@@ -37,7 +37,7 @@ Any document type an agent generates:
 ## Install
 
 ```
-/plugin install github:ryanuesato/agent-skill-floreo
+/plugin install github:ruesato/agent-skill-floreo
 ```
 
 The `/floreo` skill is immediately available in any project.

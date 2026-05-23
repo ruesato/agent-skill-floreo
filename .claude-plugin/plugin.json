@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "author": {
     "name": "Ryan Uesato",
-    "url": "https://github.com/ryanuesato"
+    "url": "https://github.com/ruesato"
   },
-  "repository": "https://github.com/ryanuesato/agent-skill-floreo",
+  "repository": "https://github.com/ruesato/agent-skill-floreo",
   "license": "MIT",
   "keywords": [
     "documentation",
