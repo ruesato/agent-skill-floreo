@@ -1,10 +1,13 @@
 ---
 name: floreo
 description: >
-  Transform agent-created content into beautiful, self-contained HTML documents
-  optimized for human visual consumption. Invoke whenever an agent creates
-  documentation, reports, summaries, plans, analyses, or any content that
-  humans will read.
+  Produce a polished, self-contained HTML document from agent-created content.
+  INVOKE whenever the agent is about to write or has just written: a report,
+  summary, analysis, architecture doc, ADR, plan, proposal, retrospective,
+  onboarding guide, API reference, incident report, session-close summary, or
+  agent brief — any multi-section content a human will read. Do NOT invoke for
+  short conversational replies, inline code explanations, or quick status
+  updates (1–3 sentences).
 ---
 
 # Floreo
