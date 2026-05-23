@@ -25,6 +25,14 @@ Use floreo for **any agent-created content that humans will read**:
 
 **Default rule**: If a human reads it, floreo it. Markdown is for source control. HTML is for reading.
 
+**Minimum threshold** — use floreo when the content has at least two of:
+- Multiple sections (three or more headings)
+- A table, chart, or diagram
+- Content that must persist beyond the current conversation
+- An audience beyond the immediate user (shared docs, stakeholder reports)
+
+Do NOT floreo: short conversational answers, inline code explanations, quick status updates (1–3 sentences), or content destined to be embedded in another system (Notion, Confluence, GitHub comments).
+
 ## Two-Phase Composition
 
 Phase 1 and Phase 2 may run sequentially in a single agent, or Phase 2 may be delegated to a Haiku subagent for token efficiency.
@@ -75,6 +83,36 @@ VISUAL ELEMENTS:
 CALLOUTS:
 - [NOTE|WARN|TIP]: [text]
 ```
+
+For **table** sections, provide data in this form so Haiku can map it directly to `<thead>/<tbody>`:
+
+```
+3. API Comparison — table
+   COLUMNS: Method | Latency (p50) | Auth Required | Rate Limit
+   ROW: GET /users | 12ms | yes | 1000/hr
+   ROW: POST /events | 45ms | yes | 500/hr
+   ROW: GET /health | 2ms | no | unlimited
+   HIGHLIGHT_ROW: POST /events  (draw attention to this row)
+```
+
+For **figure** sections, describe the data and the chart type:
+
+```
+4. Response time by region — figure
+   TYPE: bar chart
+   DATA: us-east=12ms, eu-west=34ms, ap-southeast=78ms
+   CAPTION: P50 latency measured over 7-day window
+```
+
+## File Output
+
+**Naming convention**: `<kebab-document-title>-<YYYY-MM-DD>.html`
+
+Examples: `sprint-retro-2026-05-22.html` · `auth-architecture-2026-04-10.html` · `incident-db-outage-2026-03-01.html`
+
+**Default location**: `docs/` relative to the project root. Create the directory if it doesn't exist. If the project has an existing documentation convention, follow it.
+
+**Uniqueness**: If a file with the same name exists, append `-v2`, `-v3`, etc. Do not silently overwrite.
 
 ---
 
@@ -141,7 +179,9 @@ Adapt `--ca` (accent) to the document's purpose or brand:
   --cm:#57534e;   /* muted/secondary text */
   --cq:#a8a29e;   /* quiet/meta text */
   --ca:#2563eb;   /* accent — vary by document */
-  --cab:#dbeafe   /* accent background tint */
+  --cab:#dbeafe;  /* accent background tint */
+  --cw-bg:#fef3c7; --cw:#d97706;  /* warning amber */
+  --cg-bg:#dcfce7; --cg:#16a34a   /* success green */
 }
 ```
 
@@ -164,7 +204,9 @@ Include this compressed block in every floreo document. Extend as needed:
 
 ```css
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#a8a29e;--ca:#2563eb;--cab:#dbeafe}
+:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#a8a29e;--ca:#2563eb;--cab:#dbeafe;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a}
+:root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px}
+:root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:2rem;--t-4xl:3rem}
 body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
 .pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
 h1,h2,h3,h4{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
@@ -175,19 +217,21 @@ p{margin-bottom:1rem;color:var(--cm)}
 .sc{margin-bottom:3rem}
 .hd{padding-bottom:2rem;margin-bottom:3rem;border-bottom:2px solid var(--cbr)}
 .fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
+.eyebrow{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ca);margin-bottom:.75rem}
+.subtitle{font-size:1.1rem;color:var(--cm);font-style:italic}
 .note,.warn,.tip{padding:1rem 1.25rem;border-radius:6px;margin:1.5rem 0;font-size:.95rem}
 .note{background:var(--cab);border-left:3px solid var(--ca)}
-.warn{background:#fef3c7;border-left:3px solid #d97706}
-.tip{background:#dcfce7;border-left:3px solid #16a34a}
-.tbl-w{overflow-x:auto;margin:1.5rem 0}
-.tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs);border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
+.warn{background:var(--cw-bg);border-left:3px solid var(--cw)}
+.tip{background:var(--cg-bg);border-left:3px solid var(--cg)}
+.tbl-w{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs)}
 .tbl thead{background:#f5f5f4}
 .tbl th{text-align:left;padding:.6rem 1rem;font-family:var(--f-m);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cm);border-bottom:1px solid var(--cbr)}
 .tbl td{padding:.6rem 1rem;border-bottom:1px solid #f5f5f4;color:var(--cm);vertical-align:top}
 .tbl tr:last-child td{border-bottom:none}
 .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:1.5rem 0}
 .card{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem}
-.code{background:#1c1917;color:#f5f5f4;padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;overflow-x:auto;margin:1.5rem 0;white-space:pre}
+.code{background:#1c1917;color:#f5f5f4;padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;word-break:break-all}
 .fig{margin:1.5rem 0;text-align:center}
 .fig svg{max-width:100%;height:auto}
 figcaption{font-size:.8rem;color:var(--cq);margin-top:.5rem;font-style:italic;text-align:center}
@@ -385,12 +429,14 @@ REQUIREMENTS:
 9. <meta viewport> present. max-width on .pg for readability.
 10. Set --ca to the accent color specified in the content plan.
 
-FLOREO BASE CSS:
-[paste the base CSS block from the floreo skill]
+FLOREO BASE CSS (copy verbatim from the "## Base CSS Block" section of the floreo SKILL.md you loaded):
+<insert the full contents of the ```css block from ## Base CSS Block here>
 
 CONTENT PLAN:
-[paste the content plan here]
+<insert your full Content Plan here>
 ```
+
+**Important**: Do not pass the angle-bracket placeholders literally. Replace them with the actual CSS block and actual Content Plan before sending to Haiku. The CSS block is in this skill document under `## Base CSS Block` — copy it exactly.
 
 ---
 
@@ -408,6 +454,19 @@ Before writing the final file:
 - [ ] CSS variables used throughout (no hardcoded hex values)
 - [ ] Mobile-responsive (`<meta viewport>` present, `max-width` on `.pg`)
 - [ ] JS (if any) degrades gracefully without it
+
+---
+
+## Updating an Existing Floreo Document
+
+When a floreo document needs new content, a corrected section, or a data refresh:
+
+1. **Read the existing file** — extract the current section structure (scan for `<h2>` headings and their content)
+2. **Produce an updated Content Plan** — treat the existing document as Phase 1 input; add, remove, or edit sections in the plan
+3. **Regenerate via Phase 2** — pass the updated Content Plan to Haiku; produce a complete new HTML file
+4. **Write as a new version** — use the `-v2` / `-v3` suffix convention; do not overwrite unless the user explicitly asks
+
+Do not surgically edit compressed HTML markup by hand. The cost of a full regeneration is low and the result is clean. The original file serves as a fallback until the new version is confirmed.
 
 ---
 

@@ -8,8 +8,9 @@
 
 ## CSS variable tokens
 `--cb` bg · `--cs` surface · `--cbr` border · `--ct` text · `--cm` muted · `--cq` quiet  
-`--ca` accent · `--cab` accent-bg tint  
-`--f-h` heading font · `--f-b` body font · `--f-m` mono font
+`--ca` accent · `--cab` accent-bg tint · `--cw-bg`/`--cw` warn amber · `--cg-bg`/`--cg` success green  
+`--f-h` heading font · `--f-b` body font · `--f-m` mono font  
+`--s1`–`--s8` spacing (4px→64px) · `--t-xs`–`--t-4xl` type scale (.75rem→3rem)
 
 ## Accent color by doc type
 `#2563eb` technical (default) · `#dc2626` warning/incident · `#16a34a` success  
