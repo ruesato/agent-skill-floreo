@@ -3,3 +3,8 @@
 .dolt/
 *.db
 .beads-credential-key
+# Added by code-review-graph
+.code-review-graph/
+
+# System files
+.DS_Store
