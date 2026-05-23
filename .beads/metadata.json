@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "agent_skill_effective_docs",
+  "project_id": "2434e9fa-ad5b-4afa-a015-d17c7f4e5df6"
+}

@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Floreo — Naming Reference</title>
+  <style>
+    :root {
+      --green-50:  #f0fdf4;
+      --green-100: #dcfce7;
+      --green-200: #bbf7d0;
+      --green-400: #4ade80;
+      --green-600: #16a34a;
+      --green-700: #15803d;
+      --green-900: #14532d;
+      --stone-50:  #fafaf9;
+      --stone-100: #f5f5f4;
+      --stone-200: #e7e5e4;
+      --stone-400: #a8a29e;
+      --stone-600: #57534e;
+      --stone-800: #292524;
+      --stone-900: #1c1917;
+      --amber-100: #fef3c7;
+      --amber-600: #d97706;
+      --red-100:   #fee2e2;
+      --red-600:   #dc2626;
+      --blue-100:  #dbeafe;
+      --blue-600:  #2563eb;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: var(--stone-50);
+      color: var(--stone-800);
+      line-height: 1.75;
+      padding: 0 1rem;
+    }
+
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 4rem 0 8rem;
+    }
+
+    /* ── Header ── */
+    .header {
+      border-bottom: 2px solid var(--green-200);
+      padding-bottom: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .eyebrow {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green-600);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--stone-900);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--green-700);
+    }
+
+    .subtitle {
+      font-size: 1.125rem;
+      color: var(--stone-600);
+      font-style: italic;
+    }
+
+    .meta {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      font-family: 'Courier New', monospace;
+      color: var(--stone-400);
+    }
+
+    /* ── Section headings ── */
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--stone-900);
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--stone-200);
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--stone-800);
+      margin-bottom: 0.5rem;
+      font-family: 'Courier New', monospace;
+    }
+
+    section {
+      margin-bottom: 3.5rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--stone-700);
+    }
+
+    /* ── Candidate card ── */
+    .candidates {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .candidate {
+      border: 1px solid var(--stone-200);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      background: white;
+    }
+
+    .candidate.eliminated {
+      opacity: 0.55;
+      border-style: dashed;
+    }
+
+    .candidate.selected {
+      border-color: var(--green-400);
+      border-width: 2px;
+      background: var(--green-50);
+    }
+
+    .candidate-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .candidate-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      color: var(--stone-900);
+    }
+
+    .candidate.selected .candidate-name { color: var(--green-700); }
+    .candidate.eliminated .candidate-name { text-decoration: line-through; }
+
+    .badge {
+      font-size: 0.7rem;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .badge-selected  { background: var(--green-100); color: var(--green-700); }
+    .badge-high      { background: var(--red-100);   color: var(--red-600);   }
+    .badge-medium    { background: var(--amber-100); color: var(--amber-600); }
+    .badge-low       { background: var(--blue-100);  color: var(--blue-600);  }
+    .badge-zero      { background: var(--green-100); color: var(--green-700); }
+
+    .candidate-desc {
+      font-size: 0.9rem;
+      color: var(--stone-600);
+      margin-bottom: 0.75rem;
+    }
+
+    .collision-list {
+      list-style: none;
+      font-size: 0.85rem;
+    }
+
+    .collision-list li {
+      padding: 0.2rem 0;
+      color: var(--stone-600);
+    }
+
+    .collision-list li::before {
+      content: '→ ';
+      color: var(--stone-400);
+    }
+
+    .collision-list li.severe::before { content: '✕ '; color: var(--red-600); }
+    .collision-list li.major::before  { content: '⚠ '; color: var(--amber-600); }
+    .collision-list li.clear::before  { content: '✓ '; color: var(--green-600); }
+
+    /* ── Finalist table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--stone-200);
+    }
+
+    thead {
+      background: var(--stone-100);
+    }
+
+    th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--stone-600);
+      border-bottom: 1px solid var(--stone-200);
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--stone-100);
+      color: var(--stone-700);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr.winner td { background: var(--green-50); font-weight: 600; }
+    tr.winner td:first-child { color: var(--green-700); }
+
+    /* ── Etymology ── */
+    .etymology-root {
+      background: white;
+      border: 1px solid var(--stone-200);
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .latin-word {
+      font-size: 2rem;
+      font-style: italic;
+      color: var(--green-700);
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .latin-gloss {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: var(--stone-400);
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+
+    .cognate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .cognate {
+      background: var(--stone-50);
+      border: 1px solid var(--stone-200);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+    }
+
+    .cognate-word {
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      color: var(--stone-800);
+      font-size: 0.9rem;
+    }
+
+    .cognate-lang {
+      font-size: 0.7rem;
+      color: var(--stone-400);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .cognate-meaning {
+      font-size: 0.82rem;
+      color: var(--stone-600);
+      margin-top: 0.2rem;
+      font-style: italic;
+    }
+
+    .application-card {
+      background: var(--green-50);
+      border-left: 3px solid var(--green-400);
+      border-radius: 0 8px 8px 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .application-card h4 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--green-700);
+      font-family: 'Courier New', monospace;
+      margin-bottom: 0.5rem;
+    }
+
+    .application-card p {
+      font-size: 0.95rem;
+      color: var(--stone-700);
+      margin-bottom: 0;
+    }
+
+    /* ── Decision banner ── */
+    .decision {
+      background: var(--green-900);
+      color: var(--green-50);
+      border-radius: 12px;
+      padding: 2.5rem 3rem;
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .decision-label {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--green-400);
+      margin-bottom: 0.75rem;
+    }
+
+    .decision-name {
+      font-size: 4rem;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+
+    .decision-tagline {
+      font-size: 1.1rem;
+      color: var(--green-200);
+      font-style: italic;
+    }
+
+    .invoke-example {
+      margin-top: 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: var(--green-300);
+      background: rgba(0,0,0,0.3);
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+    }
+
+    /* ── PIE root visual ── */
+    .pie-tree {
+      background: white;
+      border: 1px solid var(--stone-200);
+      border-radius: 8px;
+      padding: 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      line-height: 2;
+      color: var(--stone-700);
+    }
+
+    .pie-root {
+      color: var(--green-700);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .pie-branch { color: var(--stone-400); }
+    .pie-leaf   { color: var(--stone-800); }
+
+    blockquote {
+      border-left: 3px solid var(--green-200);
+      margin: 1.5rem 0;
+      padding: 0.75rem 1.5rem;
+      font-style: italic;
+      color: var(--stone-600);
+      font-size: 0.95rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--stone-200);
+      padding-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--stone-400);
+      font-family: 'Courier New', monospace;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <p class="eyebrow">Agent Skill · Naming Reference</p>
+    <h1><em>floreo</em></h1>
+    <p class="subtitle">How a Latin verb for blooming became the name for beautiful agent-generated documents</p>
+    <p class="meta">Created 2026-05-22 · Brainstormed with Claude Sonnet 4.6</p>
+  </header>
+
+
+  <!-- ── What This Skill Does ── -->
+  <section>
+    <h2>What floreo does</h2>
+    <p>
+      Most AI agents write documentation as Markdown — a format optimized for source control,
+      not for reading. Floreo is a skill that instructs agents to produce HTML instead: documents
+      that use typography, color, layout, and interactivity to communicate as effectively as possible
+      to a mixed audience of engineers and non-technical stakeholders.
+    </p>
+    <p>
+      The goal is not decoration. It is clarity. A well-structured HTML document with visual hierarchy,
+      scannable tables, and clear call-outs communicates the same information faster and with less
+      cognitive load than a flat Markdown file.
+    </p>
+  </section>
+
+
+  <!-- ── Naming Criteria ── -->
+  <section>
+    <h2>What we were looking for</h2>
+    <p>The name had to satisfy five conditions simultaneously:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Criterion</th>
+          <th>Requirement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Primary goal</td><td>Readable, clear, effective communication above all</td></tr>
+        <tr><td>Audience</td><td>Works for engineers and non-technical stakeholders alike</td></tr>
+        <tr><td>Feel</td><td>Playful, unexpected, elegant — not dry or technical</td></tr>
+        <tr><td>Scope</td><td>Beautiful communication broadly, not tied to HTML or Markdown</td></tr>
+        <tr><td>Invocability</td><td>Easy to say, type, and invoke by voice or text</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ── Candidates Explored ── -->
+  <section>
+    <h2>Candidates explored</h2>
+    <p>We explored three thematic clusters: <strong>light &amp; clarity</strong>, <strong>organic growth &amp; bloom</strong>, and <strong>multilingual equivalents</strong>.</p>
+
+    <div class="candidates">
+
+      <div class="candidate eliminated">
+        <div class="candidate-header">
+          <span class="candidate-name">bloom</span>
+          <span class="badge badge-high">Severe collision</span>
+        </div>
+        <p class="candidate-desc">Organic, alive — documents opening up. Strong metaphor, eliminated by collision profile.</p>
+        <ul class="collision-list">
+          <li class="severe">Bloom filter — one of the most cited CS data structures; any developer hears this immediately</li>
+          <li class="major">Bloom (fintech app) — widely installed personal finance product</li>
+          <li class="major">Bloom (mental health app) — large CBT therapy platform</li>
+          <li class="major">Bloomreach — enterprise e-commerce platform</li>
+        </ul>
+      </div>
+
+      <div class="candidate eliminated">
+        <div class="candidate-header">
+          <span class="candidate-name">hana</span>
+          <span class="badge badge-high">Severe collision</span>
+        </div>
+        <p class="candidate-desc">花 — Japanese for flower. Clean, minimal, beautiful. Eliminated by one dominant collision.</p>
+        <ul class="collision-list">
+          <li class="severe">SAP HANA — one of the largest enterprise in-memory databases on the planet; this word is owned in tech</li>
+        </ul>
+      </div>
+
+      <div class="candidate">
+        <div class="candidate-header">
+          <span class="candidate-name">gleam</span>
+          <span class="badge badge-medium">Medium collision</span>
+        </div>
+        <p class="candidate-desc">Light, clarity — a flash of signal. Easy to say, clear meaning. Finalist.</p>
+        <ul class="collision-list">
+          <li class="major">Gleam — a functional programming language targeting Erlang VM, actively growing in dev community</li>
+          <li class="major">Gleam.io — established marketing and contest platform</li>
+          <li class="clear">No collision with document tooling specifically</li>
+        </ul>
+      </div>
+
+      <div class="candidate">
+        <div class="candidate-header">
+          <span class="candidate-name">brillo</span>
+          <span class="badge badge-low">Low collision</span>
+        </div>
+        <p class="candidate-desc">Italian and Spanish for shine/brightness. Punchy, one word. Finalist.</p>
+        <ul class="collision-list">
+          <li class="major">Brillo pad — household cleaning product; cross-domain but well-known</li>
+          <li class="clear">No tech-space collision</li>
+        </ul>
+      </div>
+
+      <div class="candidate">
+        <div class="candidate-header">
+          <span class="candidate-name">flourish</span>
+          <span class="badge badge-low">Low collision</span>
+        </div>
+        <p class="candidate-desc">Double meaning: to thrive, and a decorative calligraphic ornament. Strong metaphor, slightly generic.</p>
+        <ul class="collision-list">
+          <li class="clear">No dominant tech collision</li>
+          <li>Used broadly in business and wellness contexts</li>
+        </ul>
+      </div>
+
+      <div class="candidate">
+        <div class="candidate-header">
+          <span class="candidate-name">petal</span>
+          <span class="badge badge-zero">Zero collision</span>
+        </div>
+        <p class="candidate-desc">Wildly unexpected for a doc tool. Tactile, delicate, memorable. Very few collisions anywhere.</p>
+        <ul class="collision-list">
+          <li class="clear">No known tech collision</li>
+          <li class="clear">Distinctive and surprising — impossible to confuse</li>
+        </ul>
+      </div>
+
+      <div class="candidate">
+        <div class="candidate-header">
+          <span class="candidate-name">fioritura</span>
+          <span class="badge badge-zero">Zero collision</span>
+        </div>
+        <p class="candidate-desc">Italian musical term for ornamental notes woven into a melody. Same Latin root as floreo. Perfect metaphor, five syllables.</p>
+        <ul class="collision-list">
+          <li class="clear">Effectively zero tech collision</li>
+          <li>Italian restaurants and music academia — entirely different domain</li>
+          <li>Long for voice invocation; best as /fioritura in text</li>
+        </ul>
+      </div>
+
+      <div class="candidate">
+        <div class="candidate-header">
+          <span class="candidate-name">floreo</span>
+          <span class="badge badge-low">Low collision</span>
+        </div>
+        <p class="candidate-desc">Latin: <em>I flower / I bloom / I flourish.</em> Three syllables, verb-form, works by voice and text. Winner.</p>
+        <ul class="collision-list">
+          <li class="major">Floreo — a VR autism therapy platform for children; real product, different domain</li>
+          <li>Fencing term: a sword flourish before a bout — adds a layer of meaning</li>
+          <li class="clear">No collision in documentation, developer tooling, or AI tooling</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ── Finalist Table ── -->
+  <section>
+    <h2>Finalists compared</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Collision risk</th>
+          <th>Invoke by voice</th>
+          <th>Metaphor fit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>gleam</td><td>Medium — Gleam lang</td><td>Excellent</td><td>Good (light, clarity)</td></tr>
+        <tr><td>brillo</td><td>Low — Brillo pad</td><td>Excellent</td><td>Good (shine)</td></tr>
+        <tr><td>flourish</td><td>Low</td><td>Excellent</td><td>Good (double meaning)</td></tr>
+        <tr><td>petal</td><td>Zero</td><td>Excellent</td><td>Good (unexpected)</td></tr>
+        <tr><td>fioritura</td><td>Zero</td><td>Poor (5 syllables)</td><td>Exceptional</td></tr>
+        <tr class="winner"><td>floreo ✓</td><td>Low — different domain</td><td>Excellent</td><td>Exceptional</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ── Decision ── -->
+  <div class="decision">
+    <p class="decision-label">Selected name</p>
+    <p class="decision-name">floreo</p>
+    <p class="decision-tagline">I flower. I bloom. I flourish.</p>
+    <p class="invoke-example">/floreo  ·  "floreo this into a beautiful doc"</p>
+  </div>
+
+
+  <!-- ── Etymology ── -->
+  <section>
+    <h2>Etymology of <em>floreo</em></h2>
+    <p>
+      The name was not chosen for its sound alone. It carries two thousand years of meaning
+      that maps directly onto what this skill does.
+    </p>
+
+    <div class="etymology-root">
+      <p class="latin-word">florēre</p>
+      <p class="latin-gloss">Latin · second conjugation verb</p>
+      <p>
+        <strong>floreo</strong> is the first-person singular present active indicative of <em>florēre</em>:
+        "I flower. I bloom. I am in my prime." The noun root is <em>flos, floris</em> (masculine) — the Latin word for flower.
+      </p>
+    </div>
+
+    <h3>Proto-Indo-European root</h3>
+    <p>
+      The PIE root is <em>*bhleh₃-</em> — to bloom, to swell, to thrive. A variant of
+      the broader <em>*bhel-</em> which also gives us words for light, fire, and shining.
+      This connects <em>floreo</em> etymologically to the other names on our shortlist:
+      gleam, brillo, glanz, lume — they all trace to the same ancient idea of something
+      radiant and alive.
+    </p>
+
+    <div class="pie-tree">
+      <span class="pie-root">*bhleh₃-</span> (to bloom, to thrive)<br>
+      <span class="pie-branch">├─ Latin </span><span class="pie-leaf">flos → floreo, flora, floret, florid, flourish</span><br>
+      <span class="pie-branch">├─ Old English </span><span class="pie-leaf">blōwan → blow (as flowers blow), blossom</span><br>
+      <span class="pie-branch">├─ Germanic </span><span class="pie-leaf">blōma → bloom, Blume (German)</span><br>
+      <span class="pie-branch">└─ Old Norse </span><span class="pie-leaf">blóm → bloom, flower</span>
+    </div>
+
+    <h3 style="margin-top:1.5rem;">Cognates across languages</h3>
+    <div class="cognate-grid">
+      <div class="cognate">
+        <p class="cognate-word">flower</p>
+        <p class="cognate-lang">Middle English</p>
+        <p class="cognate-meaning">from Old French flor, from Latin flos</p>
+      </div>
+      <div class="cognate">
+        <p class="cognate-word">flour</p>
+        <p class="cognate-lang">Middle English</p>
+        <p class="cognate-meaning">"flower of the meal" — the finest, most refined part of ground grain. Same word as flower until the 18th century.</p>
+      </div>
+      <div class="cognate">
+        <p class="cognate-word">fiorire</p>
+        <p class="cognate-lang">Italian</p>
+        <p class="cognate-meaning">to flower — gives us fioritura, our runner-up</p>
+      </div>
+      <div class="cognate">
+        <p class="cognate-word">fleurir</p>
+        <p class="cognate-lang">French</p>
+        <p class="cognate-meaning">to bloom, to flourish</p>
+      </div>
+      <div class="cognate">
+        <p class="cognate-word">florecer</p>
+        <p class="cognate-lang">Spanish</p>
+        <p class="cognate-meaning">to bloom, to thrive</p>
+      </div>
+      <div class="cognate">
+        <p class="cognate-word">Blüte</p>
+        <p class="cognate-lang">German</p>
+        <p class="cognate-meaning">bloom, blossom — same PIE ancestor</p>
+      </div>
+      <div class="cognate">
+        <p class="cognate-word">floreat</p>
+        <p class="cognate-lang">Latin (subjunctive)</p>
+        <p class="cognate-meaning">"may it flourish" — used in Eton, Oxford mottos</p>
+      </div>
+      <div class="cognate">
+        <p class="cognate-word">Florence</p>
+        <p class="cognate-lang">Italian (Firenze)</p>
+        <p class="cognate-meaning">from Florentia — "the flourishing one"</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:1.5rem;">The flour insight</h3>
+    <p>
+      Until the 18th century, <em>flour</em> and <em>flower</em> were the same English word.
+      Flour was "the flower of the meal" — the finest, most refined portion of ground grain,
+      separated from the coarse remainder. This is precisely what floreo does to a document:
+      it takes raw text and produces the finest, most refined version — the flower of the content.
+    </p>
+
+    <h3 style="margin-top:1.5rem;">Extended meanings in classical Latin</h3>
+    <p>In Roman usage, <em>florēre</em> carried meaning beyond horticulture:</p>
+    <ul style="padding-left:1.5rem; color:var(--stone-700); margin-bottom:1rem;">
+      <li>to be in one's prime</li>
+      <li>to be prosperous and distinguished</li>
+      <li>to be held in high esteem</li>
+      <li>to be at the height of one's power or influence</li>
+    </ul>
+    <p>
+      When an agent runs floreo on a document, it brings that document to its prime —
+      the fullest, most distinguished version of itself.
+    </p>
+
+    <h3 style="margin-top:1.5rem;">The Florilegium tradition</h3>
+    <p>
+      Medieval monks created <em>florilegia</em> — from <em>flos</em> (flower) + <em>legere</em>
+      (to gather, to read). A florilegium was a hand-curated anthology: monks combing through
+      texts to gather the most beautiful passages, arranging them into a new, more radiant whole.
+    </p>
+
+    <blockquote>
+      A florilegium was not a summary. It was a flowering — the same information, arranged
+      so that its beauty could finally be seen.
+    </blockquote>
+
+    <p>Floreo performs a florilegium on every document it touches.</p>
+
+    <h3 style="margin-top:1.5rem;">The Floralia connection</h3>
+    <p>
+      In Rome, the <em>Floralia</em> (April 28 – May 3) was the festival of Flora, goddess of
+      flowers and spring. It was defined by theatrical performances, mime, games, and spectacle —
+      the idea that information and experience should be delivered through beauty, not just words.
+      It was one of the earliest recorded traditions of communicating through design.
+    </p>
+
+    <h3 style="margin-top:1.5rem;">The fencing floreo</h3>
+    <p>
+      In fencing, a <em>floreo</em> is an ornamental flourish — a circular swing of the sword
+      before engaging an opponent. It is not functional in combat. It is a display of control,
+      mastery, and respect — the fencer announcing their intentions through a gesture of excellence
+      before the real work begins.
+    </p>
+    <p>
+      When the skill runs, it performs a floreo: a gesture of craft before presenting the work.
+    </p>
+
+    <h3 style="margin-top:1.5rem;">The verb form as identity</h3>
+    <p>
+      Most tool names are nouns (<em>prettier</em>, <em>eslint</em>, <em>figma</em>).
+      <em>Floreo</em> is a conjugated verb — first person, present tense. "I flower."
+      It gives the skill a voice and a perspective. When an agent invokes <code>/floreo</code>,
+      it is not running a tool. It is speaking: <em>I am flowering this.</em>
+    </p>
+  </section>
+
+
+  <!-- ── How it maps to the skill ── -->
+  <section>
+    <h2>How the etymology maps to the skill</h2>
+
+    <div class="application-card">
+      <h4>Raw text → HTML :: seed → flower</h4>
+      <p>
+        The most direct mapping. Markdown is a seed — compact, functional, inert.
+        HTML is the flower — the same content, fully expressed, open to the world.
+      </p>
+    </div>
+
+    <div class="application-card">
+      <h4>Flour = flower of the meal</h4>
+      <p>
+        Floreo does not add content. It refines it. The output is the finest version
+        of what was already there — separated from the coarse, delivered as the best.
+      </p>
+    </div>
+
+    <div class="application-card">
+      <h4>Fioritura — ornamentation of a melody</h4>
+      <p>
+        The musical fioritura takes a plain melody and flowers it with ornamental notes
+        without changing the underlying structure. Floreo takes plain text and flowers
+        it with visual hierarchy, typography, and layout — without changing the meaning.
+      </p>
+    </div>
+
+    <div class="application-card">
+      <h4>Florilegium — gathering the flowers of a text</h4>
+      <p>
+        Every document has moments of importance buried in plain prose.
+        Floreo surfaces them — into callouts, headers, tables, and visual emphasis —
+        so readers can see the flowers without searching through the stem.
+      </p>
+    </div>
+
+    <div class="application-card">
+      <h4>To be in one's prime</h4>
+      <p>
+        The Roman sense of <em>florēre</em> was not just growing — it was being at
+        the height of one's power. Floreo brings every document to its prime:
+        the version that communicates best to the widest audience.
+      </p>
+    </div>
+
+    <div class="application-card">
+      <h4>First-person verb — the skill has a voice</h4>
+      <p>
+        <em>Floreo</em> is not "florify" or "florenizer." It is "I flower."
+        The agent is not running a processor. It is performing an act of craft.
+        "Floreo this" is an instruction that carries its own intention.
+      </p>
+    </div>
+  </section>
+
+
+  <footer>
+    agent-skill-effective-docs · reference/agent-skill-floreo-name.html · 2026-05-22
+  </footer>
+
+</div>
+</body>
+</html>
