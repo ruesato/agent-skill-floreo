@@ -104,6 +104,305 @@ For **figure** sections, describe the data and the chart type:
    CAPTION: P50 latency measured over 7-day window
 ```
 
+### Content Plan preservation
+
+Phase 2 **must** embed the Content Plan inside the generated HTML as a machine-readable artifact. This lets future agents update the document without reverse-engineering markup, and enables export to other formats without re-reading the source.
+
+Convention: place a `<script type="application/floreo" id="content-plan">` element immediately before `</body>` containing the full Content Plan verbatim.
+
+```html
+<script type="application/floreo" id="content-plan">
+DOCUMENT: [title]
+AUDIENCE: [who reads this]
+PURPOSE: [what this enables]
+ACCENT: [hex]
+
+SECTIONS:
+1. ...
+
+VISUAL ELEMENTS:
+- ...
+
+CALLOUTS:
+- ...
+</script>
+</body>
+```
+
+This element is invisible to browsers and human readers. It is not executed. Its only consumer is a future agent.
+
+## Content Plan Templates
+
+Copy the matching template, fill in bracketed placeholders, then pass to Phase 2.
+
+### Incident Report
+
+```
+DOCUMENT: [Service] Incident — [YYYY-MM-DD]
+AUDIENCE: Engineering team, on-call, leadership
+PURPOSE: Capture what happened, root cause, and prevention so this class of incident doesn't recur
+ACCENT: #dc2626
+
+SECTIONS:
+1. Executive Summary — table
+   COLUMNS: Field | Value
+   ROW: Severity | [P0/P1/P2]
+   ROW: Duration | [start] → [end] ([N] min)
+   ROW: Services Affected | [list]
+   ROW: User Impact | [description]
+   ROW: Status | Resolved
+
+2. Timeline — prose
+   [Chronological sequence of events from first alert to resolution]
+
+3. Root Cause — prose
+   [Technical explanation of the underlying failure]
+
+4. Impact — table
+   COLUMNS: Metric | Before | During | After
+   ROW: [error rate / latency / availability...]
+
+5. Resolution — prose
+   [Steps taken to restore service]
+
+6. Prevention — list
+   [Action items with owners and due dates]
+
+CALLOUTS:
+- NOTE: [any important context about detection or response]
+```
+
+### Architecture Decision Record (ADR)
+
+```
+DOCUMENT: ADR-[NNN]: [Decision Title]
+AUDIENCE: Engineering team, future maintainers
+PURPOSE: Record why this decision was made so future engineers can revisit with full context
+ACCENT: #7c3aed
+
+SECTIONS:
+1. Status — prose
+   [Proposed | Accepted | Deprecated | Superseded by ADR-NNN]
+
+2. Context — prose
+   [The forces at play — technical, organizational, constraints — that motivated this decision]
+
+3. Decision — prose
+   [The change being made and exactly what it means]
+
+4. Alternatives Considered — table
+   COLUMNS: Option | Pros | Cons | Rejected Because
+   ROW: [option A] | [pros] | [cons] | [reason]
+   ROW: [option B] | [pros] | [cons] | [reason]
+
+5. Consequences — list
+   [What becomes easier, harder, or required as a result of this decision]
+
+CALLOUTS:
+- NOTE: [any constraint that explains an otherwise surprising choice]
+```
+
+### Sprint Retrospective
+
+```
+DOCUMENT: Sprint [N] Retrospective — [start date] → [end date]
+AUDIENCE: Engineering team
+PURPOSE: Surface what to keep, stop, and start to improve team velocity next sprint
+ACCENT: #16a34a
+
+SECTIONS:
+1. Sprint Summary — table
+   COLUMNS: Metric | Value
+   ROW: Points Committed | [N]
+   ROW: Points Delivered | [N]
+   ROW: Velocity | [N]%
+   ROW: Incidents | [N]
+   ROW: PRs Merged | [N]
+
+2. What Went Well — list
+   [Things to continue or amplify]
+
+3. What to Improve — list
+   [Friction points, gaps, or frustrations the team experienced]
+
+4. Action Items — table
+   COLUMNS: Action | Owner | Due
+   ROW: [specific change] | [name] | [date]
+
+CALLOUTS:
+- TIP: [recognition for a team member or a win worth calling out]
+```
+
+### Research Brief
+
+```
+DOCUMENT: [Topic] Research Brief
+AUDIENCE: [decision-maker role, e.g. "engineering leads", "product team"]
+PURPOSE: Synthesize findings to inform [specific decision or question]
+ACCENT: #0891b2
+
+SECTIONS:
+1. Research Question — prose
+   [The specific question this brief answers]
+
+2. Methodology — prose
+   [Sources consulted, data collected, scope and timeframe]
+
+3. Key Findings — list
+   [Top 4–7 findings, most important first]
+
+4. Comparison — table
+   COLUMNS: Option | [criterion A] | [criterion B] | [criterion C] | Verdict
+   ROW: [option] | [value] | [value] | [value] | [rec]
+
+5. Recommendation — prose
+   [Specific recommended course of action with rationale]
+
+VISUAL ELEMENTS:
+- [bar chart or figure if quantitative comparison is available]
+
+CALLOUTS:
+- WARN: [significant risk, caveat, or data limitation]
+```
+
+### Onboarding Guide
+
+```
+DOCUMENT: [Team / System] Onboarding Guide
+AUDIENCE: New engineers joining the team
+PURPOSE: Get to first meaningful contribution within [N] days without requiring hand-holding
+ACCENT: #2563eb
+
+SECTIONS:
+1. Welcome — prose
+   [What this team does, who they serve, why it matters]
+
+2. System Overview — prose
+   [High-level architecture or domain model; link to deeper docs if available]
+
+3. Setup — list (numbered procedure)
+   [Step-by-step environment setup: repo, credentials, local run, first test]
+
+4. Key Concepts — list
+   [Glossary of team-specific terms, acronyms, and mental models]
+
+5. Quick Reference — table
+   COLUMNS: Task | Command / Link
+   ROW: Run tests | [command]
+   ROW: Deploy to staging | [command or link]
+   ROW: File a bug | [link]
+
+6. Getting Help — prose
+   [Slack channels, on-call rotation, docs locations, who to ask for what]
+
+CALLOUTS:
+- TIP: [most important thing a new person should know in the first week]
+```
+
+### API Reference Page
+
+```
+DOCUMENT: [API Name] Reference
+AUDIENCE: Developers integrating the API
+PURPOSE: Enable self-service integration without requiring direct support
+ACCENT: #2563eb
+
+SECTIONS:
+1. Overview — prose
+   [What the API does, base URL, protocol/versioning]
+
+2. Authentication — code
+   [Auth mechanism: API key / OAuth / JWT — show a minimal working example]
+
+3. Endpoints — table
+   COLUMNS: Method | Path | Description | Auth Required
+   ROW: GET | /[resource] | [what it returns] | yes/no
+   ROW: POST | /[resource] | [what it creates] | yes/no
+
+4. Request / Response — code
+   [Minimal working example: curl or JSON request + annotated response]
+
+5. Error Codes — table
+   COLUMNS: Code | Meaning | Common Cause
+   ROW: 400 | Bad Request | [reason]
+   ROW: 401 | Unauthorized | [reason]
+   ROW: 429 | Rate Limited | [reason]
+
+6. Rate Limits — prose
+   [Limits, headers returned, backoff strategy]
+
+CALLOUTS:
+- WARN: [breaking change, deprecation, or gotcha worth surfacing prominently]
+```
+
+### Project Proposal
+
+```
+DOCUMENT: [Project Name] Proposal
+AUDIENCE: [stakeholder group], leadership
+PURPOSE: Get approval and resources to begin [project] by [target date]
+ACCENT: #7c3aed
+
+SECTIONS:
+1. Problem Statement — prose
+   [The specific pain, cost, or opportunity this project addresses]
+
+2. Proposed Solution — prose
+   [What we'll build or change and why this approach]
+
+3. Success Metrics — table
+   COLUMNS: Metric | Baseline | Target | Measurement
+   ROW: [metric] | [current] | [goal] | [how measured]
+
+4. Timeline — figure
+   TYPE: horizontal bar / milestone table
+   [Phases with owners and dates]
+
+5. Resources Required — table
+   COLUMNS: Resource | Amount | Source
+   ROW: Engineering | [N weeks] | [team]
+   ROW: Infrastructure | [$N/mo] | [budget]
+
+6. Risks — table
+   COLUMNS: Risk | Likelihood | Impact | Mitigation
+   ROW: [risk] | H/M/L | H/M/L | [plan]
+
+CALLOUTS:
+- NOTE: [key constraint — deadline, dependency, or stakeholder requirement]
+```
+
+### Agent Session-Close Summary
+
+```
+DOCUMENT: Session Close — [agent/task name] — [YYYY-MM-DD]
+AUDIENCE: Next agent or human resuming this work
+PURPOSE: Transfer context so work can resume without re-discovery
+ACCENT: #2563eb
+
+SECTIONS:
+1. Session Objective — prose
+   [What this session set out to accomplish]
+
+2. Work Completed — list
+   [Concrete deliverables: files written, issues closed, decisions made]
+
+3. Issues Updated — table
+   COLUMNS: Issue ID | Title | Status | Notes
+   ROW: [id] | [title] | closed / in_progress | [relevant context]
+
+4. Key Decisions — list
+   [Choices made during this session and the reasoning behind them]
+
+5. Blockers & Open Questions — list
+   [Anything unresolved that the next session needs to address]
+
+6. Next Session Kickoff — prose
+   [Exactly what to do first in the next session, including any commands to run]
+
+CALLOUTS:
+- WARN: [anything that could go wrong if context is lost — partial state, temp files, etc.]
+```
+
 ## File Output
 
 **Naming convention**: `<kebab-document-title>-<YYYY-MM-DD>.html`
@@ -327,6 +626,191 @@ Highlight a row: add `style="background:var(--cab)"` to `<tr>`.
 <span style="background:var(--cab);color:var(--ca);font-size:.7rem;font-family:var(--f-m);letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;font-weight:600">STATUS</span>
 ```
 
+### Stat block
+
+Large metric + label — for dashboards, KPI summaries, and key numbers.
+
+```html
+<div class="stats">
+  <div class="stat"><span class="stat-n">1,248</span><span class="stat-l">Requests/sec</span></div>
+  <div class="stat"><span class="stat-n">42ms</span><span class="stat-l">P50 latency</span></div>
+  <div class="stat"><span class="stat-n">99.9%</span><span class="stat-l">Uptime</span></div>
+</div>
+```
+
+Additional CSS:
+
+```css
+.stats{display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0}
+.stat{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem 1.5rem;min-width:140px}
+.stat-n{display:block;font-family:var(--f-h);font-size:2.5rem;font-weight:400;color:var(--ca);line-height:1}
+.stat-l{display:block;font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-top:.4rem}
+```
+
+### Timeline
+
+Chronological event sequence — for roadmaps, incident timelines, and release notes.
+
+```html
+<ol class="timeline">
+  <li class="tl-item">
+    <span class="tl-dot"></span>
+    <div><time class="tl-time">2026-05-01</time><strong>Event title</strong><p>Description of what happened.</p></div>
+  </li>
+  <li class="tl-item">
+    <span class="tl-dot"></span>
+    <div><time class="tl-time">2026-05-15</time><strong>Second event</strong><p>Description.</p></div>
+  </li>
+</ol>
+```
+
+Additional CSS:
+
+```css
+.timeline{list-style:none;padding:0;margin:1.5rem 0}
+.tl-item{display:flex;gap:1rem;padding-bottom:1.5rem;position:relative}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:7px;top:16px;bottom:0;width:1px;background:var(--cbr)}
+.tl-dot{width:15px;height:15px;border-radius:50%;background:var(--ca);flex-shrink:0;margin-top:4px}
+.tl-time{display:block;font-family:var(--f-m);font-size:.75rem;color:var(--cq);margin-bottom:.2rem}
+```
+
+### Numbered procedure
+
+Visual steps with circle numbers — for tutorials, runbooks, and setup guides.
+
+```html
+<ol class="steps">
+  <li class="step">
+    <span class="step-n">1</span>
+    <div class="step-bd"><h3>First step</h3><p>What to do and why.</p></div>
+  </li>
+  <li class="step">
+    <span class="step-n">2</span>
+    <div class="step-bd"><h3>Second step</h3><p>Continue here.</p></div>
+  </li>
+</ol>
+```
+
+Additional CSS:
+
+```css
+.steps{list-style:none;padding:0;margin:1.5rem 0}
+.step{display:flex;gap:1rem;margin-bottom:1.5rem}
+.step-n{width:32px;height:32px;border-radius:50%;background:var(--ca);color:#fff;font-family:var(--f-m);font-size:.875rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-bd{flex:1}
+.step-bd h3{margin-bottom:.25rem}
+```
+
+### Before / after split
+
+Two-column comparison — for code migrations, config changes, and before/after states.
+
+```html
+<div class="split">
+  <div>
+    <span class="split-lbl split-before">Before</span>
+    <pre class="code">old value or code</pre>
+  </div>
+  <div>
+    <span class="split-lbl split-after">After</span>
+    <pre class="code">new value or code</pre>
+  </div>
+</div>
+```
+
+Additional CSS:
+
+```css
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+@media(max-width:600px){.split{grid-template-columns:1fr}}
+.split-lbl{display:inline-block;font-family:var(--f-m);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;margin-bottom:.5rem}
+.split-before{background:var(--cw-bg);color:var(--cw)}
+.split-after{background:var(--cg-bg);color:var(--cg)}
+```
+
+### Collapsible section
+
+Native `<details>`/`<summary>` — no JS needed. Use for supplementary details, long appendices, or optional reading.
+
+```html
+<details class="collapsible">
+  <summary class="collapsible-hd">Section title (click to expand)</summary>
+  <div class="collapsible-bd">
+    <p>Content revealed on expand. Can contain any floreo components.</p>
+  </div>
+</details>
+```
+
+Additional CSS:
+
+```css
+.collapsible{border:1px solid var(--cbr);border-radius:8px;margin:1rem 0}
+.collapsible-hd{padding:.75rem 1rem;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ct)}
+.collapsible-hd::-webkit-details-marker{display:none}
+.collapsible-hd::after{content:'▸';color:var(--cq);font-size:.85rem}
+details[open]>.collapsible-hd::after{content:'▾'}
+.collapsible-bd{padding:1rem 1.25rem;border-top:1px solid var(--cbr)}
+```
+
+### Diff table
+
+Red/green row highlighting — for changelogs, migrations, and schema diffs. Extends `.tbl`; include the standard table CSS.
+
+```html
+<div class="tbl-w"><table class="tbl">
+<thead><tr><th>Field</th><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr class="d-add"><td>status</td><td>—</td><td>active</td></tr>
+<tr class="d-rem"><td>legacy_id</td><td>usr_1234</td><td>—</td></tr>
+<tr class="d-chg"><td>role</td><td>viewer</td><td>editor</td></tr>
+</tbody>
+</table></div>
+```
+
+Additional CSS:
+
+```css
+.d-add{background:#f0fdf4}.d-add td:first-child{border-left:3px solid var(--cg)}
+.d-rem{background:#fff1f2}.d-rem td:first-child{border-left:3px solid #ef4444}
+.d-chg{background:var(--cw-bg)}.d-chg td:first-child{border-left:3px solid var(--cw)}
+```
+
+### Table of contents
+
+Auto-generated from `<h2>` headings via ~15 lines of JS. Place near the top of `<main>`.
+
+```html
+<nav class="toc" aria-label="Contents">
+  <p class="toc-hd">Contents</p>
+  <ol id="toc-list" class="toc-list"></ol>
+</nav>
+```
+
+Additional CSS:
+
+```css
+.toc{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem 1.5rem;margin:1.5rem 0;display:inline-block;min-width:220px}
+.toc-hd{font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-bottom:.5rem}
+.toc-list{padding-left:1.25rem;margin:0}
+.toc-list li{margin-bottom:.2rem}
+.toc-list a{color:var(--cm);font-size:.9rem}
+```
+
+JS (add to the `<script>` block):
+
+```js
+(function(){
+  const list=document.getElementById('toc-list');
+  if(!list)return;
+  document.querySelectorAll('main h2').forEach((h,i)=>{
+    if(!h.id)h.id='s'+i;
+    const li=document.createElement('li');
+    li.innerHTML='<a href="#'+h.id+'">'+h.textContent+'</a>';
+    list.appendChild(li);
+  });
+})();
+```
+
 ---
 
 ## SVG Charts and Diagrams
@@ -428,6 +912,7 @@ REQUIREMENTS:
 8. Semantic HTML5 elements (header, main, section, footer, figure) to reduce class overhead.
 9. <meta viewport> present. max-width on .pg for readability.
 10. Set --ca to the accent color specified in the content plan.
+11. Embed the full Content Plan verbatim in <script type="application/floreo" id="content-plan"> immediately before </body>.
 
 FLOREO BASE CSS (copy verbatim from the "## Base CSS Block" section of the floreo SKILL.md you loaded):
 <insert the full contents of the ```css block from ## Base CSS Block here>
@@ -454,6 +939,7 @@ Before writing the final file:
 - [ ] CSS variables used throughout (no hardcoded hex values)
 - [ ] Mobile-responsive (`<meta viewport>` present, `max-width` on `.pg`)
 - [ ] JS (if any) degrades gracefully without it
+- [ ] Content Plan embedded in `<script type="application/floreo" id="content-plan">` before `</body>`
 
 ---
 
@@ -461,8 +947,8 @@ Before writing the final file:
 
 When a floreo document needs new content, a corrected section, or a data refresh:
 
-1. **Read the existing file** — extract the current section structure (scan for `<h2>` headings and their content)
-2. **Produce an updated Content Plan** — treat the existing document as Phase 1 input; add, remove, or edit sections in the plan
+1. **Recover the Content Plan** — read `<script type="application/floreo" id="content-plan">` from the existing file. If present, use it directly as Phase 1 input (skip re-deriving structure from markup). If absent, extract structure by scanning `<h2>` headings.
+2. **Produce an updated Content Plan** — add, remove, or edit sections in the recovered plan
 3. **Regenerate via Phase 2** — pass the updated Content Plan to Haiku; produce a complete new HTML file
 4. **Write as a new version** — use the `-v2` / `-v3` suffix convention; do not overwrite unless the user explicitly asks
 
