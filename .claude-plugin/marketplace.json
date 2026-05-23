@@ -1,0 +1,22 @@
+{
+  "name": "floreo",
+  "owner": {
+    "name": "Ryan Uesato",
+    "email": "hello@ryanuesato.com"
+  },
+  "description": "Floreo plugin marketplace",
+  "plugins": [
+    {
+      "name": "floreo",
+      "source": "./",
+      "description": "Turn agent-created content into beautiful, self-contained HTML documents optimized for human reading.",
+      "author": {
+        "name": "Ryan Uesato"
+      },
+      "homepage": "https://github.com/ruesato/agent-skill-floreo",
+      "repository": "https://github.com/ruesato/agent-skill-floreo",
+      "license": "MIT",
+      "keywords": ["documentation", "html", "design-system", "agent-output", "reports"]
+    }
+  ]
+}
