@@ -22,6 +22,7 @@ Use floreo for **any agent-created content that humans will read**:
 - Plans · proposals · design decisions
 - Research · comparisons · tutorials
 - Meeting notes · project updates
+- Session-close summaries (see **Session-Close Protocol** section below)
 
 **Default rule**: If a human reads it, floreo it. Markdown is for source control. HTML is for reading.
 
@@ -403,6 +404,23 @@ CALLOUTS:
 - WARN: [anything that could go wrong if context is lost — partial state, temp files, etc.]
 ```
 
+## Session-Close Protocol
+
+At the end of any work session involving meaningful decisions, code changes, or multi-step tasks, write a floreo session-close summary using the **Agent Session-Close Summary** Content Plan template.
+
+**When a session-close summary is warranted** (≥2 of the following apply):
+- Code was written, modified, or debugged
+- Design or architecture decisions were made
+- Blockers were encountered or resolved
+- Issues were created, updated, or closed
+- Context exists that a future agent would need to avoid re-discovering
+
+**Output**: use the Agent Session-Close Summary template, write to `docs/session-close-<task-slug>-<YYYY-MM-DD>.html`.
+
+This replaces the plain-text "hand off" step in agent session-close protocols. The floreo document is grep-able, scannable, and permanently structured — it carries the same context a markdown paragraph would, with reliable section boundaries a future agent can extract programmatically.
+
+---
+
 ## File Output
 
 **Naming convention**: `<kebab-document-title>-<YYYY-MM-DD>.html`
@@ -503,9 +521,10 @@ Include this compressed block in every floreo document. Extend as needed:
 
 ```css
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#a8a29e;--ca:#2563eb;--cab:#dbeafe;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a}
+:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#a8a29e;--ca:#2563eb;--cab:#dbeafe;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a}
 :root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px}
 :root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:2rem;--t-4xl:3rem}
+@media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#78716c}.code{border:1px solid var(--cbr)}}
 body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
 .pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
 h1,h2,h3,h4{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
@@ -524,9 +543,9 @@ p{margin-bottom:1rem;color:var(--cm)}
 .tip{background:var(--cg-bg);border-left:3px solid var(--cg)}
 .tbl-w{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
 .tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs)}
-.tbl thead{background:#f5f5f4}
+.tbl thead{background:var(--cs2)}
 .tbl th{text-align:left;padding:.6rem 1rem;font-family:var(--f-m);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cm);border-bottom:1px solid var(--cbr)}
-.tbl td{padding:.6rem 1rem;border-bottom:1px solid #f5f5f4;color:var(--cm);vertical-align:top}
+.tbl td{padding:.6rem 1rem;border-bottom:1px solid var(--cs2);color:var(--cm);vertical-align:top}
 .tbl tr:last-child td{border-bottom:none}
 .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:1.5rem 0}
 .card{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem}
@@ -548,6 +567,10 @@ strong{color:var(--ct)}
 ```html
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="floreo:type" content="<!-- report|plan|adr|retro|session-close -->">
+<meta name="floreo:created" content="<!-- YYYY-MM-DD -->">
+<meta name="floreo:model" content="<!-- e.g. claude-sonnet-4-6 -->">
+<meta name="floreo:version" content="1">
 <title>Document Title</title>
 <style>/* base css block + document-specific additions */</style>
 </head><body>
@@ -852,9 +875,9 @@ Use inline SVG for all charts, diagrams, and illustrations. Never embed raster i
   <rect x="10" y="40" width="120" height="40" rx="6" fill="var(--cab)" stroke="var(--ca)" stroke-width="1.5"/>
   <text x="70" y="65" text-anchor="middle" font-size="13" fill="var(--ct)">Step One</text>
   <!-- Arrow -->
-  <path d="M130 60 L180 60" stroke="var(--cq)" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
-  <!-- Arrowhead marker -->
-  <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+  <path d="M130 60 L180 60" stroke="var(--cq)" stroke-width="1.5" fill="none" marker-end="url(#arr-1)"/>
+  <!-- Arrowhead marker — use a unique ID per figure (arr-1, arr-2, …) to avoid ID collisions when a document has multiple flow diagrams -->
+  <defs><marker id="arr-1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
     <path d="M0,0 L0,6 L8,3 z" fill="var(--cq)"/>
   </marker></defs>
   <!-- Next box... -->
@@ -912,7 +935,8 @@ REQUIREMENTS:
 8. Semantic HTML5 elements (header, main, section, footer, figure) to reduce class overhead.
 9. <meta viewport> present. max-width on .pg for readability.
 10. Set --ca to the accent color specified in the content plan.
-11. Embed the full Content Plan verbatim in <script type="application/floreo" id="content-plan"> immediately before </body>.
+11. Add floreo meta tags: <meta name="floreo:type">, <meta name="floreo:created">, <meta name="floreo:model">, <meta name="floreo:version" content="1">.
+12. Embed the full Content Plan verbatim in <script type="application/floreo" id="content-plan"> immediately before </body>.
 
 FLOREO BASE CSS (copy verbatim from the "## Base CSS Block" section of the floreo SKILL.md you loaded):
 <insert the full contents of the ```css block from ## Base CSS Block here>
@@ -931,6 +955,7 @@ Before writing the final file:
 
 - [ ] Self-contained — no external dependencies
 - [ ] `<title>` is meaningful and specific
+- [ ] Floreo meta tags present (`floreo:type`, `floreo:created`, `floreo:model`, `floreo:version`)
 - [ ] Accent color (`--ca`) matches document purpose
 - [ ] Visual hierarchy is clear: h1 > h2 > h3, spacing creates sections
 - [ ] Tables used for comparative data (not prose lists)

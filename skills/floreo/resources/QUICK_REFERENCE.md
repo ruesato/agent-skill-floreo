@@ -7,10 +7,13 @@
 `.fig` figure/chart · `.code` code block
 
 ## CSS variable tokens
-`--cb` bg · `--cs` surface · `--cbr` border · `--ct` text · `--cm` muted · `--cq` quiet  
+`--cb` bg · `--cs` surface · `--cs2` subtle surface (table headers, row dividers) · `--cbr` border  
+`--ct` text · `--cm` muted · `--cq` quiet  
 `--ca` accent · `--cab` accent-bg tint · `--cw-bg`/`--cw` warn amber · `--cg-bg`/`--cg` success green  
 `--f-h` heading font · `--f-b` body font · `--f-m` mono font  
 `--s1`–`--s8` spacing (4px→64px) · `--t-xs`–`--t-4xl` type scale (.75rem→3rem)
+
+Dark mode auto-activates via `@media(prefers-color-scheme:dark)` — overrides `--cb`, `--cs`, `--cs2`, `--cbr`, `--ct`, `--cm`, `--cq`
 
 ## Accent color by doc type
 `#2563eb` technical (default) · `#dc2626` warning/incident · `#16a34a` success  
@@ -20,6 +23,8 @@
 ```html
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="floreo:type" content="report"><meta name="floreo:created" content="YYYY-MM-DD">
+<meta name="floreo:model" content="claude-sonnet-4-6"><meta name="floreo:version" content="1">
 <title>Title</title><style>/* base css */</style></head><body>
 <div class="pg"><header class="hd"><h1>Title</h1></header>
 <main><section class="sc"><h2>Section</h2><p>Content.</p></section></main>
