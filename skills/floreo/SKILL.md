@@ -48,16 +48,16 @@ The current model does the thinking work:
 4. Write all prose, headings, and data in structured form
 5. Produce a **Content Plan** (see format below)
 
-### Phase 2 — Markup (Haiku subagent preferred)
+### Phase 2 — Markup (efficient subagent preferred)
 
-Compose the HTML from the Content Plan. Haiku handles mechanical markup composition efficiently.
+Compose the HTML from the Content Plan. This is mechanical work — use the most token-efficient model capable of producing clean HTML (currently Haiku; substitute any cheaper capable model as the ecosystem evolves).
 
-**If the Agent tool is available**, spawn a Haiku subagent:
+**If the Agent tool is available**, spawn a markup subagent:
 
 ```
-Use the Agent tool with model="haiku".
+Use the Agent tool with model="haiku" (or the most efficient model currently available).
 
-Prompt: [paste the HAIKU SUBAGENT PROMPT from the resources section]
+Prompt: [paste the MARKUP SUBAGENT PROMPT from the resources section]
 Provide: the full Content Plan as input.
 ```
 
@@ -372,6 +372,44 @@ CALLOUTS:
 - NOTE: [key constraint — deadline, dependency, or stakeholder requirement]
 ```
 
+### Agent Brief
+
+A compact handoff document for multi-agent pipelines. One agent produces it; a downstream agent reads it. Humans can also review it in a browser. Use `floreo:type="brief"` in the meta tag.
+
+```
+DOCUMENT: Brief — [task/agent name] — [YYYY-MM-DD]
+AUDIENCE: Downstream agent in a multi-agent pipeline (and any human reviewer)
+PURPOSE: Transfer task context so the receiving agent acts without re-discovery
+ACCENT: #0f766e
+
+SECTIONS:
+1. Objective — prose
+   [Single sentence: exactly what the receiving agent must accomplish]
+
+2. Constraints — list
+   [Hard constraints: tech stack, deadlines, non-negotiables, scope limits]
+
+3. Context — prose
+   [What was tried, what was learned, what the current state is — only what the receiving agent needs]
+
+4. Available Inputs — table
+   COLUMNS: Input | Location | Notes
+   ROW: [file/resource] | [path or URL] | [how to use it]
+
+5. Decisions Already Made — list
+   [Choices the receiving agent must respect and not re-open, with brief rationale]
+
+6. Handoff Notes — list
+   [Watch-outs, assumptions in play, partial work left in progress]
+
+CALLOUTS:
+- NOTE: [any constraint or dependency the receiving agent must not miss]
+```
+
+**Programmatic extraction**: sections are accessible via `document.querySelector('[data-floreo-id="constraints"]')` — no regex-parsing HTML. This works because every `<section>` carries a `data-floreo-id` matching its heading slug.
+
+```
+
 ### Agent Session-Close Summary
 
 ```
@@ -445,13 +483,28 @@ Examples: `sprint-retro-2026-05-22.html` · `auth-architecture-2026-04-10.html` 
 
 ### Self-containment
 
-Everything lives in one `.html` file. No exceptions unless the user explicitly requests otherwise:
+Everything lives in one `.html` file:
 
 - All CSS in `<style>` within `<head>`
 - All JavaScript in `<script>` at the end of `<body>`
 - All images as inline SVG or base64 data URIs
 - No `<link rel="stylesheet">` to external files
 - No CDN imports or `import` statements
+
+**Target size**: keep documents under **100 KB**. At this size files load instantly, grep cleanly, and don't bloat git history.
+
+**When approaching 100 KB**, reduce before breaking self-containment:
+- Replace base64 images with `<figure>` + caption text
+- Simplify SVG paths (fewer points, combine shapes)
+- Split into multiple linked floreo files with a floreo index page
+
+**If self-containment must be broken** (e.g., a genuinely required binary asset):
+1. Extract resources to `docs/assets/<document-slug>/`
+2. Create `<document-name>.manifest.json` listing relative asset paths
+3. Add `<meta name="floreo:assets" content="<document-name>.manifest.json">` to `<head>`
+4. Note in the document footer that external dependencies exist
+
+Never silently break self-containment — the manifest makes it explicit and machine-readable.
 
 ### Markup optimization
 
@@ -502,12 +555,32 @@ Adapt `--ca` (accent) to the document's purpose or brand:
 }
 ```
 
-Common accent values by document type:
-- Technical / default: `#2563eb` (blue)
-- Warning / incident: `#dc2626` (red)
-- Success / completion: `#16a34a` (green)
-- Planning / strategy: `#7c3aed` (violet)
-- Research / analysis: `#0891b2` (cyan)
+Common accent values by document type — pick a shade to create visual variety within a category:
+
+| Category | Light | Default | Deep |
+|---|---|---|---|
+| Technical / default | `#3b82f6` | `#2563eb` | `#1d4ed8` |
+| Warning / incident | `#ef4444` | `#dc2626` | `#b91c1c` |
+| Success / completion | `#22c55e` | `#16a34a` | `#15803d` |
+| Planning / strategy | `#8b5cf6` | `#7c3aed` | `#6d28d9` |
+| Research / analysis | `#06b6d4` | `#0891b2` | `#0e7490` |
+| Brief / handoff | `#2dd4bf` | `#0f766e` | `#0d5e56` |
+| Caution / review | `#fbbf24` | `#d97706` | `#b45309` |
+| Neutral / meta | `#a8a29e` | `#78716c` | `#57534e` |
+
+### Project-level brand color
+
+If a project defines a brand color (via `floreo:brand-color: #hex` in CLAUDE.md, a project config, or explicit user instruction), use it as `--ca` for all documents in that project. This creates visual cohesion across a project's document library without per-document color decisions.
+
+When using a brand color, verify contrast against `--cb` (background) and `--cs` (surface). Minimum contrast ratio: 3:1 for large text (headings, badges), 4.5:1 for body text.
+
+### Layout variation
+
+Beyond color, vary document layout to prevent monotony at scale:
+
+- **Cover header** — large accent-background hero for high-stakes documents (proposals, major incident reports): set `.hd{background:var(--ca);color:#fff;padding:3rem;border-radius:8px}` and invert heading/subtitle colors
+- **Dense data** — reduce padding for information-heavy reference docs: `.sc{margin-bottom:1.5rem}` and `.tbl td{padding:.4rem .75rem}`
+- **Two-column body** — for comparison docs, `<div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">` wrapping parallel `<section>` elements
 
 ### Spacing
 
@@ -581,7 +654,7 @@ strong{color:var(--ct)}
     <p class="subtitle"><!-- one-line description --></p>
   </header>
   <main>
-    <section class="sc">
+    <section class="sc" data-floreo-id="section-slug">
       <h2>Section Heading</h2>
       <!-- section content -->
     </section>
@@ -594,6 +667,20 @@ strong{color:var(--ct)}
 <script>/* progressive enhancement JS, if needed */</script>
 </body></html>
 ```
+
+### Section IDs (`data-floreo-id`)
+
+Every `<section>` element must carry a `data-floreo-id` attribute with a stable kebab-case slug derived from the section heading:
+
+- "Root Cause Analysis" → `data-floreo-id="root-cause-analysis"`
+- "Key Findings" → `data-floreo-id="key-findings"`
+- "Next Session Kickoff" → `data-floreo-id="next-session-kickoff"`
+
+Rules: lowercase, hyphens only (no underscores or spaces), no punctuation, match the `<h2>` text.
+
+**Why this matters**: section IDs enable section-level diffs (`floreo-aware diff: "key-findings changed"` instead of raw line noise), stable deep-links across document versions (`#key-findings` survives a full regeneration), and programmatic extraction by downstream agents (`document.querySelector('[data-floreo-id="constraints"]').textContent`).
+
+The attribute is zero-cost in source and invisible to readers. Add it to every `<section class="sc">` — no exceptions.
 
 ---
 
@@ -915,9 +1002,118 @@ document.querySelectorAll('[data-tab]').forEach(btn=>{
 
 ---
 
-## Haiku Subagent Prompt
+## Reading Interface (Optional)
 
-When spawning the markup phase via the Agent tool (`model="haiku"`), use this prompt:
+An opt-in ~100-line CSS + JS block that turns a floreo document into a light reading app. **Do not include in the base CSS block** — add only when explicitly useful (long reference docs, stakeholder reports, onboarding guides).
+
+### HTML additions
+
+Add inside `<header class="hd">` (for the export button) and at the start of `<main>` (for search and sticky ToC):
+
+```html
+<!-- In header -->
+<button class="ri-export">Copy as Markdown</button>
+
+<!-- At start of main, before first section -->
+<div class="ri-search"><input type="search" placeholder="Search document…" aria-label="Search"></div>
+
+<!-- Sticky side ToC (CSS shows only on wide viewports) -->
+<nav class="ri-toc" aria-label="Contents"><p class="ri-toc-hd">Contents</p><ol></ol></nav>
+```
+
+### CSS additions
+
+```css
+@media(min-width:1200px){
+  .pg{max-width:1100px;display:grid;grid-template-columns:200px 1fr;gap:3rem;align-items:start}
+  .hd,.fn{grid-column:1/-1}
+  .ri-toc{position:sticky;top:2rem}
+  .ri-toc-hd{font-family:var(--f-m);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cq);margin-bottom:.5rem}
+  .ri-toc ol{list-style:none;padding:0;margin:0}
+  .ri-toc li{margin-bottom:.2rem}
+  .ri-toc a{color:var(--cm);text-decoration:none;display:block;padding:.2rem .5rem;border-radius:4px;font-size:.85rem;transition:background .1s}
+  .ri-toc a:hover,.ri-toc a.active{background:var(--cab);color:var(--ca)}
+}
+@media print{
+  .ri-toc,.ri-search,.ri-export{display:none}
+  .pg{display:block;max-width:100%}
+  h2{page-break-after:avoid}
+  .sc{page-break-inside:avoid}
+  a[href]{color:inherit;text-decoration:none}
+}
+.ri-search{margin:1rem 0 1.5rem}
+.ri-search input{width:100%;max-width:400px;padding:.4rem .75rem;border:1px solid var(--cbr);border-radius:6px;font-family:var(--f-b);font-size:.9rem;background:var(--cs);color:var(--ct)}
+.ri-search input:focus{outline:2px solid var(--ca);outline-offset:1px}
+mark.ri-hl{background:var(--cab);color:var(--ct);border-radius:2px;padding:0 1px}
+.ri-export{font-family:var(--f-m);font-size:.75rem;color:var(--cq);cursor:pointer;text-decoration:underline dotted;background:none;border:none;padding:0;margin-top:.5rem}
+.ri-export:hover{color:var(--ca)}
+```
+
+### JS additions
+
+```js
+(function(){
+  const tocList=document.querySelector('.ri-toc ol');
+  const headings=document.querySelectorAll('main h2');
+  if(tocList&&headings.length){
+    headings.forEach((h,i)=>{
+      if(!h.id)h.id='s'+i;
+      const li=document.createElement('li');
+      li.innerHTML='<a href="#'+h.id+'">'+h.textContent+'</a>';
+      tocList.appendChild(li);
+    });
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        const a=tocList.querySelector('a[href="#'+e.target.id+'"]');
+        if(a)a.classList.toggle('active',e.isIntersecting);
+      });
+    },{rootMargin:'-10% 0px -75% 0px'});
+    headings.forEach(h=>obs.observe(h));
+  }
+  const inp=document.querySelector('.ri-search input');
+  if(inp){
+    inp.addEventListener('input',()=>{
+      document.querySelectorAll('mark.ri-hl').forEach(m=>{
+        const p=m.parentNode;p.replaceChild(document.createTextNode(m.textContent),m);p.normalize();
+      });
+      const q=inp.value.trim();if(q.length<2)return;
+      const re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+      const walker=document.createTreeWalker(document.querySelector('main'),NodeFilter.SHOW_TEXT);
+      const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+      nodes.forEach(n=>{
+        re.lastIndex=0;if(!re.test(n.textContent))return;
+        const frag=document.createDocumentFragment();let last=0,m;re.lastIndex=0;
+        while((m=re.exec(n.textContent))!==null){
+          frag.appendChild(document.createTextNode(n.textContent.slice(last,m.index)));
+          const mark=document.createElement('mark');mark.className='ri-hl';mark.textContent=m[0];
+          frag.appendChild(mark);last=m.index+m[0].length;
+        }
+        frag.appendChild(document.createTextNode(n.textContent.slice(last)));
+        n.parentNode.replaceChild(frag,n);
+      });
+    });
+  }
+  const btn=document.querySelector('.ri-export');
+  if(btn)btn.addEventListener('click',()=>{
+    const lines=[];
+    document.querySelectorAll('main h2,main h3,main p,main li').forEach(el=>{
+      if(el.tagName==='H2')lines.push('\n## '+el.textContent);
+      else if(el.tagName==='H3')lines.push('\n### '+el.textContent);
+      else if(el.tagName==='P')lines.push(el.textContent);
+      else if(el.tagName==='LI')lines.push('- '+el.textContent);
+    });
+    navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+      btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy as Markdown',2000);
+    });
+  });
+})();
+```
+
+---
+
+## Markup Subagent Prompt
+
+When spawning the markup phase as a subagent, use the most token-efficient model available (currently `model="haiku"`). Use this prompt:
 
 ```
 You are composing a self-contained HTML document using the floreo design system.
@@ -938,7 +1134,7 @@ REQUIREMENTS:
 11. Add floreo meta tags: <meta name="floreo:type">, <meta name="floreo:created">, <meta name="floreo:model">, <meta name="floreo:version" content="1">.
 12. Embed the full Content Plan verbatim in <script type="application/floreo" id="content-plan"> immediately before </body>.
 
-FLOREO BASE CSS (copy verbatim from the "## Base CSS Block" section of the floreo SKILL.md you loaded):
+FLOREO BASE CSS (copy verbatim from the "## Base CSS Block" section of the floreo skill you loaded):
 <insert the full contents of the ```css block from ## Base CSS Block here>
 
 CONTENT PLAN:

@@ -31,13 +31,13 @@ Dark mode auto-activates via `@media(prefers-color-scheme:dark)` — overrides `
 <footer class="fn">source · date</footer></div></body></html>
 ```
 
-## Haiku invocation
+## Markup subagent invocation
 ```
-Agent tool, model="haiku"
+Agent tool, model="haiku" (or most efficient available)
 Provide: Content Plan + floreo base CSS + requirements from SKILL.md
 Receive: complete HTML file
 ```
 
 ## Two-phase rule
-Phase 1 (Sonnet/Opus): content, structure, prose  
-Phase 2 (Haiku): markup composition from Content Plan
+Phase 1 (capable model): content, structure, prose  
+Phase 2 (most efficient model): markup composition from Content Plan
