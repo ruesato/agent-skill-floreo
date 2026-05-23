@@ -1,0 +1,18 @@
+{
+  "name": "floreo",
+  "description": "Turn agent-created content into beautiful, self-contained HTML documents optimized for human reading. Invoke whenever an agent produces reports, plans, analyses, ADRs, session summaries, or any content humans will read.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Ryan Uesato",
+    "url": "https://github.com/ryanuesato"
+  },
+  "repository": "https://github.com/ryanuesato/agent-skill-floreo-documents",
+  "license": "MIT",
+  "keywords": [
+    "documentation",
+    "html",
+    "design-system",
+    "agent-output",
+    "reports"
+  ]
+}
