@@ -6,7 +6,7 @@
         "code-review-graph",
         "serve"
       ],
-      "cwd": "/Users/ryanuesato/code/agent-skill-floreo-documents",
+      "cwd": "/Users/ryanuesato/code/agent-skill-floreo",
       "type": "stdio",
       "env": []
     }

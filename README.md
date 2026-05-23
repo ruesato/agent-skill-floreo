@@ -7,7 +7,7 @@ A Claude Code skill that turns agent-created content into beautiful, self-contai
 ## Install
 
 ```
-/plugin install github:ryanuesato/agent-skill-floreo-documents
+/plugin install github:ryanuesato/agent-skill-floreo
 ```
 
 That's it. The `/floreo` skill is immediately available in any project.
