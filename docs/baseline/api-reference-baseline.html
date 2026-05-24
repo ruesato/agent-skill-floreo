@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="floreo:type" content="api-reference">
+<meta name="floreo:created" content="2026-05-24">
+<meta name="floreo:model" content="claude-sonnet-4-6">
+<meta name="floreo:version" content="1">
+<title>Floreo API Reference</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#a8a29e;--ca:#2563eb;--cab:#dbeafe;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a}
+:root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px}
+:root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:2rem;--t-4xl:3rem}
+@media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#78716c;--cab:#082f3e;--cw-bg:#3d1a00;--cg-bg:#052e16}.code{border:1px solid var(--cbr)}}
+body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
+.pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
+h1,h2{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
+h3,h4{font-family:var(--f-b);line-height:1.2;color:var(--ct)}
+h1{font-size:2.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.4rem}
+h2{font-size:1.5rem;font-weight:400;margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid var(--cbr)}
+h3{font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
+p{margin-bottom:1rem;color:var(--cm)}
+.sc{margin-bottom:3rem}
+.hd{padding-bottom:2rem;margin-bottom:3rem;border-bottom:2px solid var(--cbr)}
+.fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
+.eyebrow{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ca);margin-bottom:.75rem}
+.subtitle{font-size:1.1rem;color:var(--cm)}
+.note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;font-size:.95rem}
+.note{background:var(--cab)}
+.warn{background:var(--cw-bg)}
+.tip{background:var(--cg-bg)}
+.tbl-w{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs)}
+.tbl thead{background:var(--cs2)}
+.tbl th{text-align:left;padding:.6rem 1rem;font-family:var(--f-m);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cm);border-bottom:1px solid var(--cbr)}
+.tbl td{padding:.6rem 1rem;border-bottom:1px solid var(--cs2);color:var(--cm);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:1.5rem 0}
+.card{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem}
+.code{background:#1c1917;color:#f5f5f4;padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;word-break:break-all}
+.fig{margin:1.5rem 0;text-align:center}
+.fig svg{max-width:100%;height:auto}
+figcaption{font-size:.8rem;color:var(--cq);margin-top:.5rem;font-style:italic;text-align:center}
+a{color:var(--ca);text-decoration:none;transition:color .15s ease-out}
+a:hover{text-decoration:underline}
+ul,ol{padding-left:1.5rem;margin-bottom:1rem;color:var(--cm)}
+li{margin-bottom:.25rem}
+strong{color:var(--ct)}
+.ic{background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}</style>
+</head><body>
+<div class="pg">
+<header class="hd">
+<p class="eyebrow">API Reference · floreo v1</p>
+<h1>Floreo API Reference</h1>
+<p class="subtitle">Programmatic interface for reading and updating floreo documents</p>
+</header>
+<main>
+<section class="sc" data-floreo-id="overview"><h2>Overview</h2><p>Floreo documents expose a stable DOM API for programmatic reading and updating. All sections carry data-floreo-id attributes. The Content Plan is embedded as a machine-readable script element.</section><section class="sc" data-floreo-id="authentication"><h2>Authentication</h2><p>No authentication required — floreo documents are static HTML files consumed locally.</section><section class="sc" data-floreo-id="endpoints"><h2>Section Access</h2><div class="tbl-w"><table class="tbl"><thead><tr><th>Method<th>Selector<th>Returns<tbody><tr><td>querySelector<td>[data-floreo-id='key-findings']<td>Section element<tr><td>querySelector<td>script#content-plan<td>Content Plan text<tr><td>querySelectorAll<td>main h2<td>All section headings</table></div></section><section class="sc" data-floreo-id="request-response"><h2>Example</h2><pre class="code"><code>const plan = document.querySelector('script#content-plan').textContent;
+const findings = document.querySelector('[data-floreo-id="key-findings"]').textContent;</code></pre></section><section class="sc" data-floreo-id="error-codes"><h2>Compatibility</h2><div class="tbl-w"><table class="tbl"><thead><tr><th>Browser<th>Support<tbody><tr><td>Chrome 90+<td>Full<tr><td>Firefox 88+<td>Full<tr><td>Safari 14+<td>Full<tr><td>IE 11<td>Unsupported</table></div></section>
+<div class="warn"><strong>Warn:</strong> Content Plan embedding requires the Phase 2 subagent to include the script element — verify this is present before programmatic extraction.</div>
+
+</main>
+<footer class="fn">Generated 2026-05-24 · floreo v1 · claude-sonnet-4-6</footer>
+</div>
+<script type="application/floreo" id="content-plan">
+DOCUMENT: Floreo API Reference
+AUDIENCE: Engineering
+PURPOSE: Baseline measurement
+ACCENT: #2563eb
+</script>
+</body></html>

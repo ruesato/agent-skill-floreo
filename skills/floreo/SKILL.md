@@ -517,7 +517,21 @@ Everything lives in one `.html` file:
 - No `<link rel="stylesheet">` to external files
 - No CDN imports or `import` statements
 
-**Target size**: keep documents under **100 KB**. At this size files load instantly, grep cleanly, and don't bloat git history.
+**Target size**: keep documents under **100 KB** absolute maximum. More importantly, stay within the per-template budget for your document type:
+
+| Template type | Target | Hard limit |
+|---|---|---|
+| Session-close summary | < 20 KB | 30 KB |
+| Sprint retrospective | < 20 KB | 30 KB |
+| Agent brief | < 20 KB | 30 KB |
+| Incident report | < 30 KB | 50 KB |
+| Architecture decision record | < 30 KB | 50 KB |
+| Onboarding guide | < 30 KB | 50 KB |
+| API reference | < 30 KB | 50 KB |
+| Research brief | < 50 KB | 75 KB |
+| Project proposal | < 50 KB | 75 KB |
+
+Check size before writing: `wc -c <file>.html`. The base CSS alone is ~3.5 KB — content budget is total minus that overhead.
 
 **When approaching 100 KB**, reduce before breaking self-containment:
 - Replace base64 images with `<figure>` + caption text
@@ -541,6 +555,35 @@ Markup is written for agent efficiency, not human readability of source:
 - **Omit optional attributes**: no `type="text/javascript"`, no `type="text/css"`
 - **Semantic HTML5**: use `<header>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>`, `<figure>`, `<figcaption>`, `<nav>` to reduce class overhead
 - **No redundant wrappers**: nest elements directly when a wrapper adds no semantic or layout value
+
+### Markup Compression Rules
+
+Source HTML is written for agents and LLMs, not humans. Humans see only the rendered page — they never read the source. Apply every rule without exception:
+
+**Omit optional closing tags** — HTML5 allows these to be elided:
+- `</p>` when followed by another block element or end of parent
+- `</li>` when followed by `<li>` or end of list
+- `</td>`, `</tr>`, `</th>`, `</thead>`, `</tbody>` — all optional in HTML5
+
+**No whitespace between tags** — no newlines, no spaces between adjacent elements:
+```
+<!-- WRONG -->
+<ul>
+  <li>One</li>
+  <li>Two</li>
+</ul>
+
+<!-- RIGHT -->
+<ul><li>One<li>Two</ul>
+```
+
+**No indentation** — zero leading spaces or tabs before any element.
+
+**No HTML comments** — never write `<!-- ... -->` in generated output.
+
+**Boolean attributes without values** — `disabled` not `disabled="disabled"`, `checked` not `checked="true"`, `required` not `required="required"`.
+
+**CSS shorthand throughout** — `margin:0 1rem` not four separate margin properties; `padding:.6rem 1rem` not two; `border:1px solid var(--cbr)` not three separate properties.
 
 ---
 
@@ -646,13 +689,13 @@ p{margin-bottom:1rem;color:var(--cm)}
 .sc{margin-bottom:3rem}
 .hd{padding-bottom:2rem;margin-bottom:3rem;border-bottom:2px solid var(--cbr)}
 .fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
-.eyebrow{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ca);margin-bottom:.75rem}
-.subtitle{font-size:1.1rem;color:var(--cm)}
+.ey{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ca);margin-bottom:.75rem}
+.sub{font-size:1.1rem;color:var(--cm)}
 .note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;font-size:.95rem}
 .note{background:var(--cab)}
 .warn{background:var(--cw-bg)}
 .tip{background:var(--cg-bg)}
-.tbl-w{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
+.tw{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
 .tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs)}
 .tbl thead{background:var(--cs2)}
 .tbl th{text-align:left;padding:.6rem 1rem;font-family:var(--f-m);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cm);border-bottom:1px solid var(--cbr)}
@@ -689,9 +732,9 @@ strong{color:var(--ct)}
 </head><body>
 <div class="pg">
   <header class="hd">
-    <p class="eyebrow"><!-- type label, e.g. "Technical Report · 2026-05-22" --></p>
+    <p class="ey"><!-- type label, e.g. "Technical Report · 2026-05-22" --></p>
     <h1>Document Title</h1>
-    <p class="subtitle"><!-- one-line description --></p>
+    <p class="sub"><!-- one-line description --></p>
   </header>
   <main>
     <section class="sc" data-floreo-id="section-slug">
@@ -747,7 +790,7 @@ Run <code class="ic">/floreo install</code> to begin.
 ### Table
 
 ```html
-<div class="tbl-w"><table class="tbl">
+<div class="tw"><table class="tbl">
 <thead><tr><th>Column A</th><th>Column B</th><th>Column C</th></tr></thead>
 <tbody>
 <tr><td>value</td><td>value</td><td>value</td></tr>
@@ -792,9 +835,9 @@ Large metric + label — for dashboards, KPI summaries, and key numbers.
 
 ```html
 <div class="stats">
-  <div class="stat"><span class="stat-n">1,248</span><span class="stat-l">Requests/sec</span></div>
-  <div class="stat"><span class="stat-n">42ms</span><span class="stat-l">P50 latency</span></div>
-  <div class="stat"><span class="stat-n">99.9%</span><span class="stat-l">Uptime</span></div>
+  <div class="stat"><span class="sn">1,248</span><span class="sl">Requests/sec</span></div>
+  <div class="stat"><span class="sn">42ms</span><span class="sl">P50 latency</span></div>
+  <div class="stat"><span class="sn">99.9%</span><span class="sl">Uptime</span></div>
 </div>
 ```
 
@@ -803,8 +846,8 @@ Additional CSS:
 ```css
 .stats{display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0}
 .stat{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem 1.5rem;min-width:140px}
-.stat-n{display:block;font-family:var(--f-h);font-size:2.5rem;font-weight:400;color:var(--ca);line-height:1}
-.stat-l{display:block;font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-top:.4rem}
+.sn{display:block;font-family:var(--f-h);font-size:2.5rem;font-weight:400;color:var(--ca);line-height:1}
+.sl{display:block;font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-top:.4rem}
 ```
 
 ### Timeline
@@ -812,14 +855,14 @@ Additional CSS:
 Chronological event sequence — for roadmaps, incident timelines, and release notes.
 
 ```html
-<ol class="timeline">
-  <li class="tl-item">
-    <span class="tl-dot"></span>
-    <div><time class="tl-time">2026-05-01</time><strong>Event title</strong><p>Description of what happened.</p></div>
+<ol class="tl">
+  <li class="tli">
+    <span class="tld"></span>
+    <div><time class="tlt">2026-05-01</time><strong>Event title</strong><p>Description of what happened.</p></div>
   </li>
-  <li class="tl-item">
-    <span class="tl-dot"></span>
-    <div><time class="tl-time">2026-05-15</time><strong>Second event</strong><p>Description.</p></div>
+  <li class="tli">
+    <span class="tld"></span>
+    <div><time class="tlt">2026-05-15</time><strong>Second event</strong><p>Description.</p></div>
   </li>
 </ol>
 ```
@@ -827,11 +870,11 @@ Chronological event sequence — for roadmaps, incident timelines, and release n
 Additional CSS:
 
 ```css
-.timeline{list-style:none;padding:0;margin:1.5rem 0}
-.tl-item{display:flex;gap:1rem;padding-bottom:1.5rem;position:relative}
-.tl-item:not(:last-child)::before{content:'';position:absolute;left:7px;top:16px;bottom:0;width:1px;background:var(--cbr)}
-.tl-dot{width:15px;height:15px;border-radius:50%;background:var(--ca);flex-shrink:0;margin-top:4px}
-.tl-time{display:block;font-family:var(--f-m);font-size:.75rem;color:var(--cq);margin-bottom:.2rem}
+.tl{list-style:none;padding:0;margin:1.5rem 0}
+.tli{display:flex;gap:1rem;padding-bottom:1.5rem;position:relative}
+.tli:not(:last-child)::before{content:'';position:absolute;left:7px;top:16px;bottom:0;width:1px;background:var(--cbr)}
+.tld{width:15px;height:15px;border-radius:50%;background:var(--ca);flex-shrink:0;margin-top:4px}
+.tlt{display:block;font-family:var(--f-m);font-size:.75rem;color:var(--cq);margin-bottom:.2rem}
 ```
 
 ### Numbered procedure
@@ -839,14 +882,14 @@ Additional CSS:
 Visual steps with circle numbers — for tutorials, runbooks, and setup guides.
 
 ```html
-<ol class="steps">
+<ol class="sps">
   <li class="step">
-    <span class="step-n">1</span>
-    <div class="step-bd"><h3>First step</h3><p>What to do and why.</p></div>
+    <span class="spn">1</span>
+    <div class="sbd"><h3>First step</h3><p>What to do and why.</p></div>
   </li>
   <li class="step">
-    <span class="step-n">2</span>
-    <div class="step-bd"><h3>Second step</h3><p>Continue here.</p></div>
+    <span class="spn">2</span>
+    <div class="sbd"><h3>Second step</h3><p>Continue here.</p></div>
   </li>
 </ol>
 ```
@@ -854,11 +897,11 @@ Visual steps with circle numbers — for tutorials, runbooks, and setup guides.
 Additional CSS:
 
 ```css
-.steps{list-style:none;padding:0;margin:1.5rem 0}
+.sps{list-style:none;padding:0;margin:1.5rem 0}
 .step{display:flex;gap:1rem;margin-bottom:1.5rem}
-.step-n{width:32px;height:32px;border-radius:50%;background:var(--ca);color:#fff;font-family:var(--f-m);font-size:.875rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.step-bd{flex:1}
-.step-bd h3{margin-bottom:.25rem}
+.spn{width:32px;height:32px;border-radius:50%;background:var(--ca);color:#fff;font-family:var(--f-m);font-size:.875rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.sbd{flex:1}
+.sbd h3{margin-bottom:.25rem}
 ```
 
 ### Before / after split
@@ -866,13 +909,13 @@ Additional CSS:
 Two-column comparison — for code migrations, config changes, and before/after states.
 
 ```html
-<div class="split">
+<div class="spl">
   <div>
-    <span class="split-lbl split-before">Before</span>
+    <span class="slbl split-before">Before</span>
     <pre class="code">old value or code</pre>
   </div>
   <div>
-    <span class="split-lbl split-after">After</span>
+    <span class="slbl split-after">After</span>
     <pre class="code">new value or code</pre>
   </div>
 </div>
@@ -881,11 +924,11 @@ Two-column comparison — for code migrations, config changes, and before/after 
 Additional CSS:
 
 ```css
-.split{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
-@media(max-width:600px){.split{grid-template-columns:1fr}}
-.split-lbl{display:inline-block;font-family:var(--f-m);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;margin-bottom:.5rem}
-.split-before{background:var(--cw-bg);color:var(--cw)}
-.split-after{background:var(--cg-bg);color:var(--cg)}
+.spl{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+@media(max-width:600px){.spl{grid-template-columns:1fr}}
+.slbl{display:inline-block;font-family:var(--f-m);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;margin-bottom:.5rem}
+.slb{background:var(--cw-bg);color:var(--cw)}
+.sla{background:var(--cg-bg);color:var(--cg)}
 ```
 
 ### Collapsible section
@@ -893,9 +936,9 @@ Additional CSS:
 Native `<details>`/`<summary>` — no JS needed. Use for supplementary details, long appendices, or optional reading.
 
 ```html
-<details class="collapsible">
-  <summary class="collapsible-hd">Section title (click to expand)</summary>
-  <div class="collapsible-bd">
+<details class="clp">
+  <summary class="clph">Section title (click to expand)</summary>
+  <div class="clpb">
     <p>Content revealed on expand. Can contain any floreo components.</p>
   </div>
 </details>
@@ -904,12 +947,12 @@ Native `<details>`/`<summary>` — no JS needed. Use for supplementary details, 
 Additional CSS:
 
 ```css
-.collapsible{border:1px solid var(--cbr);border-radius:8px;margin:1rem 0}
-.collapsible-hd{padding:.75rem 1rem;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ct)}
-.collapsible-hd::-webkit-details-marker{display:none}
-.collapsible-hd::after{content:'▸';color:var(--cq);font-size:.85rem}
-details[open]>.collapsible-hd::after{content:'▾'}
-.collapsible-bd{padding:1rem 1.25rem;border-top:1px solid var(--cbr)}
+.clp{border:1px solid var(--cbr);border-radius:8px;margin:1rem 0}
+.clph{padding:.75rem 1rem;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ct)}
+.clph::-webkit-details-marker{display:none}
+.clph::after{content:'▸';color:var(--cq);font-size:.85rem}
+details[open]>.clph::after{content:'▾'}
+.clpb{padding:1rem 1.25rem;border-top:1px solid var(--cbr)}
 ```
 
 ### Diff table
@@ -917,12 +960,12 @@ details[open]>.collapsible-hd::after{content:'▾'}
 Red/green row highlighting — for changelogs, migrations, and schema diffs. Extends `.tbl`; include the standard table CSS.
 
 ```html
-<div class="tbl-w"><table class="tbl">
+<div class="tw"><table class="tbl">
 <thead><tr><th>Field</th><th>Old</th><th>New</th></tr></thead>
 <tbody>
-<tr class="d-add"><td>status</td><td>—</td><td>active</td></tr>
-<tr class="d-rem"><td>legacy_id</td><td>usr_1234</td><td>—</td></tr>
-<tr class="d-chg"><td>role</td><td>viewer</td><td>editor</td></tr>
+<tr class="da"><td>status</td><td>—</td><td>active</td></tr>
+<tr class="dr"><td>legacy_id</td><td>usr_1234</td><td>—</td></tr>
+<tr class="dc"><td>role</td><td>viewer</td><td>editor</td></tr>
 </tbody>
 </table></div>
 ```
@@ -930,9 +973,9 @@ Red/green row highlighting — for changelogs, migrations, and schema diffs. Ext
 Additional CSS:
 
 ```css
-.d-add{background:#f0fdf4}.d-add td:first-child{border-left:3px solid var(--cg)}
-.d-rem{background:#fff1f2}.d-rem td:first-child{border-left:3px solid #ef4444}
-.d-chg{background:var(--cw-bg)}.d-chg td:first-child{border-left:3px solid var(--cw)}
+.da{background:#f0fdf4}.da td:first-child{border-left:3px solid var(--cg)}
+.dr{background:#fff1f2}.dr td:first-child{border-left:3px solid #ef4444}
+.dc{background:var(--cw-bg)}.dc td:first-child{border-left:3px solid var(--cw)}
 ```
 
 ### Table of contents
@@ -941,8 +984,8 @@ Auto-generated from `<h2>` headings via ~15 lines of JS. Place near the top of `
 
 ```html
 <nav class="toc" aria-label="Contents">
-  <p class="toc-hd">Contents</p>
-  <ol id="toc-list" class="toc-list"></ol>
+  <p class="toch">Contents</p>
+  <ol id="toc-list" class="tocl"></ol>
 </nav>
 ```
 
@@ -950,10 +993,10 @@ Additional CSS:
 
 ```css
 .toc{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem 1.5rem;margin:1.5rem 0;display:inline-block;min-width:220px}
-.toc-hd{font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-bottom:.5rem}
-.toc-list{padding-left:1.25rem;margin:0}
-.toc-list li{margin-bottom:.2rem}
-.toc-list a{color:var(--cm);font-size:.9rem}
+.toch{font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-bottom:.5rem}
+.tocl{padding-left:1.25rem;margin:0}
+.tocl li{margin-bottom:.2rem}
+.tocl a{color:var(--cm);font-size:.9rem}
 ```
 
 JS (add to the `<script>` block):
@@ -1173,10 +1216,45 @@ INPUT: The structured content plan below.
 REQUIREMENTS:
 1. Output a COMPLETE, VALID HTML file — nothing else. No explanation, no markdown fences.
 2. Single file: all CSS inline in <style>, all JS inline in <script>, no external resources.
-3. Use floreo class names: .pg .hd .fn .sc .card .tbl .tbl-w .note .warn .tip .fig .code .grid
+3. Use floreo class names: .pg .hd .fn .sc .card .tbl .tw .note .warn .tip .fig .code .grid
 4. Use the floreo base CSS block exactly as provided. Add document-specific rules after it.
 5. Use CSS variables (--ca, --cb, --cs, --cbr, --ct, --cm, --cq, --cab) — never hardcode colors.
-6. Compressed markup: short class names, minimal whitespace in CSS, no redundant attributes.
+6. COMPRESSION — source is read by agents and LLMs, never by humans. Humans see only the rendered page. Apply ALL rules with no exceptions:
+   - No indentation. Zero leading spaces or tabs before any element.
+   - No whitespace between tags. Write <ul><li>One<li>Two</ul> not a newline-indented list.
+   - Omit optional closing tags: </p> </li> </td> </tr> </th> </thead> </tbody>
+   - No HTML comments. Never write <!-- anything --> in output.
+   - Boolean attributes without values: write disabled not disabled="disabled".
+   - CSS shorthand throughout: margin:0 1rem not four margin properties; padding:.6rem 1rem not two.
+
+COMPRESSION EXAMPLE:
+
+BEFORE (wrong — do not produce this):
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Alpha</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<ul>
+  <li>First item</li>
+  <li>Second item</li>
+</ul>
+<p>Some prose here.</p>
+
+AFTER (correct — produce this):
+<table><thead><tr><th>Name<th>Value<tbody><tr><td>Alpha<td>1</table>
+<ul><li>First item<li>Second item</ul>
+<p>Some prose here.
+
 7. SVG for any charts or diagrams (inline, viewBox only — no fixed width/height).
 8. Semantic HTML5 elements (header, main, section, footer, figure) to reduce class overhead.
 9. <meta viewport> present. max-width on .pg for readability.
@@ -1199,6 +1277,7 @@ CONTENT PLAN:
 
 Before writing the final file:
 
+- [ ] File size within per-template budget (run `wc -c <file>.html`; see Self-containment table for limits)
 - [ ] Self-contained — no external dependencies
 - [ ] `<title>` is meaningful and specific
 - [ ] Floreo meta tags present (`floreo:type`, `floreo:created`, `floreo:model`, `floreo:version`)
