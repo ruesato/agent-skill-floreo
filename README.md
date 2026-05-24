@@ -39,7 +39,7 @@ Any document type an agent generates:
 Claude Code plugins require a two-step install: register the marketplace, then install the plugin.
 
 ```
-/plugin marketplace add github:ruesato/agent-skill-floreo
+/plugin marketplace add ruesato/agent-skill-floreo
 /plugin install floreo@floreo
 ```
 
