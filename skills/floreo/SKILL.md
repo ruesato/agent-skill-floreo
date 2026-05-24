@@ -66,6 +66,21 @@ Provide: the full Content Plan as input.
 
 **If the Agent tool is unavailable**, compose the markup in the current model using the same guidelines.
 
+### Phase 3 — Visual Polish (optional, requires impeccable)
+
+After Phase 2 writes the `.html` file to disk:
+
+1. **Check availability**: Scan the available skills list for `impeccable`. If it is not present, skip this phase silently.
+2. **Check project context**: Look for `PRODUCT.md` in the project root (or wherever impeccable resolves it — `.agents/context/`, `docs/`). If impeccable is available but `PRODUCT.md` is missing, skip Phase 3 and tell the user: *"Run `/impeccable teach` to enable automatic visual polish on future floreo documents."*
+3. **Invoke impeccable**: With both conditions met, run:
+   ```
+   /impeccable polish [path-to-generated-html-file]
+   ```
+   Impeccable will load its project context, apply its design system, and perform a full visual quality pass — typography hierarchy, spacing rhythm, color contrast, and document-appropriate polish.
+4. **Verify self-containment**: After impeccable finishes, confirm the file still has no external dependencies (no `<link rel="stylesheet">`, no CDN `<script src=...>`, no remote `@import`). If impeccable introduced any, remove them and inline the styles.
+
+**What impeccable improves over floreo's base output**: typography scale and weight contrast, spacing rhythm (impeccable enforces deliberate variation vs. uniform padding), color strategy (OKLCH tinted neutrals, chroma-aware palette), and any design drift from floreo's component patterns. Floreo provides structure; impeccable provides craft.
+
 ### Content Plan format
 
 ```
