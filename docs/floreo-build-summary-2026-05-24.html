@@ -6,17 +6,19 @@
 <meta name="floreo:type" content="summary">
 <meta name="floreo:created" content="2026-05-24">
 <meta name="floreo:model" content="claude-sonnet-4-6">
-<meta name="floreo:version" content="1">
+<meta name="floreo:version" content="2">
 <title>Floreo Plugin — Build Summary & Design Reference</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#a8a29e;--ca:#0891b2;--cab:#cffafe;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a}
+:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#ffffff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#a8a29e;--ca:#0891b2;--cab:#cffafe;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a}
 :root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px}
-:root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3rem:2rem;--t-4xl:3rem}
+:root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:2rem;--t-4xl:3rem}
 @media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#78716c}.code{border:1px solid var(--cbr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
 .pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
-h1,h2,h3,h4{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
+h1,h2{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
+h3,h4{font-family:var(--f-b);line-height:1.2;color:var(--ct)}
 h1{font-size:2.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.4rem}
 h2{font-size:1.5rem;font-weight:400;margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid var(--cbr)}
 h3{font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
@@ -25,11 +27,11 @@ p{margin-bottom:1rem;color:var(--cm)}
 .hd{padding-bottom:2rem;margin-bottom:3rem;border-bottom:2px solid var(--cbr)}
 .fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
 .eyebrow{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ca);margin-bottom:.75rem}
-.subtitle{font-size:1.1rem;color:var(--cm);font-style:italic}
-.note,.warn,.tip{padding:1rem 1.25rem;border-radius:6px;margin:1.5rem 0;font-size:.95rem}
-.note{background:var(--cab);border-left:3px solid var(--ca)}
-.warn{background:var(--cw-bg);border-left:3px solid var(--cw)}
-.tip{background:var(--cg-bg);border-left:3px solid var(--cg)}
+.subtitle{font-size:1.1rem;color:var(--cm)}
+.note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;font-size:.95rem}
+.note{background:var(--cab)}
+.warn{background:var(--cw-bg)}
+.tip{background:var(--cg-bg)}
 .tbl-w{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
 .tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs)}
 .tbl thead{background:var(--cs2)}
@@ -39,17 +41,18 @@ p{margin-bottom:1rem;color:var(--cm)}
 .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:1.5rem 0}
 .card{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem}
 .code{background:#1c1917;color:#f5f5f4;padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;word-break:break-all}
+.ic{background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem}
 .fig{margin:1.5rem 0;text-align:center}
 .fig svg{max-width:100%;height:auto}
 figcaption{font-size:.8rem;color:var(--cq);margin-top:.5rem;font-style:italic;text-align:center}
-a{color:var(--ca);text-decoration:none}
+a{color:var(--ca);text-decoration:none;transition:color .15s ease-out}
 a:hover{text-decoration:underline}
 ul,ol{padding-left:1.5rem;margin-bottom:1rem;color:var(--cm)}
 li{margin-bottom:.25rem}
 strong{color:var(--ct)}
 .steps{list-style:none;padding:0;margin:1.5rem 0}
 .step{display:flex;gap:1rem;margin-bottom:1.5rem}
-.step-n{width:32px;height:32px;border-radius:50%;background:var(--ca);color:#fff;font-family:var(--f-m);font-size:.875rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-n{width:32px;height:32px;border-radius:50%;background:var(--ca);color:var(--cb);font-family:var(--f-m);font-size:.875rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
 .step-bd{flex:1;color:var(--cm)}
 </style>
 </head>
@@ -74,28 +77,28 @@ strong{color:var(--ct)}
 <div class="tbl-w"><table class="tbl">
 <thead><tr><th>Type</th><th>Accent Color</th><th>Typical Use</th></tr></thead>
 <tbody>
-<tr><td>Report / Summary</td><td><code style="background:none;color:#2563eb;padding:0;font-family:var(--f-m)">#2563eb</code></td><td>Analysis, research findings</td></tr>
-<tr><td>Incident Report</td><td><code style="background:none;color:#dc2626;padding:0;font-family:var(--f-m)">#dc2626</code></td><td>Post-mortems with timeline and action items</td></tr>
-<tr><td>Architecture Decision Record</td><td><code style="background:none;color:#7c3aed;padding:0;font-family:var(--f-m)">#7c3aed</code></td><td>Technical decisions with full context</td></tr>
-<tr><td>Sprint Retrospective</td><td><code style="background:none;color:#16a34a;padding:0;font-family:var(--f-m)">#16a34a</code></td><td>Team velocity and action items</td></tr>
-<tr><td>Research Brief</td><td><code style="background:none;color:#0891b2;padding:0;font-family:var(--f-m)">#0891b2</code></td><td>Synthesized findings for decision-making</td></tr>
-<tr><td>Project Proposal</td><td><code style="background:none;color:#7c3aed;padding:0;font-family:var(--f-m)">#7c3aed</code></td><td>Problem, solution, metrics, timeline, risks</td></tr>
-<tr><td>Agent Brief</td><td><code style="background:none;color:#0f766e;padding:0;font-family:var(--f-m)">#0f766e</code></td><td>Multi-agent context handoff</td></tr>
-<tr><td>Session-Close Summary</td><td><code style="background:none;color:#2563eb;padding:0;font-family:var(--f-m)">#2563eb</code></td><td>End-of-session context for next agent</td></tr>
+<tr><td>Report / Summary</td><td><code class="ic" style="color:#2563eb">#2563eb</code></td><td>Analysis, research findings</td></tr>
+<tr><td>Incident Report</td><td><code class="ic" style="color:#dc2626">#dc2626</code></td><td>Post-mortems with timeline and action items</td></tr>
+<tr><td>Architecture Decision Record</td><td><code class="ic" style="color:#7c3aed">#7c3aed</code></td><td>Technical decisions with full context</td></tr>
+<tr><td>Sprint Retrospective</td><td><code class="ic" style="color:#16a34a">#16a34a</code></td><td>Team velocity and action items</td></tr>
+<tr><td>Research Brief</td><td><code class="ic" style="color:#0891b2">#0891b2</code></td><td>Synthesized findings for decision-making</td></tr>
+<tr><td>Project Proposal</td><td><code class="ic" style="color:#7c3aed">#7c3aed</code></td><td>Problem, solution, metrics, timeline, risks</td></tr>
+<tr><td>Agent Brief</td><td><code class="ic" style="color:#0f766e">#0f766e</code></td><td>Multi-agent context handoff</td></tr>
+<tr><td>Session-Close Summary</td><td><code class="ic" style="color:#2563eb">#2563eb</code></td><td>End-of-session context for next agent</td></tr>
 </tbody>
 </table></div>
 </section>
 
 <section class="sc" data-floreo-id="design-identity">
 <h2>Design Identity</h2>
-<p>Floreo documents share a consistent visual register: editorial and serious, not decorative. System fonts — Georgia for headings, system-ui for body, Courier New for code/metadata/eyebrows — with no external font load. Warm stone neutrals (#fafaf9 background, #1c1917 text, #57534e muted text). Accent color varies by document type to create visual identity at a glance. Dark mode via prefers-color-scheme. Max width 860px for comfortable reading.</p>
-<p>The design deliberately avoids gradient text, glassmorphism, hero-metric templates, identical card grids, and side-stripe borders on callouts. The goal is clarity and craft — documents that look intentional without looking decorative. Callouts use background-tint + left border (3px). Code blocks use a dark surface (#1c1917) against the warm background.</p>
+<p>Floreo documents share a consistent visual register: editorial and serious, not decorative. System fonts — Georgia for headings (h1, h2 only), system-ui for body and sub-headings, Courier New for code/metadata/eyebrows — with no external font load. Warm stone neutrals (#fafaf9 background, #1c1917 text, #57534e muted text). Accent color varies by document type to create visual identity at a glance. Dark mode via prefers-color-scheme. Max width 860px for comfortable reading.</p>
+<p>The design deliberately avoids gradient text, glassmorphism, hero-metric templates, identical card grids, and side-stripe borders on callouts. The goal is clarity and craft. Callouts use background-tint only — the tint IS the signal, no border-left decoration. Code blocks use a dark surface (#1c1917) against the warm background for strong figure-ground contrast.</p>
 </section>
 
 <section class="sc" data-floreo-id="what-we-built-this-session">
 <h2>What We Built This Session</h2>
 <ul>
-<li>Fixed marketplace install syntax: removed incorrect <code style="background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem">github:</code> prefix. Correct: <code style="background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem">/plugin marketplace add ruesato/agent-skill-floreo</code>, then <code style="background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem">/plugin install floreo@floreo</code></li>
+<li>Fixed marketplace install syntax: removed incorrect <code class="ic">github:</code> prefix. Correct: <code class="ic">/plugin marketplace add ruesato/agent-skill-floreo</code>, then <code class="ic">/plugin install floreo@floreo</code></li>
 <li>Added Phase 3 — Visual Polish: optional impeccable integration that runs after HTML generation when impeccable skill and PRODUCT.md are both present in the project</li>
 <li>Tightened trigger conditions: replaced "if a human reads it, floreo it" with explicit imperative triggers and a Do NOT floreo exclusion list for .md files, SKILL.md, CLAUDE.md, steering files, and tool-parsed content</li>
 <li>Aligned setup skill CLAUDE.md block to match the same refined trigger language</li>
@@ -105,7 +108,7 @@ strong{color:var(--ct)}
 
 <section class="sc" data-floreo-id="impeccable-integration">
 <h2>Impeccable Integration</h2>
-<p>After Phase 2 writes the HTML file, if the impeccable skill is available and PRODUCT.md exists in the project, floreo invokes <code style="background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem">/impeccable polish [file]</code> for a visual quality pass. Impeccable brings: OKLCH-aware color strategy, typography hierarchy enforcement (≥1.25 scale ratio between steps), deliberate spacing rhythm (not uniform padding), and the full impeccable design laws. After impeccable runs, floreo verifies the file remains self-contained — no external CSS or JS introduced.</p>
+<p>After Phase 2 writes the HTML file, if the impeccable skill is available and PRODUCT.md exists in the project, floreo invokes <code class="ic">/impeccable polish [file]</code> for a visual quality pass. Impeccable brings: OKLCH-aware color strategy, typography hierarchy enforcement, deliberate spacing rhythm (not uniform padding), and the full impeccable design laws. After impeccable runs, floreo verifies the file remains self-contained — no external CSS or JS introduced.</p>
 <p>The integration is conditional by design. Impeccable requires PRODUCT.md for project context. Without it, floreo skips Phase 3 and nudges: "Run /impeccable teach to enable automatic visual polish."</p>
 <figure class="fig">
 <svg viewBox="0 0 660 140" xmlns="http://www.w3.org/2000/svg">
@@ -133,10 +136,10 @@ strong{color:var(--ct)}
 <section class="sc" data-floreo-id="enabling-phase-3">
 <h2>Enabling Phase 3</h2>
 <ol class="steps">
-<li class="step"><span class="step-n">1</span><div class="step-bd">Run <code style="background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem">/impeccable teach</code> in this project directory — provide this document as context for the session</div></li>
+<li class="step"><span class="step-n">1</span><div class="step-bd">Run <code class="ic">/impeccable teach</code> in this project directory — provide this document as context for the session</div></li>
 <li class="step"><span class="step-n">2</span><div class="step-bd">Describe floreo's register as <strong>"document / editorial"</strong> — not product UI or marketing</div></li>
-<li class="step"><span class="step-n">3</span><div class="step-bd">Describe design identity: warm stone neutrals, editorial serif headings (Georgia), system-ui body, accent color varies by document type, dark mode via CSS media query</div></li>
-<li class="step"><span class="step-n">4</span><div class="step-bd">Describe anti-references: no decorative animations, no glassmorphism, no hero metrics, no gradient text — clarity over decoration. Documents exist to be read, not admired.</div></li>
+<li class="step"><span class="step-n">3</span><div class="step-bd">Describe design identity: warm stone neutrals, editorial serif headings (Georgia for h1/h2), system-ui for body and sub-headings, accent color varies by document type, dark mode via CSS media query</div></li>
+<li class="step"><span class="step-n">4</span><div class="step-bd">Describe anti-references: no decorative animations, no glassmorphism, no hero metrics, no gradient text, no side-stripe borders on callouts — clarity over decoration. Documents exist to be read, not admired.</div></li>
 <li class="step"><span class="step-n">5</span><div class="step-bd">After PRODUCT.md is created, Phase 3 activates automatically on the next floreo run</div></li>
 </ol>
 </section>

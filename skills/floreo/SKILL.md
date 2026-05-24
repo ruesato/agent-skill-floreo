@@ -626,7 +626,8 @@ Include this compressed block in every floreo document. Extend as needed:
 @media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#78716c}.code{border:1px solid var(--cbr)}}
 body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
 .pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
-h1,h2,h3,h4{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
+h1,h2{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
+h3,h4{font-family:var(--f-b);line-height:1.2;color:var(--ct)}
 h1{font-size:2.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.4rem}
 h2{font-size:1.5rem;font-weight:400;margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid var(--cbr)}
 h3{font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
@@ -635,11 +636,11 @@ p{margin-bottom:1rem;color:var(--cm)}
 .hd{padding-bottom:2rem;margin-bottom:3rem;border-bottom:2px solid var(--cbr)}
 .fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
 .eyebrow{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ca);margin-bottom:.75rem}
-.subtitle{font-size:1.1rem;color:var(--cm);font-style:italic}
-.note,.warn,.tip{padding:1rem 1.25rem;border-radius:6px;margin:1.5rem 0;font-size:.95rem}
-.note{background:var(--cab);border-left:3px solid var(--ca)}
-.warn{background:var(--cw-bg);border-left:3px solid var(--cw)}
-.tip{background:var(--cg-bg);border-left:3px solid var(--cg)}
+.subtitle{font-size:1.1rem;color:var(--cm)}
+.note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;font-size:.95rem}
+.note{background:var(--cab)}
+.warn{background:var(--cw-bg)}
+.tip{background:var(--cg-bg)}
 .tbl-w{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
 .tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs)}
 .tbl thead{background:var(--cs2)}
@@ -652,11 +653,13 @@ p{margin-bottom:1rem;color:var(--cm)}
 .fig{margin:1.5rem 0;text-align:center}
 .fig svg{max-width:100%;height:auto}
 figcaption{font-size:.8rem;color:var(--cq);margin-top:.5rem;font-style:italic;text-align:center}
-a{color:var(--ca);text-decoration:none}
+a{color:var(--ca);text-decoration:none;transition:color .15s ease-out}
 a:hover{text-decoration:underline}
 ul,ol{padding-left:1.5rem;margin-bottom:1rem;color:var(--cm)}
 li{margin-bottom:.25rem}
 strong{color:var(--ct)}
+.ic{background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 ```
 
 ---
