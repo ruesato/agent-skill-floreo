@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-24T00:00:00Z",
+  "title": "Design System: Floreo",
+  "extensions": {
+    "colorMeta": {
+      "parchment-warm":    { "role": "neutral",   "displayName": "Parchment Warm",    "canonical": "oklch(98.5% 0.003 85)",  "tonalRamp": ["#1c1917","#292524","#44403c","#78716c","#a8a29e","#d6d3d1","#e7e5e4","#fafaf9"] },
+      "surface-white":     { "role": "neutral",   "displayName": "Surface White",     "canonical": "oklch(100% 0 0)",        "tonalRamp": ["#1c1917","#292524","#44403c","#78716c","#a8a29e","#d6d3d1","#f5f5f4","#ffffff"] },
+      "surface-muted":     { "role": "neutral",   "displayName": "Surface Muted",     "canonical": "oklch(96.8% 0.003 85)",  "tonalRamp": ["#1c1917","#292524","#44403c","#78716c","#a8a29e","#d6d3d1","#e7e5e4","#f5f5f4"] },
+      "stone-border":      { "role": "neutral",   "displayName": "Stone Border",      "canonical": "oklch(92% 0.004 85)",    "tonalRamp": ["#1c1917","#292524","#44403c","#78716c","#a8a29e","#d6d3d1","#e7e5e4","#fafaf9"] },
+      "ink-deep":          { "role": "neutral",   "displayName": "Ink Deep",          "canonical": "oklch(14% 0.012 60)",    "tonalRamp": ["#1c1917","#292524","#3c3836","#57534e","#78716c","#a8a29e","#d6d3d1","#fafaf9"] },
+      "ink-mid":           { "role": "neutral",   "displayName": "Ink Mid",           "canonical": "oklch(38% 0.018 60)",    "tonalRamp": ["#1c1917","#292524","#3c3836","#57534e","#78716c","#a8a29e","#d6d3d1","#fafaf9"] },
+      "ink-quiet":         { "role": "neutral",   "displayName": "Ink Quiet",         "canonical": "oklch(68% 0.012 60)",    "tonalRamp": ["#1c1917","#292524","#3c3836","#57534e","#78716c","#a8a29e","#d6d3d1","#fafaf9"] },
+      "accent":            { "role": "primary",   "displayName": "Variable Document Accent", "canonical": "oklch(50% 0.22 264)", "tonalRamp": ["#1e3a8a","#1d4ed8","#2563eb","#3b82f6","#60a5fa","#93c5fd","#bfdbfe","#dbeafe"] },
+      "accent-tint":       { "role": "primary",   "displayName": "Accent Tint",       "canonical": "oklch(93% 0.05 264)",    "tonalRamp": ["#1e3a8a","#1d4ed8","#2563eb","#3b82f6","#60a5fa","#93c5fd","#bfdbfe","#dbeafe"] },
+      "amber-warning":     { "role": "tertiary",  "displayName": "Amber Warning",     "canonical": "oklch(62% 0.17 65)",     "tonalRamp": ["#92400e","#b45309","#d97706","#f59e0b","#fbbf24","#fcd34d","#fde68a","#fef3c7"] },
+      "amber-warning-bg":  { "role": "tertiary",  "displayName": "Amber Mist",        "canonical": "oklch(96% 0.04 90)",     "tonalRamp": ["#92400e","#b45309","#d97706","#f59e0b","#fbbf24","#fcd34d","#fde68a","#fef3c7"] },
+      "emerald-tip":       { "role": "secondary", "displayName": "Emerald Tip",       "canonical": "oklch(50% 0.17 150)",    "tonalRamp": ["#14532d","#166534","#16a34a","#22c55e","#4ade80","#86efac","#bbf7d0","#dcfce7"] },
+      "emerald-tip-bg":    { "role": "secondary", "displayName": "Emerald Mist",      "canonical": "oklch(96% 0.04 155)",    "tonalRamp": ["#14532d","#166534","#16a34a","#22c55e","#4ade80","#86efac","#bbf7d0","#dcfce7"] }
+    },
+    "typographyMeta": {
+      "display":  { "displayName": "Display",  "purpose": "Document title only. One per document. The moment the reader's eye anchors." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings (h2). Serif authority without weight." },
+      "title":    { "displayName": "Title",    "purpose": "Sub-section headings (h3). Bold sans registers as 'within this section'." },
+      "body":     { "displayName": "Body",     "purpose": "All running prose. 65–75ch max line length. The voice of the content." },
+      "label":    { "displayName": "Label",    "purpose": "Eyebrows, table headers, timestamps, footers. Mono tracked-out uppercase." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "hover-state", "value": "background 0.15s ease-out, color 0.15s ease-out", "purpose": "The only valid transition. State changes on hover/focus elements only." }
+    ],
+    "breakpoints": [
+      { "name": "reading-max", "value": "860px", "purpose": "Max width of the .pg reading container." },
+      { "name": "mobile",      "value": "600px", "purpose": "Breakpoint for two-column components (split, before/after) collapsing to single column." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Callout — Note",
+      "kind": "custom",
+      "refersTo": "callout-note",
+      "description": "Informational aside. Blue tint background, no side-stripe border.",
+      "html": "<div class=\"ds-callout-note\"><strong>Note:</strong> This is an informational note with context or supplementary detail.</div>",
+      "css": ".ds-callout-note { background: #dbeafe; border-radius: 8px; padding: 1rem 1.25rem; font-size: 0.95rem; color: #1c1917; line-height: 1.6; }"
+    },
+    {
+      "name": "Callout — Warning",
+      "kind": "custom",
+      "refersTo": "callout-warn",
+      "description": "Caution or risk signal. Amber tint background, no side-stripe border.",
+      "html": "<div class=\"ds-callout-warn\"><strong>Warning:</strong> Something that warrants caution before proceeding.</div>",
+      "css": ".ds-callout-warn { background: #fef3c7; border-radius: 8px; padding: 1rem 1.25rem; font-size: 0.95rem; color: #1c1917; line-height: 1.6; }"
+    },
+    {
+      "name": "Callout — Tip",
+      "kind": "custom",
+      "refersTo": "callout-tip",
+      "description": "Helpful suggestion or positive signal. Green tint background.",
+      "html": "<div class=\"ds-callout-tip\"><strong>Tip:</strong> A helpful suggestion or something worth highlighting positively.</div>",
+      "css": ".ds-callout-tip { background: #dcfce7; border-radius: 8px; padding: 1rem 1.25rem; font-size: 0.95rem; color: #1c1917; line-height: 1.6; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Surface container for grouped content. Tonal lift from page, no shadow.",
+      "html": "<div class=\"ds-card\"><h3 style=\"font-family:system-ui;font-size:1.1rem;font-weight:600;margin-bottom:0.4rem;color:#1c1917\">Card Title</h3><p style=\"margin:0;color:#57534e;font-size:1rem;line-height:1.7\">Card body text describing the grouped content.</p></div>",
+      "css": ".ds-card { background: #ffffff; border: 1px solid #e7e5e4; border-radius: 8px; padding: 1.25rem; font-family: system-ui, -apple-system, sans-serif; }"
+    },
+    {
+      "name": "Code Block",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "The only fully dark surface in the palette. High contrast for technical content.",
+      "html": "<pre class=\"ds-code\"><code>const result = await agent.run(prompt);\nconsole.log(result.content);</code></pre>",
+      "css": ".ds-code { background: #1c1917; color: #f5f5f4; padding: 1.25rem; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; overflow-x: auto; white-space: pre-wrap; word-break: break-all; line-height: 1.6; }"
+    },
+    {
+      "name": "Table",
+      "kind": "custom",
+      "description": "Full-width data grid. Mono uppercase headers, tonal muted header row.",
+      "html": "<div class=\"ds-tbl-w\"><table class=\"ds-tbl\"><thead><tr><th>Column A</th><th>Column B</th><th>Column C</th></tr></thead><tbody><tr><td>Value</td><td>Value</td><td>Value</td></tr><tr><td>Value</td><td>Value</td><td>Value</td></tr></tbody></table></div>",
+      "css": ".ds-tbl-w { overflow-x: auto; border: 1px solid #e7e5e4; border-radius: 8px; overflow: hidden; } .ds-tbl { width: 100%; border-collapse: collapse; font-size: 0.9rem; background: #ffffff; font-family: system-ui, -apple-system, sans-serif; } .ds-tbl thead { background: #f5f5f4; } .ds-tbl th { text-align: left; padding: 0.6rem 1rem; font-family: 'Courier New', Courier, monospace; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: #57534e; border-bottom: 1px solid #e7e5e4; } .ds-tbl td { padding: 0.6rem 1rem; border-bottom: 1px solid #f5f5f4; color: #57534e; vertical-align: top; } .ds-tbl tr:last-child td { border-bottom: none; }"
+    },
+    {
+      "name": "Stat Block",
+      "kind": "custom",
+      "description": "Large metric + label. Serif number in accent color. No card wrapper.",
+      "html": "<div class=\"ds-stats\"><div class=\"ds-stat\"><span class=\"ds-stat-n\">99.9%</span><span class=\"ds-stat-l\">Uptime</span></div><div class=\"ds-stat\"><span class=\"ds-stat-n\">42ms</span><span class=\"ds-stat-l\">P50 Latency</span></div></div>",
+      "css": ".ds-stats { display: flex; gap: 1rem; flex-wrap: wrap; } .ds-stat { background: #ffffff; border: 1px solid #e7e5e4; border-radius: 8px; padding: 1.25rem 1.5rem; min-width: 140px; font-family: system-ui, sans-serif; } .ds-stat-n { display: block; font-family: Georgia, 'Times New Roman', serif; font-size: 2.5rem; font-weight: 400; color: #2563eb; line-height: 1; } .ds-stat-l { display: block; font-family: 'Courier New', Courier, monospace; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #a8a29e; margin-top: 0.4rem; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Reference Shelf",
+    "overview": "Floreo documents are the books you keep. Not dashboards, not feeds — reading artifacts meant to be consulted again weeks later when context is needed. The design system exists to make AI-generated content feel like it was worth writing.\n\nThe palette is warm stone, not clinical white. Headings speak in Georgian serif: authority without aggression. Body copy runs in system-ui: native, fast, unobtrusive. The mono face appears only where precision matters. Three voices, each in its place.\n\nThis system explicitly rejects: SaaS dashboard aesthetic, AI-generated generic output, corporate report PDF, marketing landing page patterns.",
+    "keyCharacteristics": [
+      "Warm stone neutrals, never clinical white or reflexively dark",
+      "Three font stacks with strict roles: serif display, sans body, mono metadata",
+      "Accent color varies per document type; rarity is the signal",
+      "Flat surfaces with tonal depth only, no shadows",
+      "Components recede; typography and spacing carry meaning"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule",    "body": "The document accent appears on at most 10% of any surface. Its rarity is the signal. A document drowning in its own accent color loses its identity badge.", "section": "colors" },
+      { "name": "The Warm Neutral Rule",  "body": "All neutrals tint toward warm stone, never toward cool gray. The chroma is low (0.005–0.01 OKLCH) but measurable; the warmth is felt before it is noticed.", "section": "colors" },
+      { "name": "The Three-Voice Rule",   "body": "Georgia for headings. System-ui for body. Courier New for metadata and code. Never mix them within a role.", "section": "typography" },
+      { "name": "The Serif Authority Rule","body": "h1 and h2 are always Georgia. h3 and below switch to system-ui to signal 'within a section,' not 'a new chapter.'", "section": "typography" },
+      { "name": "The No-Shadow Rule",     "body": "No box-shadow on any document element except interactive focus rings. Shadows signal interactivity; floreo documents are read, not clicked.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use Georgia at 2.5rem weight 400 for the document title.",
+      "Do vary the document accent (--ca) per document type.",
+      "Do keep accent use below 10% of any surface.",
+      "Do tint all neutrals warm toward stone. #1c1917 not #111111.",
+      "Do use the three-step tonal stack for the only depth mechanism.",
+      "Do max body line length at 65–75ch.",
+      "Do use Courier New uppercase for eyebrows, table headers, timestamps, and metadata.",
+      "Do embed the floreo Content Plan in <script type=\"application/floreo\"> before </body>.",
+      "Do respect prefers-color-scheme: dark and prefers-reduced-motion."
+    ],
+    "donts": [
+      "Don't use side-stripe borders (border-left or border-right > 1px as colored accent) on callouts, cards, or list items. Background tint is the signal.",
+      "Don't use gradient text. Single solid color only.",
+      "Don't use the SaaS dashboard aesthetic — dark sidebars, metric cards, gradient accents.",
+      "Don't produce AI-generic output — uniform padding everywhere, identical card grids, no spacing rhythm.",
+      "Don't produce corporate report PDF aesthetic — gray on gray, no accent.",
+      "Don't use marketing landing page patterns — hero sections, gradient headlines, hero-metric template.",
+      "Don't use #000 or #fff. Always tint toward warm stone.",
+      "Don't animate layout properties. Only background/color transitions at 150ms ease-out.",
+      "Don't break self-containment. No external fonts, no CDN stylesheets. One .html file.",
+      "Don't add shadows to document elements."
+    ]
+  }
+}
