@@ -27,11 +27,16 @@ human-readable output — no explicit `/floreo` invocation needed.
 ```
 ## floreo
 
-Use the floreo skill for all agent-created content that humans will read:
-reports, summaries, analyses, plans, proposals, ADRs, retrospectives,
-onboarding guides, API references, incident reports, session-close summaries,
-and agent briefs. **Default rule: if a human reads it, floreo it.** Markdown
-is for source control; HTML is for reading.
+Use the floreo skill for standalone reading artifacts — content whose natural
+output is an .html file a human opens in a browser: reports, summaries,
+analyses, plans, proposals, retrospectives, incident reports, research briefs,
+session-close summaries, and agent briefs (when the receiver is human).
+
+**Do NOT use floreo for**: any .md file the project expects (README.md,
+CLAUDE.md, AGENTS.md, ONBOARDING.md, ADRs saved as Markdown, etc.), skill or
+command definition files (SKILL.md, files in skills/ or commands/), steering
+and config files for agents or tools, or content a downstream agent or tool
+will parse as plain text or Markdown.
 
 Invoke the floreo skill before writing the final output file. The floreo skill
 file contains the full design system, component library, and Content Plan

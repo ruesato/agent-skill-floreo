@@ -2,12 +2,13 @@
 name: floreo
 description: >
   Produce a polished, self-contained HTML document from agent-created content.
-  INVOKE whenever the agent is about to write or has just written: a report,
-  summary, analysis, architecture doc, ADR, plan, proposal, retrospective,
-  onboarding guide, API reference, incident report, session-close summary, or
-  agent brief — any multi-section content a human will read. Do NOT invoke for
-  short conversational replies, inline code explanations, or quick status
-  updates (1–3 sentences).
+  INVOKE for standalone reading artifacts: reports, analyses, incident reports,
+  retrospectives, proposals, research briefs, session-close summaries, and agent
+  briefs — content whose natural output is an .html file a human will open in a
+  browser. Do NOT invoke when the output is a .md file (README, CLAUDE.md,
+  SKILL.md, AGENTS.md, ADRs in docs/, or any Markdown the project expects),
+  a steering or config file for an agent or tool, a skill or command definition,
+  or content a downstream agent or tool will parse as text.
 ---
 
 # Floreo
@@ -18,16 +19,17 @@ Turn raw content into polished, self-contained HTML. Agents write the markup; hu
 
 ## When to Invoke
 
-Use floreo for **any agent-created content that humans will read**:
+Use floreo for **standalone reading artifacts** — content whose natural output is an `.html` file a human opens in a browser:
 
 - Reports · summaries · analyses
-- Technical documentation · architecture docs
 - Plans · proposals · design decisions
 - Research · comparisons · tutorials
 - Meeting notes · project updates
+- Incident reports · post-mortems
 - Session-close summaries (see **Session-Close Protocol** section below)
+- Agent briefs (when the receiver is a human, not another agent parsing text)
 
-**Default rule**: If a human reads it, floreo it. Markdown is for source control. HTML is for reading.
+**The file-format rule**: If the output would naturally be a `.md` file, do NOT use floreo. If the output would naturally be an `.html` file the user opens in a browser, use floreo.
 
 **Minimum threshold** — use floreo when the content has at least two of:
 - Multiple sections (three or more headings)
@@ -35,7 +37,13 @@ Use floreo for **any agent-created content that humans will read**:
 - Content that must persist beyond the current conversation
 - An audience beyond the immediate user (shared docs, stakeholder reports)
 
-Do NOT floreo: short conversational answers, inline code explanations, quick status updates (1–3 sentences), or content destined to be embedded in another system (Notion, Confluence, GitHub comments).
+**Do NOT floreo any of these:**
+- `.md` files the project expects: `README.md`, `CLAUDE.md`, `AGENTS.md`, `ONBOARDING.md`, `CONTRIBUTING.md`, ADRs saved as Markdown, or any file whose format is dictated by the project or a tool
+- Skill and command definition files (`SKILL.md`, files in `skills/`, `commands/`, `agents/`)
+- Steering and config files for agents or tools (`.cursor/rules`, `.github/copilot-instructions.md`, `system-prompt.txt`, etc.)
+- Content a downstream agent or tool will parse as plain text or Markdown
+- Short conversational answers, inline code explanations, or quick status updates (1–3 sentences)
+- Content destined to be embedded in another system (Notion, Confluence, GitHub comments, PR descriptions)
 
 ## Two-Phase Composition
 
