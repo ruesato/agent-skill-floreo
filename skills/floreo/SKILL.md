@@ -558,7 +558,7 @@ System fonts — no external dependencies, instant load:
 }
 ```
 
-Use `--f-h` for headings and display text. Use `--f-b` for body copy. Use `--f-m` for code, metadata, labels, eyebrows.
+**Serif Authority Rule:** `h1` and `h2` use `--f-h` (Georgia) — section-level authority. `h3` and below use `--f-b` (system-ui) — they are within a section, not starting a new chapter. Never apply `--f-h` to `h3` or below. Use `--f-m` for code, metadata, labels, eyebrows.
 
 Type scale (rem): `--t-xs:.75` `--t-sm:.875` `--t-md:1` `--t-lg:1.125` `--t-xl:1.25` `--t-2xl:1.5` `--t-3xl:2` `--t-4xl:3`
 
@@ -579,6 +579,17 @@ Adapt `--ca` (accent) to the document's purpose or brand:
   --cw-bg:#fef3c7; --cw:#d97706;  /* warning amber */
   --cg-bg:#dcfce7; --cg:#16a34a   /* success green */
 }
+```
+
+**Dark mode — always override callout backgrounds.** The pastel tints (`--cab`, `--cw-bg`, `--cg-bg`) become unreadable with near-white text in dark mode. Add these to the dark mode `:root` block:
+
+```css
+@media(prefers-color-scheme:dark){:root{
+  /* ... other dark tokens ... */
+  --cab:#082f3e;   /* dark teal — readable with #fafaf9 text */
+  --cw-bg:#3d1a00; /* dark amber */
+  --cg-bg:#052e16  /* dark green */
+}}
 ```
 
 Common accent values by document type — pick a shade to create visual variety within a category:
@@ -721,6 +732,16 @@ The attribute is zero-cost in source and invisible to readers. Add it to every `
 <div class="note"><strong>Note:</strong> informational aside</div>
 <div class="warn"><strong>Warning:</strong> caution or risk</div>
 <div class="tip"><strong>Tip:</strong> helpful suggestion</div>
+```
+
+**Background tint is the signal. No side-stripe borders.** Never add `border-left` or `border-right` as a colored accent to callouts — that is the Bootstrap-alert aesthetic this system explicitly rejects. The background color alone communicates the variant. The dark mode overrides for `--cab`, `--cw-bg`, and `--cg-bg` are required (see Color tokens above).
+
+### Inline code
+
+Use the `.ic` class for inline code snippets within prose or table cells. Do not repeat inline `style` attributes:
+
+```html
+Run <code class="ic">/floreo install</code> to begin.
 ```
 
 ### Table
@@ -1182,7 +1203,10 @@ Before writing the final file:
 - [ ] `<title>` is meaningful and specific
 - [ ] Floreo meta tags present (`floreo:type`, `floreo:created`, `floreo:model`, `floreo:version`)
 - [ ] Accent color (`--ca`) matches document purpose
-- [ ] Visual hierarchy is clear: h1 > h2 > h3, spacing creates sections
+- [ ] Visual hierarchy is clear: h1 > h2 (Georgia) → h3 (system-ui), spacing creates sections
+- [ ] `h3`/`h4` use `--f-b` (system-ui), NOT `--f-h` (Georgia) — Serif Authority Rule
+- [ ] Callouts use background-tint only — no `border-left` accent stripe
+- [ ] Dark mode overrides present for `--cab`, `--cw-bg`, `--cg-bg` in the dark media query
 - [ ] Tables used for comparative data (not prose lists)
 - [ ] Callouts (`.note`, `.warn`, `.tip`) surface key insights
 - [ ] SVG present for any quantitative comparisons
