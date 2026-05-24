@@ -2,13 +2,13 @@
 name: floreo
 description: >
   Produce a polished, self-contained HTML document from agent-created content.
-  INVOKE for standalone reading artifacts: reports, analyses, incident reports,
-  retrospectives, proposals, research briefs, session-close summaries, and agent
-  briefs — content whose natural output is an .html file a human will open in a
-  browser. Do NOT invoke when the output is a .md file (README, CLAUDE.md,
-  SKILL.md, AGENTS.md, ADRs in docs/, or any Markdown the project expects),
-  a steering or config file for an agent or tool, a skill or command definition,
-  or content a downstream agent or tool will parse as text.
+  INVOKE whenever the agent is about to write: a report, summary, analysis,
+  research brief, plan, proposal, retrospective, incident report, session-close
+  summary, or agent brief (when the receiver is human). Floreo turns these into
+  polished .html reading artifacts — do not write them as Markdown instead.
+  Do NOT invoke for: any .md file the project or a tool expects (README.md,
+  CLAUDE.md, AGENTS.md, SKILL.md, steering files, skill or command
+  definitions), or content a downstream agent or tool will parse as plain text.
 ---
 
 # Floreo
@@ -19,7 +19,7 @@ Turn raw content into polished, self-contained HTML. Agents write the markup; hu
 
 ## When to Invoke
 
-Use floreo for **standalone reading artifacts** — content whose natural output is an `.html` file a human opens in a browser:
+Use floreo for **documents that exist to be read** — reports, analyses, and any multi-section content a human will read for understanding, not to configure a tool:
 
 - Reports · summaries · analyses
 - Plans · proposals · design decisions
@@ -29,7 +29,7 @@ Use floreo for **standalone reading artifacts** — content whose natural output
 - Session-close summaries (see **Session-Close Protocol** section below)
 - Agent briefs (when the receiver is a human, not another agent parsing text)
 
-**The file-format rule**: If the output would naturally be a `.md` file, do NOT use floreo. If the output would naturally be an `.html` file the user opens in a browser, use floreo.
+**Default**: write these as `.html` via floreo, not as Markdown. Floreo is the output path for reading artifacts — don't default to `.md` just because that's the familiar format.
 
 **Minimum threshold** — use floreo when the content has at least two of:
 - Multiple sections (three or more headings)

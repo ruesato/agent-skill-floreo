@@ -27,16 +27,16 @@ human-readable output — no explicit `/floreo` invocation needed.
 ```
 ## floreo
 
-Use the floreo skill for standalone reading artifacts — content whose natural
-output is an .html file a human opens in a browser: reports, summaries,
-analyses, plans, proposals, retrospectives, incident reports, research briefs,
-session-close summaries, and agent briefs (when the receiver is human).
+Use the floreo skill whenever writing: a report, summary, analysis, research
+brief, plan, proposal, retrospective, incident report, session-close summary,
+or agent brief (when the receiver is human). Floreo turns these into polished
+.html reading artifacts — do not write them as Markdown instead.
 
-**Do NOT use floreo for**: any .md file the project expects (README.md,
-CLAUDE.md, AGENTS.md, ONBOARDING.md, ADRs saved as Markdown, etc.), skill or
-command definition files (SKILL.md, files in skills/ or commands/), steering
-and config files for agents or tools, or content a downstream agent or tool
-will parse as plain text or Markdown.
+**Do NOT use floreo for**: any .md file the project or a tool expects
+(README.md, CLAUDE.md, AGENTS.md, ONBOARDING.md, ADRs saved as Markdown,
+etc.), skill or command definition files (SKILL.md, files in skills/ or
+commands/), steering and config files for agents or tools, or content a
+downstream agent or tool will parse as plain text.
 
 Invoke the floreo skill before writing the final output file. The floreo skill
 file contains the full design system, component library, and Content Plan
