@@ -38,22 +38,24 @@ Any document type an agent generates:
 
 Claude Code plugins require a two-step install: register the marketplace, then install the plugin.
 
-```
-/plugin marketplace add ruesato/agent-skill-floreo
-/plugin install floreo@floreo
+```bash
+claude plugin marketplace add ruesato/agent-skill-floreo
+claude plugin install floreo@floreo
 ```
 
-The `floreo` skill is immediately available in any project.
+This installs floreo at user scope (available in every project). To limit to a single project, add `--scope project` to the install command.
+
+The `/floreo` skill is available immediately in any Claude Code session.
 
 ### Local development
 
-To test from a local clone without pushing:
+To test from a local clone without publishing:
 
 ```bash
 claude --plugin-dir /path/to/agent-skill-floreo
 ```
 
-Use `/reload-plugins` after editing skill files to pick up changes without restarting.
+Changes to `SKILL.md` take effect on the next skill invocation — no restart needed. Changes to `plugin.json` or `marketplace.json` require restarting Claude Code to pick up.
 
 ---
 
