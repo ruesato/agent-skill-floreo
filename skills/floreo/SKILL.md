@@ -55,7 +55,19 @@ The current model does the thinking work:
 
 1. Understand the audience and purpose of this document
 2. Determine the information hierarchy (what's primary, secondary, metadata)
-3. Identify what needs visual treatment: tables for comparisons, callouts for warnings, code blocks, SVG charts for quantitative data
+3. **Identify visual treatment** — for every section with data, make an explicit choice using this table. Do not skip this step. Tables are for relationships; charts are for magnitudes and trends. Default to a chart when the data has shape.
+
+   | If your content has… | Reach for… |
+   |---|---|
+   | 2–8 quantities to compare | Bar chart (inline SVG) |
+   | A value changing over time | Line chart (inline SVG) |
+   | Parts of a whole (percentages, shares) | Donut chart (inline SVG) |
+   | Events in chronological order | Timeline (`.tl` component) |
+   | A process with steps or branches | Flow diagram (inline SVG) |
+   | 3+ headline metrics | Stat block (`.stats`) |
+   | Phases or milestones with dates | Milestone chart (inline SVG) |
+   | 4 or more `<h2>` sections | Table of contents (included by default) |
+
 4. Write all prose, headings, and data in structured form
 5. Produce a **Content Plan** (see format below)
 
@@ -105,7 +117,10 @@ SECTIONS:
    [content]
 
 VISUAL ELEMENTS:
-- [describe any charts, diagrams, or figures needed with their data]
+- [Required when any section has quantitative data. For each: chart type + data + which section. Write "none" explicitly if no quantitative content.]
+
+INTERACTIVE:
+- [Required field. List any: toc | tabs | search | collapsible — or write "none". ToC is required when 4+ sections.]
 
 CALLOUTS:
 - [NOTE|WARN|TIP]: [text]
@@ -122,13 +137,28 @@ For **table** sections, provide data in this form so Haiku can map it directly t
    HIGHLIGHT_ROW: POST /events  (draw attention to this row)
 ```
 
-For **figure** sections, describe the data and the chart type:
+For **figure** sections, describe the data and the chart type. Available types: `bar chart`, `line chart`, `donut chart`, `milestone chart`, `flow diagram`, `timeline` (uses `.tl` component).
 
 ```
 4. Response time by region — figure
    TYPE: bar chart
    DATA: us-east=12ms, eu-west=34ms, ap-southeast=78ms
    CAPTION: P50 latency measured over 7-day window
+
+5. Error rate over time — figure
+   TYPE: line chart
+   DATA: Jan=0.1%, Feb=0.3%, Mar=0.2%, Apr=0.8%, May=0.15%
+   CAPTION: Monthly p95 error rate
+
+6. Traffic by source — figure
+   TYPE: donut chart
+   DATA: organic=60%, paid=25%, direct=15%
+   CAPTION: Traffic sources Q1 2026
+
+7. Release schedule — figure
+   TYPE: milestone chart
+   DATA: Alpha=2026-03-01(done), Beta=2026-05-01(done), Launch=2026-07-01(upcoming)
+   CAPTION: Filled = complete, open = planned
 ```
 
 ### Content Plan preservation
@@ -179,8 +209,9 @@ SECTIONS:
    ROW: User Impact | [description]
    ROW: Status | Resolved
 
-2. Timeline — prose
-   [Chronological sequence of events from first alert to resolution]
+2. Timeline — figure
+   TYPE: timeline (use .tl component)
+   [Each event: timestamp | title | description — ordered earliest to latest]
 
 3. Root Cause — prose
    [Technical explanation of the underlying failure]
@@ -194,6 +225,13 @@ SECTIONS:
 
 6. Prevention — list
    [Action items with owners and due dates]
+
+VISUAL ELEMENTS:
+- stat block: Duration=[N min], Error Rate=[peak %], Users Affected=[N]
+- timeline: section 2 (use .tl component — required)
+
+INTERACTIVE:
+- toc (6 sections — required)
 
 CALLOUTS:
 - NOTE: [any important context about detection or response]
@@ -224,6 +262,12 @@ SECTIONS:
 
 5. Consequences — list
    [What becomes easier, harder, or required as a result of this decision]
+
+VISUAL ELEMENTS:
+- none typically; flow diagram (optional) if section 2 describes component relationships affected by this decision
+
+INTERACTIVE:
+- toc (5 sections — required)
 
 CALLOUTS:
 - NOTE: [any constraint that explains an otherwise surprising choice]
@@ -256,6 +300,12 @@ SECTIONS:
    COLUMNS: Action | Owner | Due
    ROW: [specific change] | [name] | [date]
 
+VISUAL ELEMENTS:
+- stat block: Points Committed=[N], Points Delivered=[N], Velocity=[N]% (required)
+
+INTERACTIVE:
+- toc (4 sections — required)
+
 CALLOUTS:
 - TIP: [recognition for a team member or a win worth calling out]
 ```
@@ -286,7 +336,11 @@ SECTIONS:
    [Specific recommended course of action with rationale]
 
 VISUAL ELEMENTS:
-- [bar chart or figure if quantitative comparison is available]
+- bar chart: comparison data from section 4 (required when any criterion column is quantitative; omit only when all columns are qualitative text)
+
+INTERACTIVE:
+- toc (5 sections — required)
+- search (optional — useful for long briefs with dense findings)
 
 CALLOUTS:
 - WARN: [significant risk, caveat, or data limitation]
@@ -321,6 +375,13 @@ SECTIONS:
 
 6. Getting Help — prose
    [Slack channels, on-call rotation, docs locations, who to ask for what]
+
+VISUAL ELEMENTS:
+- flow diagram (optional): system architecture if section 2 describes component relationships
+
+INTERACTIVE:
+- toc (6 sections — required)
+- collapsible: wrap section 3 step details if setup has more than 8 steps
 
 CALLOUTS:
 - TIP: [most important thing a new person should know in the first week]
@@ -358,6 +419,14 @@ SECTIONS:
 6. Rate Limits — prose
    [Limits, headers returned, backoff strategy]
 
+VISUAL ELEMENTS:
+- bar chart (optional): latency by endpoint if performance benchmarks are available
+- none otherwise
+
+INTERACTIVE:
+- toc (6 sections — required)
+- collapsible: each endpoint group if there are more than 6 endpoints
+
 CALLOUTS:
 - WARN: [breaking change, deprecation, or gotcha worth surfacing prominently]
 ```
@@ -382,8 +451,8 @@ SECTIONS:
    ROW: [metric] | [current] | [goal] | [how measured]
 
 4. Timeline — figure
-   TYPE: horizontal bar / milestone table
-   [Phases with owners and dates]
+   TYPE: milestone chart (use the milestone SVG pattern from the skill — required)
+   [Each phase: name=date(done|upcoming) — mark completed phases filled, add TODAY marker]
 
 5. Resources Required — table
    COLUMNS: Resource | Amount | Source
@@ -393,6 +462,13 @@ SECTIONS:
 6. Risks — table
    COLUMNS: Risk | Likelihood | Impact | Mitigation
    ROW: [risk] | H/M/L | H/M/L | [plan]
+
+VISUAL ELEMENTS:
+- milestone chart: phases from section 4 (required)
+- stat block: 2–3 key success metrics from section 3
+
+INTERACTIVE:
+- toc (6 sections — required)
 
 CALLOUTS:
 - NOTE: [key constraint — deadline, dependency, or stakeholder requirement]
@@ -427,6 +503,12 @@ SECTIONS:
 
 6. Handoff Notes — list
    [Watch-outs, assumptions in play, partial work left in progress]
+
+VISUAL ELEMENTS:
+- none typically; flow diagram (optional) if section 3 describes a multi-step process with branching paths
+
+INTERACTIVE:
+- none (briefs are consumed programmatically — interactive features add overhead for the target agent parser)
 
 CALLOUTS:
 - NOTE: [any constraint or dependency the receiving agent must not miss]
@@ -463,6 +545,12 @@ SECTIONS:
 
 6. Next Session Kickoff — prose
    [Exactly what to do first in the next session, including any commands to run]
+
+VISUAL ELEMENTS:
+- none typically; stat block if the session produced measurable outputs (issues closed, tests passing, files written)
+
+INTERACTIVE:
+- toc (6 sections — required)
 
 CALLOUTS:
 - WARN: [anything that could go wrong if context is lost — partial state, temp files, etc.]
@@ -982,6 +1070,8 @@ Additional CSS:
 
 Auto-generated from `<h2>` headings via ~15 lines of JS. Place near the top of `<main>`.
 
+**Default rule:** include when the document has 4 or more `<h2>` sections. Declare this in the Content Plan's `INTERACTIVE:` field as `toc`.
+
 ```html
 <nav class="toc" aria-label="Contents">
   <p class="toch">Contents</p>
@@ -1062,6 +1152,96 @@ Use inline SVG for all charts, diagrams, and illustrations. Never embed raster i
   </marker></defs>
   <!-- Next box... -->
 </svg>
+</figure>
+```
+
+### Line chart pattern
+
+Use for trends over time or sequential values. The area fill is optional — remove the `<polygon>` for a clean line-only chart.
+
+```html
+<figure class="fig">
+<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+<title>Trend over time</title>
+<line x1="44" y1="10" x2="44" y2="180" stroke="var(--cbr)" stroke-width="1"/>
+<line x1="44" y1="180" x2="390" y2="180" stroke="var(--cbr)" stroke-width="1"/>
+<line x1="44" y1="60" x2="390" y2="60" stroke="var(--cbr)" stroke-width="1" stroke-dasharray="4 3"/>
+<line x1="44" y1="120" x2="390" y2="120" stroke="var(--cbr)" stroke-width="1" stroke-dasharray="4 3"/>
+<!-- Area fill (optional) -->
+<polygon points="80,150 150,110 220,75 290,95 360,50 360,180 80,180" fill="var(--ca)" opacity=".08"/>
+<!-- Data line — y=10 is top, y=170 is bottom; scale your values to fit -->
+<polyline points="80,150 150,110 220,75 290,95 360,50"
+  fill="none" stroke="var(--ca)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="80" cy="150" r="4" fill="var(--ca)"/>
+<circle cx="150" cy="110" r="4" fill="var(--ca)"/>
+<circle cx="220" cy="75" r="4" fill="var(--ca)"/>
+<circle cx="290" cy="95" r="4" fill="var(--ca)"/>
+<circle cx="360" cy="50" r="4" fill="var(--ca)"/>
+<text x="80" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">Jan</text>
+<text x="150" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">Feb</text>
+<text x="220" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">Mar</text>
+<text x="290" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">Apr</text>
+<text x="360" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">May</text>
+</svg>
+<figcaption>Caption describing the trend this chart shows</figcaption>
+</figure>
+```
+
+### Donut chart pattern
+
+Use for parts of a whole. Technique: stroke-dasharray on a circle (simpler than arc paths). Formula: `circumference ≈ 283` (for r=45). Each segment: `length = pct × 283`, `offset = -(sum of prior lengths)`. All segments use `transform="rotate(-90 100 100)"` to start at 12 o'clock.
+
+```html
+<figure class="fig">
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<title>Proportion breakdown</title>
+<!-- r=45, circumference≈283. Formula: length=pct×283 | offset=-(sum of prior lengths) -->
+<circle cx="100" cy="100" r="45" fill="none" stroke="var(--cs2)" stroke-width="24"/>
+<!-- Segment 1: 60% (length=170) — starts at 12 o'clock -->
+<circle cx="100" cy="100" r="45" fill="none" stroke="var(--ca)" stroke-width="24"
+  stroke-dasharray="170 283" transform="rotate(-90 100 100)"/>
+<!-- Segment 2: 25% (length=71) — starts after segment 1 (offset=-170) -->
+<circle cx="100" cy="100" r="45" fill="none" stroke="var(--ca)" stroke-width="24" opacity=".5"
+  stroke-dasharray="71 283" stroke-dashoffset="-170" transform="rotate(-90 100 100)"/>
+<!-- Center hole + label -->
+<circle cx="100" cy="100" r="28" fill="var(--cb)"/>
+<text x="100" y="96" text-anchor="middle" font-size="20" font-family="Georgia,'Times New Roman',serif" fill="var(--ca)">60%</text>
+<text x="100" y="112" text-anchor="middle" font-size="9" font-family="'Courier New',monospace" fill="var(--cq)" letter-spacing="2">PRIMARY</text>
+</svg>
+<figcaption>Caption describing what the proportions represent</figcaption>
+</figure>
+```
+
+### Milestone chart pattern
+
+Use for project timelines, release schedules, and roadmaps. Filled circles = complete; open circles = upcoming. Add a TODAY marker (dashed vertical line) to show current progress.
+
+```html
+<figure class="fig">
+<svg viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg">
+<title>Project milestones</title>
+<line x1="60" y1="38" x2="500" y2="38" stroke="var(--cbr)" stroke-width="2"/>
+<!-- Completed milestone -->
+<circle cx="120" cy="38" r="8" fill="var(--cg)"/>
+<text x="120" y="60" text-anchor="middle" font-size="11" fill="var(--cm)">Phase 1</text>
+<text x="120" y="74" text-anchor="middle" font-size="10" font-family="'Courier New',monospace" fill="var(--cq)">May 1</text>
+<!-- Completed milestone -->
+<circle cx="250" cy="38" r="8" fill="var(--cg)"/>
+<text x="250" y="60" text-anchor="middle" font-size="11" fill="var(--cm)">Phase 2</text>
+<text x="250" y="74" text-anchor="middle" font-size="10" font-family="'Courier New',monospace" fill="var(--cq)">Jun 15</text>
+<!-- TODAY marker -->
+<line x1="320" y1="20" x2="320" y2="56" stroke="var(--ca)" stroke-width="1.5" stroke-dasharray="3 2"/>
+<text x="320" y="15" text-anchor="middle" font-size="9" font-family="'Courier New',monospace" fill="var(--ca)">TODAY</text>
+<!-- Upcoming milestone (open circle) -->
+<circle cx="380" cy="38" r="8" fill="var(--cb)" stroke="var(--cbr)" stroke-width="2"/>
+<text x="380" y="60" text-anchor="middle" font-size="11" fill="var(--cm)">Phase 3</text>
+<text x="380" y="74" text-anchor="middle" font-size="10" font-family="'Courier New',monospace" fill="var(--cq)">Aug 1</text>
+<!-- Upcoming milestone -->
+<circle cx="470" cy="38" r="8" fill="var(--cb)" stroke="var(--cbr)" stroke-width="2"/>
+<text x="470" y="60" text-anchor="middle" font-size="11" fill="var(--cm)">Launch</text>
+<text x="470" y="74" text-anchor="middle" font-size="10" font-family="'Courier New',monospace" fill="var(--cq)">Sep 30</text>
+</svg>
+<figcaption>Project milestones — filled circles complete, open circles planned</figcaption>
 </figure>
 ```
 
@@ -1255,7 +1435,7 @@ AFTER (correct — produce this):
 <ul><li>First item<li>Second item</ul>
 <p>Some prose here.
 
-7. SVG for any charts or diagrams (inline, viewBox only — no fixed width/height).
+7. SVG for any charts or diagrams (inline, viewBox only — no fixed width/height). Match chart type to data: bar chart for comparisons, line chart for trends, donut (stroke-dasharray technique) for proportions, `.tl` timeline for events, milestone SVG for phases. Implement the `INTERACTIVE` field from the Content Plan: `toc` → add `.toc` nav block + JS; `collapsible` → use `<details class="clp">`; `tabs` → use the tab JS pattern; `search` → use the search input + JS from the Reading Interface section.
 8. Semantic HTML5 elements (header, main, section, footer, figure) to reduce class overhead.
 9. <meta viewport> present. max-width on .pg for readability.
 10. Set --ca to the accent color specified in the content plan.
@@ -1288,7 +1468,8 @@ Before writing the final file:
 - [ ] Dark mode overrides present for `--cab`, `--cw-bg`, `--cg-bg` in the dark media query
 - [ ] Tables used for comparative data (not prose lists)
 - [ ] Callouts (`.note`, `.warn`, `.tip`) surface key insights
-- [ ] SVG present for any quantitative comparisons
+- [ ] SVG chart present for any section with 3+ quantitative data points — a table alone is not sufficient for magnitude or trend data
+- [ ] `INTERACTIVE` field from Content Plan implemented — ToC present if 4+ sections, collapsible/tabs/search added if declared
 - [ ] CSS variables used throughout (no hardcoded hex values)
 - [ ] Mobile-responsive (`<meta viewport>` present, `max-width` on `.pg`)
 - [ ] JS (if any) degrades gracefully without it
