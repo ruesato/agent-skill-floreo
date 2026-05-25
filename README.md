@@ -55,7 +55,7 @@ To test from a local clone without publishing:
 claude --plugin-dir /path/to/agent-skill-floreo
 ```
 
-Changes to `SKILL.md` take effect on the next skill invocation — no restart needed. Changes to `plugin.json` or `marketplace.json` require restarting Claude Code to pick up.
+Use `/reload-plugins` after editing skill files to pick up changes without restarting.
 
 ---
 
