@@ -779,7 +779,7 @@ p{margin-bottom:1rem;color:var(--cm)}
 .fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
 .ey{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ca);margin-bottom:.75rem}
 .sub{font-size:1.1rem;color:var(--cm)}
-.note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;font-size:.95rem}
+.note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;font-size:.95rem;color:var(--ct)}
 .note{background:var(--cab)}
 .warn{background:var(--cw-bg)}
 .tip{background:var(--cg-bg)}
