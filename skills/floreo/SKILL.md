@@ -1068,9 +1068,11 @@ Additional CSS:
 
 ### Table of contents
 
-Auto-generated from `<h2>` headings via ~15 lines of JS. Place near the top of `<main>`.
+Auto-generated from `<h2>` headings via ~20 lines of JS. Place near the top of `<main>`, before the first `<section class="sc">`.
 
 **Default rule:** include when the document has 4 or more `<h2>` sections. Declare this in the Content Plan's `INTERACTIVE:` field as `toc`.
+
+**Responsive layout:** on viewports ≥1100px the ToC moves into a sticky right-hand sidebar alongside the document body — it stays visible no matter how far the user scrolls. On narrower viewports it renders inline as a card.
 
 ```html
 <nav class="toc" aria-label="Contents">
@@ -1086,7 +1088,10 @@ Additional CSS:
 .toch{font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-bottom:.5rem}
 .tocl{padding-left:1.25rem;margin:0}
 .tocl li{margin-bottom:.2rem}
-.tocl a{color:var(--cm);font-size:.9rem}
+.tocl a{color:var(--cm);font-size:.9rem;text-decoration:none;display:block;padding:.15rem .25rem;border-radius:3px}
+.tocl a:hover,.tocl a.active{color:var(--ca);background:var(--cab)}
+@media(min-width:1100px){.pg{max-width:1080px}main{display:grid;grid-template-columns:1fr 220px;gap:0 3rem;align-items:start}.toc{grid-column:2;grid-row:1/999;position:sticky;top:2rem;margin:0;display:block}.sc{grid-column:1}}
+@media print{main{display:block}.toc{display:none}}
 ```
 
 JS (add to the `<script>` block):
@@ -1101,6 +1106,13 @@ JS (add to the `<script>` block):
     li.innerHTML='<a href="#'+h.id+'">'+h.textContent+'</a>';
     list.appendChild(li);
   });
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      const a=list.querySelector('a[href="#'+e.target.id+'"]');
+      if(a)a.classList.toggle('active',e.isIntersecting);
+    });
+  },{rootMargin:'-10% 0px -75% 0px'});
+  document.querySelectorAll('main h2').forEach(h=>obs.observe(h));
 })();
 ```
 
