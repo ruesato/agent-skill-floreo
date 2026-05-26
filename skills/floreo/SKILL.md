@@ -1084,7 +1084,7 @@ Auto-generated from `<h2>` headings via ~20 lines of JS. Place near the top of `
 Additional CSS:
 
 ```css
-.toc{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem 1.5rem;margin:1.5rem 0;display:inline-block;min-width:220px}
+.toc{padding:1.25rem 1.5rem;margin:1.5rem 0;display:inline-block;min-width:220px}
 .toch{font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-bottom:.5rem}
 .tocl{padding-left:1.25rem;margin:0}
 .tocl li{margin-bottom:.2rem}
@@ -1300,7 +1300,7 @@ Add inside `<header class="hd">` (for the export button) and at the start of `<m
 <button class="ri-export">Copy as Markdown</button>
 
 <!-- At start of main, before first section -->
-<div class="ri-search"><input type="search" placeholder="Search document…" aria-label="Search"></div>
+<div class="ri-search"><input type="search" placeholder="Search document…" aria-label="Search"><span class="ri-search-ct" aria-live="polite"></span><button class="ri-search-nav" data-dir="-1" aria-label="Previous match" title="Prev (Shift+Enter)" disabled>↑</button><button class="ri-search-nav" data-dir="1" aria-label="Next match" title="Next (Enter)" disabled>↓</button></div>
 
 <!-- Sticky side ToC (CSS shows only on wide viewports) -->
 <nav class="ri-toc" aria-label="Contents"><p class="ri-toc-hd">Contents</p><ol></ol></nav>
@@ -1326,10 +1326,15 @@ Add inside `<header class="hd">` (for the export button) and at the start of `<m
   .sc{page-break-inside:avoid}
   a[href]{color:inherit;text-decoration:none}
 }
-.ri-search{margin:1rem 0 1.5rem}
-.ri-search input{width:100%;max-width:400px;padding:.4rem .75rem;border:1px solid var(--cbr);border-radius:6px;font-family:var(--f-b);font-size:.9rem;background:var(--cs);color:var(--ct)}
+.ri-search{margin:1rem 0 1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.ri-search input{flex:1 1 200px;min-width:0;max-width:400px;padding:.4rem .75rem;border:1px solid var(--cbr);border-radius:6px;font-family:var(--f-b);font-size:.9rem;background:var(--cs);color:var(--ct)}
 .ri-search input:focus{outline:2px solid var(--ca);outline-offset:1px}
-mark.ri-hl{background:var(--cab);color:var(--ct);border-radius:2px;padding:0 1px}
+.ri-search-ct{font-size:.8rem;color:var(--cq);white-space:nowrap;min-width:3ch}
+.ri-search-nav{background:var(--cs);border:1px solid var(--cbr);border-radius:4px;padding:.2rem .45rem;font-size:.75rem;cursor:pointer;color:var(--cm);line-height:1}
+.ri-search-nav:hover:not(:disabled){background:var(--cab);color:var(--ca)}
+.ri-search-nav:disabled{opacity:.35;cursor:default}
+mark.ri-hl{background:var(--ca);color:var(--cb);border-radius:2px;padding:0 2px}
+mark.ri-hl.ri-hl-cur{outline:2px solid var(--ct);outline-offset:1px}
 .ri-export{font-family:var(--f-m);font-size:.75rem;color:var(--cq);cursor:pointer;text-decoration:underline dotted;background:none;border:none;padding:0;margin-top:.5rem}
 .ri-export:hover{color:var(--ca)}
 ```
@@ -1356,11 +1361,31 @@ mark.ri-hl{background:var(--cab);color:var(--ct);border-radius:2px;padding:0 1px
     headings.forEach(h=>obs.observe(h));
   }
   const inp=document.querySelector('.ri-search input');
+  const ct=document.querySelector('.ri-search-ct');
+  const navBtns=document.querySelectorAll('.ri-search-nav');
   if(inp){
-    inp.addEventListener('input',()=>{
+    let marks=[],cur=-1;
+    function setActive(i){
+      marks.forEach((m,j)=>m.classList.toggle('ri-hl-cur',j===i));
+      if(marks[i])marks[i].scrollIntoView({block:'nearest',behavior:'smooth'});
+      cur=i;
+      if(ct)ct.textContent=marks.length?(cur+1)+' / '+marks.length:'';
+      navBtns.forEach(b=>b.disabled=!marks.length);
+    }
+    function navigate(dir){
+      if(!marks.length)return;
+      setActive((cur+dir+marks.length)%marks.length);
+    }
+    function clearMarks(){
       document.querySelectorAll('mark.ri-hl').forEach(m=>{
         const p=m.parentNode;p.replaceChild(document.createTextNode(m.textContent),m);p.normalize();
       });
+      marks=[];cur=-1;
+      if(ct)ct.textContent='';
+      navBtns.forEach(b=>b.disabled=true);
+    }
+    inp.addEventListener('input',()=>{
+      clearMarks();
       const q=inp.value.trim();if(q.length<2)return;
       const re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
       const walker=document.createTreeWalker(document.querySelector('main'),NodeFilter.SHOW_TEXT);
@@ -1370,13 +1395,19 @@ mark.ri-hl{background:var(--cab);color:var(--ct);border-radius:2px;padding:0 1px
         const frag=document.createDocumentFragment();let last=0,m;re.lastIndex=0;
         while((m=re.exec(n.textContent))!==null){
           frag.appendChild(document.createTextNode(n.textContent.slice(last,m.index)));
-          const mark=document.createElement('mark');mark.className='ri-hl';mark.textContent=m[0];
-          frag.appendChild(mark);last=m.index+m[0].length;
+          const mk=document.createElement('mark');mk.className='ri-hl';mk.textContent=m[0];
+          marks.push(mk);frag.appendChild(mk);last=m.index+m[0].length;
         }
         frag.appendChild(document.createTextNode(n.textContent.slice(last)));
         n.parentNode.replaceChild(frag,n);
       });
+      if(marks.length)setActive(0);
+      else if(ct)ct.textContent='No results';
     });
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){e.preventDefault();navigate(e.shiftKey?-1:1);}
+    });
+    navBtns.forEach(b=>b.addEventListener('click',()=>navigate(+b.dataset.dir)));
   }
   const btn=document.querySelector('.ri-export');
   if(btn)btn.addEventListener('click',()=>{
