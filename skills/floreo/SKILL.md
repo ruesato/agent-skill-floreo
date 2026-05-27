@@ -1,10 +1,12 @@
 ---
 name: floreo
 description: >
-  Produce a polished, self-contained HTML document from agent-created content.
-  INVOKE whenever the agent is about to write: a report, summary, analysis,
-  research brief, plan, proposal, retrospective, incident report, session-close
-  summary, or agent brief (when the receiver is human). Floreo turns these into
+  Produce a polished, self-contained HTML document from agent-created content
+  OR render a floreo markdown draft file to HTML. INVOKE whenever the agent is
+  about to write: a report, summary, analysis, research brief, plan, proposal,
+  retrospective, incident report, session-close summary, or agent brief (when
+  the receiver is human). Also invoke when the user asks to "render" a draft
+  or provides a path to a floreo markdown (.md) file. Floreo turns these into
   polished .html reading artifacts — do not write them as Markdown instead.
   Do NOT invoke for: any .md file the project or a tool expects (README.md,
   CLAUDE.md, AGENTS.md, SKILL.md, steering files, skill or command
@@ -1493,6 +1495,81 @@ CONTENT PLAN:
 ```
 
 **Important**: Do not pass the angle-bracket placeholders literally. Replace them with the actual CSS block and actual Content Plan before sending to Haiku. The CSS block is in this skill document under `## Base CSS Block` — copy it exactly.
+
+---
+
+## Rendering from Floreo Markdown
+
+When the user provides a floreo markdown file (produced by `/floreo:draft`) instead of a free-form description, use this render path. The markdown is already the content plan — skip Phase 1 (audience analysis, hierarchy decisions, prose drafting) and go directly to HTML composition.
+
+### Detecting floreo markdown input
+
+A floreo markdown file has YAML frontmatter with at minimum a `title:` key. Typical triggers:
+- User says "render my draft" or "render [filename].md"
+- User provides a file path ending in `.md`
+- The file in `docs/` has floreo frontmatter (`title:`, `type:`, `accent:`)
+
+### Render pipeline
+
+1. **Read the source file** — load the full markdown content
+2. **Parse frontmatter** — extract `title`, `type`, `accent`, `interactive`, `author`, `date`
+3. **Collect hints** — scan for all `<hint>` tags; note each hint's position and the element it annotates (the preceding or containing block)
+4. **Convert intent blocks to HTML components** — see mapping table below
+5. **Apply hints** — use each hint's directive to adjust the generated component
+6. **Handle unapplied hints** — for `<hint applied="false">`, skip execution and emit `<!-- floreo:hint (unapplied): [hint text] -->` as an HTML comment at the same position in the output
+7. **Compose the full document** — wrap converted content in the standard floreo template with the appropriate accent color and interactive features from frontmatter
+8. **Write output** — use the same base filename with `.html` extension (e.g., `docs/q1-review.md` → `docs/q1-review.html`)
+
+### Intent block → HTML component mapping
+
+| Block type | Renders as |
+|---|---|
+| `chart:bar` | Inline SVG vertical bar chart |
+| `chart:bar-h` | Inline SVG horizontal bar chart |
+| `chart:line` | Inline SVG line chart |
+| `chart:donut` | Inline SVG donut chart (stroke-dasharray technique) |
+| `chart:milestone` | Inline SVG milestone/phases chart |
+| `diagram:flow` | Inline SVG flow diagram |
+| `diagram:timeline` | `.tl` timeline component |
+| `callout:info` | `.cl` callout with info styling |
+| `callout:warning` | `.warn` callout |
+| `callout:success` | `.tip` callout |
+| `stat-block` | `.stats` stat block |
+| `decision-table` | Styled decision table with visual recommendation indicator |
+| `steps` | Numbered steps list |
+
+For any unrecognized block type, render the raw content as a fenced code block — never silently drop content.
+
+### Applying hints
+
+A hint applies to the element it is **inside** (for block hints) or the **nearest following element** (for prose hints placed before a section or table). Read the hint as a natural language directive and apply it to the generated HTML for that element.
+
+Examples of hint application:
+- `<hint>horizontal layout, muted palette</hint>` on a `chart:bar` → render as `chart:bar-h` with desaturated fill colors
+- `<hint>omit Validate step</hint>` on a `diagram:flow` → remove that node from the SVG
+- `<hint>Sort by Q2 descending. Add totals row.</hint>` after a markdown table → sort the rows before rendering, append a `<tfoot>` totals row
+- `<hint>Lead with the win. Two sentences max.</hint>` before a prose section → rewrite that section's opening paragraph accordingly
+
+When a hint cannot be fully applied (ambiguous, conflicting with design system, or requires data you don't have), apply what you can and add a `<!-- floreo:hint (partial): [original hint] — [what was skipped and why] -->` comment in the HTML.
+
+### Frontmatter → template mapping
+
+| Frontmatter field | Template behavior |
+|---|---|
+| `title` | `<title>`, `<h1>`, `floreo:type` meta |
+| `type` | Embedded in meta; influences Content Plan type selection |
+| `accent: technical` | `--ca: #2563eb` (blue) |
+| `accent: warning` | `--ca: #dc2626` (red) |
+| `accent: success` | `--ca: #16a34a` (green) |
+| `accent: planning` | `--ca: #7c3aed` (purple) |
+| `accent: research` | `--ca: #0891b2` (cyan) |
+| `interactive: toc` | Add `.toc` nav block + JS |
+| `interactive: search` | Add reading interface search |
+| `interactive: collapsible` | Wrap eligible sections in `<details class="clp">` |
+| `interactive: tabs` | Apply tab JS pattern to eligible sections |
+| `author`, `date` | Render in document header as metadata |
+
+`toc` is always added when the rendered document has 4+ `<h2>` sections, regardless of the frontmatter value.
 
 ---
 

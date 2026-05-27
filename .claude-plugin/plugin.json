@@ -1,7 +1,7 @@
 {
   "name": "floreo",
   "description": "Turn agent-created content into beautiful, self-contained HTML documents optimized for human reading. Invoke whenever an agent produces reports, plans, analyses, research briefs, session summaries, or other reading artifacts (not .md config or skill files).",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "author": {
     "name": "Ryan Uesato",
     "url": "https://github.com/ruesato"
