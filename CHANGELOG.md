@@ -4,6 +4,23 @@ All notable changes to floreo are documented here. Follows [Keep a Changelog](ht
 
 ---
 
+## [1.2.1] — 2026-05-27
+
+### Changed
+
+- **Draft-first default workflow** — `/floreo` now drafts a floreo markdown file before rendering HTML. After producing the draft, the agent outputs a decision prompt showing section and intent block counts, then waits for user input:
+  ```
+  Draft complete → `docs/[slug].md`
+  [N] sections · [X] intent blocks
+
+  Edit the file and say **"render"** when ready, or say **"render now"** to go straight to HTML.
+  ```
+- **Re-entry pattern** — after a user edits the draft, the agent recognizes render triggers ("render", "looks good", "done", "go ahead", etc.) and proceeds to HTML without re-prompting
+- **Escape hatch** — users can skip the draft step by saying "just give me the HTML", "skip the draft", or "render directly"; session-close summaries and agent briefs always skip to HTML as single-pass documents
+- Skill description updated to lead with the new default behavior
+
+---
+
 ## [1.2.0] — 2026-05-27
 
 ### Added

@@ -1,16 +1,15 @@
 ---
 name: floreo
 description: >
-  Produce a polished, self-contained HTML document from agent-created content
-  OR render a floreo markdown draft file to HTML. INVOKE whenever the agent is
-  about to write: a report, summary, analysis, research brief, plan, proposal,
-  retrospective, incident report, session-close summary, or agent brief (when
-  the receiver is human). Also invoke when the user asks to "render" a draft
-  or provides a path to a floreo markdown (.md) file. Floreo turns these into
-  polished .html reading artifacts — do not write them as Markdown instead.
-  Do NOT invoke for: any .md file the project or a tool expects (README.md,
-  CLAUDE.md, AGENTS.md, SKILL.md, steering files, skill or command
-  definitions), or content a downstream agent or tool will parse as plain text.
+  Produce polished reading artifacts from agent-created content. Default path:
+  draft a floreo markdown file first, then prompt the user to iterate or render
+  to HTML. Also invoked when the user says "render", "render now", "looks good",
+  or similar after reviewing a draft — or provides a path to a floreo markdown
+  file. INVOKE for: reports, summaries, analyses, research briefs, plans,
+  proposals, retrospectives, incident reports, session-close summaries, and
+  agent briefs (when the receiver is human). Do NOT invoke for: README.md,
+  CLAUDE.md, SKILL.md, steering files, config files, or any content a
+  downstream agent or tool will parse as plain text.
 ---
 
 # Floreo
@@ -31,7 +30,7 @@ Use floreo for **documents that exist to be read** — reports, analyses, and an
 - Session-close summaries (see **Session-Close Protocol** section below)
 - Agent briefs (when the receiver is a human, not another agent parsing text)
 
-**Default**: write these as `.html` via floreo, not as Markdown. Floreo is the output path for reading artifacts — don't default to `.md` just because that's the familiar format.
+**Default**: use floreo for reading artifacts — don't default to plain Markdown just because that's the familiar format. Floreo's default path drafts first, then prompts you to iterate or render to HTML (see **Default Workflow** below).
 
 **Minimum threshold** — use floreo when the content has at least two of:
 - Multiple sections (three or more headings)
@@ -46,6 +45,49 @@ Use floreo for **documents that exist to be read** — reports, analyses, and an
 - Content a downstream agent or tool will parse as plain text or Markdown
 - Short conversational answers, inline code explanations, or quick status updates (1–3 sentences)
 - Content destined to be embedded in another system (Notion, Confluence, GitHub comments, PR descriptions)
+
+## Default Workflow
+
+Floreo **drafts first by default**, then prompts the user to iterate or render. This keeps revision cycles cheap and surfaces a clear decision point before committing to final HTML.
+
+### Path 1 — Draft-first (default)
+
+Use this path when invoked with a description, topic, or request to write a document.
+
+1. **Produce the floreo markdown draft** — follow the format in `/floreo:draft`. Write to `docs/[slug].md`. Apply the same content-thinking work as Phase 1 of Two-Phase Composition: audience, hierarchy, visual treatment decisions.
+2. **Count the document's structure**: total `##` sections and total intent blocks (any fenced block with a `:` in the language tag).
+3. **Output the decision prompt** — exactly this format, substituting real values:
+
+   ```
+   Draft complete → `docs/[slug].md`
+   [N] sections · [X] intent blocks
+
+   Edit the file and say **"render"** when ready, or say **"render now"** to go straight to HTML.
+   ```
+
+4. **Stop and wait for the user's response.** Do not proceed to render automatically.
+
+### Path 2 — Re-entry after editing
+
+When the user returns after editing the draft, recognize any of the following as a **render trigger** and proceed to render the current state of the draft file:
+
+> "render" · "render it" · "render now" · "go ahead" · "looks good" · "done" · "done editing" · "finalize" · "make the HTML" · "ship it"
+
+When a render trigger is detected:
+1. Read the current state of `docs/[slug].md` — the user may have made changes since the draft was written
+2. Follow the **Rendering from Floreo Markdown** section
+
+If the user returns with revision feedback instead ("add a section on X", "the tone is wrong"), apply the edits to the draft file and re-output the decision prompt with updated counts.
+
+### Path 3 — Skip to HTML (escape hatch)
+
+Skip the draft step and go directly to **Two-Phase Composition** when:
+
+- The user explicitly asks: "just give me the HTML", "skip the draft", "render directly", "no draft"
+- The user provides a file path to an existing floreo markdown file → render it immediately
+- The content is a **session-close summary** or **agent brief** — these are time-sensitive, single-pass documents where draft iteration adds no value
+
+---
 
 ## Two-Phase Composition
 
