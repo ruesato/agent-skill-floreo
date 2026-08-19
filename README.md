@@ -39,8 +39,8 @@ Any document type an agent generates:
 Claude Code plugins require a two-step install: register the marketplace, then install the plugin.
 
 ```
-/plugin marketplace add ruesato/agent-skill-floreo
-/plugin install floreo@floreo
+/plugin marketplace add ruesato/plugins
+/plugin install floreo@ruesato-plugins
 ```
 
 This installs floreo at user scope (available in every project). To limit to a single project, add `--scope project` to the install command.
