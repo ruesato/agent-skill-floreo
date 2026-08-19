@@ -6,5 +6,11 @@
 # Added by code-review-graph
 .code-review-graph/
 
+# Personal dev configs (not published with the floreo plugin)
+.claude/skills/
+.claude/settings.json
+.mcp.json
+.opencode.json
+
 # System files
 .DS_Store

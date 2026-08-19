@@ -4,6 +4,15 @@ All notable changes to floreo are documented here. Follows [Keep a Changelog](ht
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- **Repo hygiene** — untracked personal local-dev files from the published plugin tree: `.claude/skills/` (debug-issue, explore-codebase, refactor-safely, review-changes graph skills), `.claude/settings.json`, `.mcp.json`, `.opencode.json`. These depend on the code-review-graph MCP server and bd/hooks wiring irrelevant to floreo consumers. Added to `.gitignore` and removed from git tracking; files remain on disk for local dev.
+- **Docs** — documented the `get_minimal_context` graph tool in the code-review-graph MCP tools section of `AGENTS.md` and `CLAUDE.md` (was referenced by the 4 graph skills as a mandatory first call but missing from the tool inventory table).
+
+---
+
 ## [1.2.1] — 2026-05-27
 
 ### Changed

@@ -91,6 +91,7 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 
 | Tool | Use when |
 | ------ | ---------- |
+| `get_minimal_context` | Entry point for any graph task — returns ~100 tokens of risk, communities, flows, and suggested next tools |
 | `detect_changes` | Reviewing code changes — gives risk-scored analysis |
 | `get_review_context` | Need source snippets for review — token-efficient |
 | `get_impact_radius` | Understanding blast radius of a change |
@@ -102,7 +103,8 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 
 ### Workflow
 
-1. The graph auto-updates on file changes (via hooks).
-2. Use `detect_changes` for code review.
-3. Use `get_affected_flows` to understand impact.
-4. Use `query_graph` pattern="tests_for" to check coverage.
+1. Start every task with `get_minimal_context(task="...")` — ultra-compact entry point (~100 tokens, suggests next tools).
+2. The graph auto-updates on file changes (via hooks).
+3. Use `detect_changes` for code review.
+4. Use `get_affected_flows` to understand impact.
+5. Use `query_graph` pattern="tests_for" to check coverage.
