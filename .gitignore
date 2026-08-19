@@ -12,5 +12,10 @@
 .mcp.json
 .opencode.json
 
+# Build / planning artifacts (not published with the floreo plugin)
+docs/baseline/project-proposal-baseline.html
+docs/baseline/retro-baseline.html
+docs/floreo-build-summary-*.html
+
 # System files
 .DS_Store
