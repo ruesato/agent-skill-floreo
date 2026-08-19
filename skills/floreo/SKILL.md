@@ -1169,20 +1169,22 @@ Use inline SVG for all charts, diagrams, and illustrations. Never embed raster i
 **SVG rules:**
 - `viewBox="0 0 W H"` — no fixed `width`/`height` on the `<svg>` element; CSS controls size
 - Use `fill="var(--ca)"` and other CSS variables inside SVG
-- Include `<title>` for accessibility
+- Include `<title>` and `<desc>` for accessibility — set `role="img"` on the `<svg>` and `aria-labelledby="TITLE-ID DESC-ID"` pointing to both. Use unique IDs per figure (e.g. `bar1-title`, `bar2-title`) when a document has multiple charts, the same convention as arrowhead marker IDs.
 - Keep coordinates clean (integer pixels, consistent scale)
+- **Fill contrast (WCAG AA):** every data-bearing fill must clear 3:1 against the page background (`--cb`) **and against any adjacent segment** (WCAG 1.4.11 — donut/stacked segments touch, so each pair needs 3:1). Do **not** differentiate segments with `opacity` — a 0.5 opacity fill drops to ~2:1 and fails. Because the accent (`--ca`) is mid-luminance, pair it with `--ct` (darkest in light mode / lightest in dark mode) for the secondary segment — that clears 3:1 against both `--cb` and `--ca` in both modes. Adjacent bars with a background gap between them only need 3:1 against `--cb`. The area-fill `<polygon>` in a line chart is decorative (the line + points + labels carry the data) and is exempt.
 
 ### Bar chart pattern
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
-  <title>Chart title</title>
+<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="bar1-title bar1-desc">
+  <title id="bar1-title">Chart title</title>
+  <desc id="bar1-desc">One-sentence summary of what the chart compares and the key takeaway.</desc>
   <!-- Y-axis gridlines -->
   <line x1="40" y1="10" x2="40" y2="180" stroke="var(--cbr)" stroke-width="1"/>
-  <!-- Bars -->
+  <!-- Bars — single series uses one fill; for two series use --ca and --cm (both clear 3:1) -->
   <rect x="60" y="80" width="40" height="100" fill="var(--ca)" rx="3"/>
-  <rect x="120" y="50" width="40" height="130" fill="var(--ca)" opacity=".7" rx="3"/>
+  <rect x="120" y="50" width="40" height="130" fill="var(--ca)" rx="3"/>
   <!-- Labels -->
   <text x="80" y="195" text-anchor="middle" font-size="12" fill="var(--cm)">Label A</text>
   <text x="140" y="195" text-anchor="middle" font-size="12" fill="var(--cm)">Label B</text>
@@ -1195,8 +1197,9 @@ Use inline SVG for all charts, diagrams, and illustrations. Never embed raster i
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
-  <title>Flow diagram</title>
+<svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flow1-title flow1-desc">
+  <title id="flow1-title">Flow diagram</title>
+  <desc id="flow1-desc">Describe the steps and the direction of flow.</desc>
   <!-- Box -->
   <rect x="10" y="40" width="120" height="40" rx="6" fill="var(--cab)" stroke="var(--ca)" stroke-width="1.5"/>
   <text x="70" y="65" text-anchor="middle" font-size="13" fill="var(--ct)">Step One</text>
@@ -1217,8 +1220,9 @@ Use for trends over time or sequential values. The area fill is optional — rem
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
-<title>Trend over time</title>
+<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="line1-title line1-desc">
+<title id="line1-title">Trend over time</title>
+<desc id="line1-desc">Describe the metric, the time range, and the overall direction of the trend.</desc>
 <line x1="44" y1="10" x2="44" y2="180" stroke="var(--cbr)" stroke-width="1"/>
 <line x1="44" y1="180" x2="390" y2="180" stroke="var(--cbr)" stroke-width="1"/>
 <line x1="44" y1="60" x2="390" y2="60" stroke="var(--cbr)" stroke-width="1" stroke-dasharray="4 3"/>
@@ -1249,15 +1253,16 @@ Use for parts of a whole. Technique: stroke-dasharray on a circle (simpler than 
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-<title>Proportion breakdown</title>
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="donut1-title donut1-desc">
+<title id="donut1-title">Proportion breakdown</title>
+<desc id="donut1-desc">Name the whole, list the segments in order with their percentages, and state the largest share.</desc>
 <!-- r=45, circumference≈283. Formula: length=pct×283 | offset=-(sum of prior lengths) -->
 <circle cx="100" cy="100" r="45" fill="none" stroke="var(--cs2)" stroke-width="24"/>
 <!-- Segment 1: 60% (length=170) — starts at 12 o'clock -->
 <circle cx="100" cy="100" r="45" fill="none" stroke="var(--ca)" stroke-width="24"
   stroke-dasharray="170 283" transform="rotate(-90 100 100)"/>
-<!-- Segment 2: 25% (length=71) — starts after segment 1 (offset=-170) -->
-<circle cx="100" cy="100" r="45" fill="none" stroke="var(--ca)" stroke-width="24" opacity=".5"
+<!-- Segment 2: 25% (length=71) — starts after segment 1 (offset=-170). Use --ct (not opacity) so it clears 3:1 against both --cb and the adjacent --ca segment. -->
+<circle cx="100" cy="100" r="45" fill="none" stroke="var(--ct)" stroke-width="24"
   stroke-dasharray="71 283" stroke-dashoffset="-170" transform="rotate(-90 100 100)"/>
 <!-- Center hole + label -->
 <circle cx="100" cy="100" r="28" fill="var(--cb)"/>
@@ -1274,8 +1279,9 @@ Use for project timelines, release schedules, and roadmaps. Filled circles = com
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg">
-<title>Project milestones</title>
+<svg viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ms1-title ms1-desc">
+<title id="ms1-title">Project milestones</title>
+<desc id="ms1-desc">List the phases with dates and note which are complete versus planned.</desc>
 <line x1="60" y1="38" x2="500" y2="38" stroke="var(--cbr)" stroke-width="2"/>
 <!-- Completed milestone -->
 <circle cx="120" cy="38" r="8" fill="var(--cg)"/>
@@ -1631,6 +1637,7 @@ Before writing the final file:
 - [ ] Tables used for comparative data (not prose lists)
 - [ ] Callouts (`.note`, `.warn`, `.tip`) surface key insights
 - [ ] SVG chart present for any section with 3+ quantitative data points — a table alone is not sufficient for magnitude or trend data
+- [ ] Every inline SVG has `role="img"`, `<title id>`, `<desc id>`, and `aria-labelledby` pointing to both; data-bearing fills clear 3:1 against `--cb` (no opacity-based segment differentiation)
 - [ ] `INTERACTIVE` field from Content Plan implemented — ToC present if 4+ sections, collapsible/tabs/search added if declared
 - [ ] CSS variables used throughout (no hardcoded hex values)
 - [ ] Mobile-responsive (`<meta viewport>` present, `max-width` on `.pg`)
