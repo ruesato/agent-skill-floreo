@@ -1,8 +1,8 @@
 # Floreo Quick Reference
 
 ## Class names
-`.pg` page wrapper · `.hd` header · `.fn` footer · `.sc` section · `.bd` body  
-`.card` card · `.grid` card grid · `.tbl` table · `.tbl-w` table wrapper  
+`.pg` page wrapper · `.hd` header · `.fn` footer · `.sc` section  
+`.card` card · `.grid` card grid · `.tbl` table · `.tw` table wrapper  
 `.note` info callout · `.warn` warning callout · `.tip` tip callout  
 `.fig` figure/chart · `.code` code block
 
