@@ -101,6 +101,8 @@ Run once in any project to embed an auto-invoke rule in `CLAUDE.md`:
 
 After that, the agent uses floreo automatically for any human-readable output in that project — no explicit invocation needed.
 
+To reverse it, run `/floreo:unsetup` — removes the auto-invoke rule from `CLAUDE.md`. Explicit `/floreo` invocation works as usual afterward.
+
 ---
 
 ## Floreo Markdown Format
