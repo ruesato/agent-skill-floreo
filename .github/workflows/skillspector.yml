@@ -1,0 +1,63 @@
+# Adapted from crodris/skills (MIT) — .github/workflows/skillspector.yml,
+# via ruesato/agent-skills-lastcall.
+name: SkillSpector
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills/**"
+      - ".skillspector-baseline.yaml"
+      - "scripts/scan-skills.sh"
+      - ".github/workflows/skillspector.yml"
+  pull_request:
+    paths:
+      - "skills/**"
+      - ".skillspector-baseline.yaml"
+      - "scripts/scan-skills.sh"
+      - ".github/workflows/skillspector.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Scan skills
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+
+      - name: Install SkillSpector
+        run: |
+          # Pinned so CI results are reproducible; an unpinned install tracks
+          # upstream HEAD, and scan results could change with no change here.
+          # Bump the pinned commit SHA deliberately, and re-run the baseline
+          # review in .skillspector-baseline.yaml when findings shift — the
+          # baseline is only valid for the scanner version that produced it.
+          uv tool install git+https://github.com/NVIDIA/skillspector.git@29b0dc8c39424e8e31ca055fa027adf8ba8f9650 # v2.9.6
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Scan skills (fail on non-suppressed findings)
+        env:
+          # The LLM semantic stage runs only when the secret is present, and
+          # falls back to static-only otherwise (fork PRs, secret not yet
+          # configured, secret rotation). That means a green check can mean
+          # two different depths of scan, so scan-skills.sh prints the mode it
+          # ran in and stamps it into every uploaded report. The baseline is
+          # calibrated for static-only; re-review it if the LLM stage is
+          # turned on permanently.
+          SKILLSPECTOR_PROVIDER: anthropic
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SKILLSPECTOR_LLM: ${{ secrets.ANTHROPIC_API_KEY != '' && '1' || '0' }}
+        run: REPORT_DIR=skillspector-reports scripts/scan-skills.sh
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skillspector-reports
+          path: skillspector-reports/
+          if-no-files-found: ignore

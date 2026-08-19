@@ -17,5 +17,8 @@ docs/baseline/project-proposal-baseline.html
 docs/baseline/retro-baseline.html
 docs/floreo-build-summary-*.html
 
+# SkillSpector local scan reports (CI uploads them as artifacts instead)
+skillspector-reports/
+
 # System files
 .DS_Store

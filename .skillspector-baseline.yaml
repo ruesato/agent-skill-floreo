@@ -1,0 +1,88 @@
+# SkillSpector baseline — reviewed findings accepted as false positives.
+# Docs: https://github.com/NVIDIA/SkillSpector/blob/main/docs/SUPPRESSION.md
+#
+# Calibrated by: skillspector v2.9.6 (the SHA pinned in
+#   .github/workflows/skillspector.yml), static analysis only (--no-llm).
+# Both facts matter. Exact fingerprints fail closed when `scanner_version` does
+# not match or the source text moved, so bumping the pinned SHA — or turning on
+# the LLM semantic stage — will resurface these findings for re-review rather
+# than silently keeping them suppressed. That is the intended behaviour: a
+# suppression should not outlive the thing it was reviewed against.
+#
+# Why fingerprints rather than glob `rules`: a fingerprint binds to the actual
+# decoded source text, so editing the excused paragraph invalidates the
+# suppression and the finding comes back. A glob rule would keep suppressing
+# whatever new wording still matched it. SkillSpector's own guidance reserves
+# `rules` for deliberate, tightly-scoped policy suppressions precisely because
+# "a broad rule can hide newly malicious content". This repo has no such policy
+# case yet, so `rules` is empty. If one is ever added, scope it with `path` and
+# `message` and note that the glob suppresses ANY future hit on that phrase at
+# that path — including in a file that has since gained new wording.
+#
+# Never suppress a finding you have not understood. Every entry below was read
+# at its source location first.
+#
+# Calibrated against the first scan of skills/draft, skills/floreo,
+# skills/setup, and skills/unsetup. setup and unsetup scanned clean (0 active
+# findings). The three fingerprints below suppress reviewed false positives
+# only — all are P2 "Hidden Instructions" hits on HTML comments that are
+# documentation of a feature or teaching annotations inside fenced code
+# examples, not hidden directives. Fingerprints were generated with
+# `skillspector baseline <skill>/ --no-llm` on v2.9.6; the long-form reasons
+# below replace the placeholder reasons that command wrote.
+version: 2
+scanner_version: 2.9.6
+rules: []
+fingerprints:
+- hash: sha256:30fc16ffdcfdb732a3c7be41ac590afdb30e70661053514c861f37ccf3ca2309
+  rule_id: P2
+  file: SKILL.md
+  reason: >-
+    False positive in skills/draft/SKILL.md line 199. P2 "Hidden Instructions"
+    matched the table cell documenting floreo's rejected-hint behavior: when a
+    hint carries status="rejected", the render agent preserves it as an
+    `<!-- floreo:hint (rejected): ... -->` HTML comment so the author's decision
+    stays visible to human reviewers of the rendered document. The static
+    pattern keys on the `<!-- ... -->` comment syntax and cannot read that this
+    is documentation OF a feature, inside a code span, in a markdown table
+    describing hint lifecycle states — it directs no agent action. The
+    preservation is a deliberate, user-visible design choice (rejected hints
+    remain auditable in output), the opposite of hiding a malicious directive.
+    Verified at source: the table at draft/SKILL.md:193-199 lists every hint
+    status and its render behavior; "rejected" is the one case where a comment
+    is intentionally kept, and the prose at draft/SKILL.md:262 explains why
+    ("so the decision is visible in the rendered output").
+- hash: sha256:8d55ca511b4fb2d440d558cae664175bc81c9a6abcab90e3cc9a6b1fd86ada85
+  rule_id: P2
+  file: SKILL.md
+  reason: >-
+    False positive in skills/floreo/SKILL.md line 1401. P2 "Hidden Instructions"
+    matched an HTML comment annotating a fenced ```html code example: `<!-- Bars
+    — single series uses one fill; for two series use --ca and --cm (both clear
+    3:1) -->`. The skill uses such comments throughout its SVG/HTML examples as
+    teaching annotations labeling structural regions of the markup a generated
+    document should follow. The static pattern keys on `<!-- ... -->` and cannot
+    distinguish a documentation annotation inside a code fence from a hidden
+    instruction in live content. These comments never reach a generated
+    document — the skill's own Markup Compression Rules state "No HTML comments
+    — never write `<!-- ... -->` in generated output" (floreo/SKILL.md:929).
+    They exist only to teach the reader of SKILL.md. Verified: 40+ such
+    annotations appear across the skill's chart/HTML examples (page skeleton,
+    bar/line/donut/milestone/grouped-bar/scatter charts, flow diagrams,
+    heatmap); only the two whose prose most resembles an instruction were
+    flagged. The comment contains color-guidance prose, not a directive to
+    perform an action.
+- hash: sha256:18c1887677c1ff37f746e33b15c992f4da3ac7d338e031dcd022e071937bb76c
+  rule_id: P2
+  file: SKILL.md
+  reason: >-
+    False positive in skills/floreo/SKILL.md line 1713. P2 "Hidden Instructions"
+    matched an HTML comment annotating a fenced ```html code example: `<!-- At
+    start of main, before first section -->`. Same root cause as the
+    floreo:1401 finding: a teaching annotation inside a code fence labeling
+    where the search/ToC markup goes. The prose immediately above the code
+    fence (floreo/SKILL.md:1707) already states "Add inside `<header class="hd">`
+    (for the export button) and at the start of `<main>` (for search and sticky
+    ToC)" — the comment is a redundant placement marker, not an instruction.
+    Never reaches generated output per the skill's no-HTML-comments rule
+    (floreo/SKILL.md:929).

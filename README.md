@@ -227,6 +227,28 @@ Every floreo document includes:
 
 ---
 
+## Security scanning
+
+Every skill under `skills/` is scanned by [NVIDIA SkillSpector](https://github.com/NVIDIA/SkillSpector) in CI on push and pull request. **The build fails on any non-suppressed finding.**
+
+This repo ships scripts that run from agent sessions under implicit trust — `scripts/migrate-floreo.sh` patches `.html` files and writes `.md`/`.bak` files inside the project, and the `setup`/`unsetup` skills rewrite the project's `CLAUDE.md`. That is exactly the taint, sink, and persistence surface SkillSpector's static pass examines.
+
+Run it locally:
+
+```bash
+uv tool install git+https://github.com/NVIDIA/skillspector.git
+scripts/scan-skills.sh            # every skill
+scripts/scan-skills.sh floreo     # one skill
+```
+
+Reviewed false positives are suppressed in `.skillspector-baseline.yaml`, each with a written reason. **Never suppress a finding you have not understood.** Suppressions are fingerprints bound to the decoded source text and to the scanner version, so they fail closed: editing the excused text, or bumping the pinned SkillSpector version in `.github/workflows/skillspector.yml`, brings the finding back for re-review rather than keeping it silently suppressed.
+
+The LLM semantic stage runs only when `ANTHROPIC_API_KEY` is present and falls back to static-only otherwise, so the same green check can mean two depths of scan. `scripts/scan-skills.sh` prints the mode it ran in and stamps it into every uploaded report.
+
+This complements `scripts/check-floreo.sh`; it does not replace it. `check-floreo.sh` validates generated documents against the quality checklist, SkillSpector is the CI security gate.
+
+---
+
 ## License
 
 MIT
