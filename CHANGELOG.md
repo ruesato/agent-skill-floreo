@@ -6,6 +6,13 @@ All notable changes to floreo are documented here. Follows [Keep a Changelog](ht
 
 ## [Unreleased]
 
+### Added
+
+- **Content Plan templates** — five new templates: Meeting Notes, Weekly Status Update, Design Review, Runbook/SOP, and Technical Spec/RFC. Each ships pre-filled `DOCUMENT`/`AUDIENCE`/`PURPOSE`/`ACCENT` and section scaffolding matching the existing template format, bringing the library from 9 to 14 types.
+- **SVG chart vocabulary** — four new inline-SVG chart patterns: grouped/stacked bar (multi-series with `--ca`/`--ct` contrast), scatter plot (two-variable correlation), area-as-primary (cumulative magnitude with `--ca` fill + `--ct` edge), and heatmap (4-step discrete token scale `--cs2` → `--cab` → `--ca` → `--ct`, no opacity encoding). Visual-treatment table, available-types list, and intent-block mapping updated with `chart:grouped-bar`, `chart:area`, `chart:scatter`, `chart:heatmap`.
+- **`scripts/check-floreo.sh`** — automated Quality Checklist validator. Enforces meta tags, self-containment, embedded Content Plan, `data-floreo-id` on sections, SVG accessibility (`role`/`title`/`desc`/`aria-labelledby`), dark-mode callout overrides, file-size budget, mobile-responsive `max-width`, and hardcoded-hex warnings. Supports `--strict` (warnings as failures) and directory recursion; exit `0`/`1`/`2` for CI gating.
+- **`scripts/migrate-floreo.sh`** — bulk document migration tooling. Three subcommands: `report` (inventory a `docs/` dir), `extract` (pull embedded Content Plans to `.md` for re-render), and `refresh-css` (mechanically patch the base CSS block to the current `SKILL.md` version, with `--dry-run` and `.bak` backups). Handles both current (print-query) and legacy v1.0 (reduced-motion) CSS block boundaries. Documented in a new **Bulk Migration** section of the skill.
+
 ### Changed
 
 - **Repo hygiene** — untracked personal local-dev files from the published plugin tree: `.claude/skills/` (debug-issue, explore-codebase, refactor-safely, review-changes graph skills), `.claude/settings.json`, `.mcp.json`, `.opencode.json`. These depend on the code-review-graph MCP server and bd/hooks wiring irrelevant to floreo consumers. Added to `.gitignore` and removed from git tracking; files remain on disk for local dev.

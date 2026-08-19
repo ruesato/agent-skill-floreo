@@ -101,16 +101,20 @@ The current model does the thinking work:
 2. Determine the information hierarchy (what's primary, secondary, metadata)
 3. **Identify visual treatment** — for every section with data, make an explicit choice using this table. Do not skip this step. Tables are for relationships; charts are for magnitudes and trends. Default to a chart when the data has shape.
 
-   | If your content has… | Reach for… |
-   |---|---|
-   | 2–8 quantities to compare | Bar chart (inline SVG) |
-   | A value changing over time | Line chart (inline SVG) |
-   | Parts of a whole (percentages, shares) | Donut chart (inline SVG) |
-   | Events in chronological order | Timeline (`.tl` component) |
-   | A process with steps or branches | Flow diagram (inline SVG) |
-   | 3+ headline metrics | Stat block (`.stats`) |
-   | Phases or milestones with dates | Milestone chart (inline SVG) |
-   | 4 or more `<h2>` sections | Table of contents (included by default) |
+    | If your content has… | Reach for… |
+    |---|---|
+    | 2–8 quantities to compare | Bar chart (inline SVG) |
+    | 2–4 series across the same categories | Grouped/stacked bar chart (inline SVG) |
+    | A value changing over time | Line chart (inline SVG) |
+    | Cumulative volume over time | Area chart (inline SVG) |
+    | Correlation between two variables | Scatter plot (inline SVG) |
+    | Parts of a whole (percentages, shares) | Donut chart (inline SVG) |
+    | Magnitude across two categorical axes | Heatmap (inline SVG) |
+    | Events in chronological order | Timeline (`.tl` component) |
+    | A process with steps or branches | Flow diagram (inline SVG) |
+    | 3+ headline metrics | Stat block (`.stats`) |
+    | Phases or milestones with dates | Milestone chart (inline SVG) |
+    | 4 or more `<h2>` sections | Table of contents (included by default) |
 
 4. Write all prose, headings, and data in structured form
 5. Produce a **Content Plan** (see format below)
@@ -181,7 +185,7 @@ For **table** sections, provide data in this form so Haiku can map it directly t
    HIGHLIGHT_ROW: POST /events  (draw attention to this row)
 ```
 
-For **figure** sections, describe the data and the chart type. Available types: `bar chart`, `line chart`, `donut chart`, `milestone chart`, `flow diagram`, `timeline` (uses `.tl` component).
+For **figure** sections, describe the data and the chart type. Available types: `bar chart`, `grouped bar chart` (or `stacked bar chart`), `line chart`, `area chart`, `scatter plot`, `donut chart`, `heatmap`, `milestone chart`, `flow diagram`, `timeline` (uses `.tl` component).
 
 ```
 4. Response time by region — figure
@@ -598,6 +602,217 @@ INTERACTIVE:
 
 CALLOUTS:
 - WARN: [anything that could go wrong if context is lost — partial state, temp files, etc.]
+```
+
+### Meeting Notes
+
+```
+DOCUMENT: [Meeting Name] — [YYYY-MM-DD]
+AUDIENCE: Attendees and anyone who missed the meeting
+PURPOSE: Capture decisions, action items, and context so work progresses without a follow-up sync
+ACCENT: #2563eb
+
+SECTIONS:
+1. Meeting Metadata — table
+   COLUMNS: Field | Value
+   ROW: Date | [YYYY-MM-DD]
+   ROW: Facilitator | [name]
+   ROW: Attendees | [list]
+   ROW: Duration | [N min]
+
+2. Agenda — list
+   [Topics planned for discussion, in order]
+
+3. Discussion — prose
+   [Key points raised per agenda item — what was considered, not just the outcome]
+
+4. Decisions — list
+   [Each decision with one-line rationale and who made the call]
+
+5. Action Items — table
+   COLUMNS: Action | Owner | Due
+   ROW: [specific next step] | [name] | [date]
+
+VISUAL ELEMENTS:
+- stat block: Action Items=[N], Decisions=[N], Duration=[N min] (required)
+
+INTERACTIVE:
+- toc (5 sections — required)
+
+CALLOUTS:
+- NOTE: [context a non-attendee needs — a deferred topic, a follow-up meeting, etc.]
+```
+
+### Weekly Status Update
+
+```
+DOCUMENT: Weekly Status — [Team/Project] — Week of [YYYY-MM-DD]
+AUDIENCE: Team lead, stakeholders, teammates
+PURPOSE: Communicate progress, blockers, and plans for the coming week in a scannable format
+ACCENT: #0891b2
+
+SECTIONS:
+1. At a Glance — table
+   COLUMNS: Metric | This Week | Trend
+   ROW: Tasks Completed | [N] | [↑/→/↓]
+   ROW: Tasks In Progress | [N] | [↑/→/↓]
+   ROW: Blockers | [N] | [↑/→/↓]
+
+2. Completed This Week — list
+   [Shipped work with brief impact note per item]
+
+3. In Progress — list
+   [Active work with expected completion window]
+
+4. Blockers — list
+   [What's stuck, why, and what's needed to unblock — or "none" explicitly]
+
+5. Next Week — list
+   [Planned work, ordered by priority]
+
+6. Metrics — figure
+   TYPE: line chart (use the line SVG pattern — optional when quantitative trend data exists)
+   DATA: [week N-2]=[value], [week N-1]=[value], [week N]=[value]
+   CAPTION: [metric name] over the last 3 weeks
+
+VISUAL ELEMENTS:
+- stat block: Tasks Completed=[N], In Progress=[N], Blockers=[N] (required)
+- line chart: section 6 (optional — include when trend data adds signal beyond the table)
+
+INTERACTIVE:
+- toc (6 sections — required)
+
+CALLOUTS:
+- WARN: [any blocker requiring outside help — name the dependency and who can resolve it]
+```
+
+### Design Review
+
+```
+DOCUMENT: Design Review — [Component/System Name] — [YYYY-MM-DD]
+AUDIENCE: Engineering team, design stakeholders, reviewers
+PURPOSE: Record the design under review, feedback received, and the decision so the work can proceed with alignment
+ACCENT: #7c3aed
+
+SECTIONS:
+1. Proposal Summary — prose
+   [One-paragraph description of the design being reviewed and the problem it solves]
+
+2. Goals & Constraints — list
+   [What the design must achieve and the hard constraints it operates within]
+
+3. Alternatives Considered — table
+   COLUMNS: Option | Approach | Trade-off | Status
+   ROW: [option A] | [approach] | [trade-off] | selected / rejected
+   ROW: [option B] | [approach] | [trade-off] | rejected
+
+4. Feedback — list
+   [Reviewer comments grouped by theme, with attribution where useful]
+
+5. Decision — prose
+   [The outcome: approved, approved-with-changes, or revised — and the specific conditions]
+
+6. Action Items — table
+   COLUMNS: Action | Owner | Due
+   ROW: [follow-up from feedback] | [name] | [date]
+
+VISUAL ELEMENTS:
+- flow diagram (optional): component relationships if the proposal describes a system architecture
+
+INTERACTIVE:
+- toc (6 sections — required)
+
+CALLOUTS:
+- NOTE: [any constraint or reviewer concern that shapes the next iteration]
+```
+
+### Runbook / SOP
+
+```
+DOCUMENT: [Procedure Name] Runbook
+AUDIENCE: On-call engineers, operators executing this procedure
+PURPOSE: Enable reliable execution of a repeatable procedure without requiring expert knowledge or tribal context
+ACCENT: #d97706
+
+SECTIONS:
+1. Objective — prose
+   [What this procedure accomplishes and when to run it]
+
+2. Prerequisites — list
+   [Access, tools, state, and approvals required before starting]
+
+3. Procedure — figure
+   TYPE: flow diagram (use the flow SVG pattern — optional when the procedure has branches)
+   [Sequential steps with decision points and branches]
+   [Pair the diagram with the numbered procedure below]
+
+4. Steps — list (numbered procedure)
+   [Each step as a concrete action with expected result — use the .sps numbered procedure component]
+
+5. Verification — list
+   [How to confirm the procedure succeeded — observable signals, commands, or checks]
+
+6. Rollback / Recovery — prose
+   [How to undo or recover if the procedure fails partway — required for any state-changing operation]
+
+7. Escalation — table
+   COLUMNS: Condition | Contact | Channel
+   ROW: [failure signal] | [role/name] | [Slack/page/email]
+
+VISUAL ELEMENTS:
+- flow diagram: section 3 (optional — include when the procedure has branches or conditional steps)
+- numbered procedure: section 4 (required — use the .sps component)
+
+INTERACTIVE:
+- toc (7 sections — required)
+- collapsible: wrap section 4 step details if the procedure has more than 8 steps
+
+CALLOUTS:
+- WARN: [irreversible or state-changing step — call out explicitly before the reader reaches it]
+```
+
+### Technical Spec / RFC
+
+```
+DOCUMENT: [RFC-NNN]: [Title]
+AUDIENCE: Engineering team, reviewers, approvers
+PURPOSE: Propose a technical design with enough detail for review, feedback, and informed approval
+ACCENT: #7c3aed
+
+SECTIONS:
+1. Summary — prose
+   [One-paragraph overview of the proposal and the outcome it enables]
+
+2. Motivation — prose
+   [The problem or opportunity driving this proposal — what's broken or missing today]
+
+3. Goals & Non-Goals — list
+   [Goals: what this design accomplishes · Non-Goals: what it deliberately excludes, to prevent scope creep]
+
+4. Proposed Design — prose
+   [The design in detail — components, data flow, interfaces, key decisions]
+
+5. Alternatives Considered — table
+   COLUMNS: Option | Approach | Rejected Because
+   ROW: [option A] | [approach] | [reason]
+   ROW: [option B] | [approach] | [reason]
+
+6. Risks & Mitigations — table
+   COLUMNS: Risk | Likelihood | Impact | Mitigation
+   ROW: [risk] | H/M/L | H/M/L | [plan]
+
+7. Open Questions — list
+   [Unresolved questions for reviewers, ordered by blocking priority]
+
+VISUAL ELEMENTS:
+- flow diagram: section 4 (optional — include when the design involves component relationships or data flow)
+- milestone chart (optional): rollout phases if the proposal includes a phased delivery plan
+
+INTERACTIVE:
+- toc (7 sections — required)
+
+CALLOUTS:
+- NOTE: [any constraint, dependency, or reviewer decision that shapes the proposal]
 ```
 
 ## Session-Close Protocol
@@ -1308,6 +1523,151 @@ Use for project timelines, release schedules, and roadmaps. Filled circles = com
 </figure>
 ```
 
+### Grouped / stacked bar chart pattern
+
+Use for comparing 2–4 series across categories. Grouped places series side-by-side per category; stacked places segments on the same bar at increasing y-offsets. Pair series with `--ca` and `--ct` (both clear 3:1 against `--cb` and against each other) — never differentiate with opacity.
+
+```html
+<figure class="fig">
+<svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="gbar1-title gbar1-desc">
+<title id="gbar1-title">Grouped bar chart title</title>
+<desc id="gbar1-desc">Compare two series across categories; name the series and state which category leads.</desc>
+<line x1="40" y1="10" x2="40" y2="190" stroke="var(--cbr)" stroke-width="1"/>
+<line x1="40" y1="190" x2="440" y2="190" stroke="var(--cbr)" stroke-width="1"/>
+<!-- Group 1: series A (--ca) + series B (--ct). A 4px gap separates the two bars in a group; groups are 100px apart. -->
+<rect x="60" y="120" width="28" height="70" fill="var(--ca)" rx="3"/>
+<rect x="92" y="90" width="28" height="100" fill="var(--ct)" rx="3"/>
+<!-- Group 2 -->
+<rect x="160" y="80" width="28" height="110" fill="var(--ca)" rx="3"/>
+<rect x="192" y="60" width="28" height="130" fill="var(--ct)" rx="3"/>
+<!-- Group 3 -->
+<rect x="260" y="140" width="28" height="50" fill="var(--ca)" rx="3"/>
+<rect x="292" y="110" width="28" height="80" fill="var(--ct)" rx="3"/>
+<!-- Category labels -->
+<text x="90" y="208" text-anchor="middle" font-size="12" fill="var(--cm)">Q1</text>
+<text x="190" y="208" text-anchor="middle" font-size="12" fill="var(--cm)">Q2</text>
+<text x="290" y="208" text-anchor="middle" font-size="12" fill="var(--cm)">Q3</text>
+<!-- Legend -->
+<rect x="350" y="14" width="12" height="12" fill="var(--ca)" rx="2"/>
+<text x="368" y="24" font-size="11" fill="var(--cm)">Series A</text>
+<rect x="350" y="32" width="12" height="12" fill="var(--ct)" rx="2"/>
+<text x="368" y="42" font-size="11" fill="var(--cm)">Series B</text>
+</svg>
+<figcaption>Grouped bar — two series per category; pair --ca with --ct for 3:1 contrast</figcaption>
+</figure>
+```
+
+**Stacked variant:** place segments on the same `x` at increasing `y` offsets — each segment's `y = 190 - cumulativeHeight`, stacking series B on top of series A. Keep adjacent segments 3:1 contrast (pair `--ca` with `--ct`). Add a 1px `var(--cb)` stroke between segments to keep the boundary crisp when two same-family tones meet.
+
+### Scatter plot pattern
+
+Use for correlation between two continuous variables. Each point is a circle at `(x,y)`; the pattern of points reveals correlation, clustering, or outliers.
+
+```html
+<figure class="fig">
+<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scat1-title scat1-desc">
+<title id="scat1-title">Scatter plot title</title>
+<desc id="scat1-desc">Correlation between two variables; name the axes and describe the pattern (cluster, trend, outlier).</desc>
+<line x1="44" y1="10" x2="44" y2="190" stroke="var(--cbr)" stroke-width="1"/>
+<line x1="44" y1="190" x2="390" y2="190" stroke="var(--cbr)" stroke-width="1"/>
+<line x1="44" y1="60" x2="390" y2="60" stroke="var(--cbr)" stroke-width="1" stroke-dasharray="4 3"/>
+<line x1="44" y1="125" x2="390" y2="125" stroke="var(--cbr)" stroke-width="1" stroke-dasharray="4 3"/>
+<!-- Data points — r=4 with --ca clears 3:1 against --cb. For a second cluster, use --ct. -->
+<circle cx="80" cy="160" r="4" fill="var(--ca)"/>
+<circle cx="110" cy="145" r="4" fill="var(--ca)"/>
+<circle cx="150" cy="120" r="4" fill="var(--ca)"/>
+<circle cx="190" cy="95" r="4" fill="var(--ca)"/>
+<circle cx="240" cy="70" r="4" fill="var(--ca)"/>
+<circle cx="300" cy="45" r="4" fill="var(--ca)"/>
+<circle cx="350" cy="35" r="4" fill="var(--ca)"/>
+<!-- Axis labels -->
+<text x="220" y="222" text-anchor="middle" font-size="11" fill="var(--cm)">[X-axis variable]</text>
+<text x="14" y="100" text-anchor="middle" font-size="11" fill="var(--cm)" transform="rotate(-90 14 100)">[Y-axis variable]</text>
+</svg>
+<figcaption>Scatter — correlation between two variables; note any trend or outlier</figcaption>
+</figure>
+```
+
+### Area chart pattern (area as primary)
+
+Use for cumulative magnitude or volume over time where the filled region is the primary signal (unlike the line chart, where the area fill is optional decoration). The fill carries the data — use `--ca` at full opacity (clears 3:1 against `--cb`); a `--ct` top edge and points clarify the shape.
+
+```html
+<figure class="fig">
+<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="area1-title area1-desc">
+<title id="area1-title">Area chart title</title>
+<desc id="area1-desc">Magnitude accumulated over time; name the metric, the range, and the peak.</desc>
+<line x1="44" y1="10" x2="44" y2="180" stroke="var(--cbr)" stroke-width="1"/>
+<line x1="44" y1="180" x2="390" y2="180" stroke="var(--cbr)" stroke-width="1"/>
+<line x1="44" y1="60" x2="390" y2="60" stroke="var(--cbr)" stroke-width="1" stroke-dasharray="4 3"/>
+<line x1="44" y1="120" x2="390" y2="120" stroke="var(--cbr)" stroke-width="1" stroke-dasharray="4 3"/>
+<!-- Area fill — the fill carries the data here, so --ca at full opacity (clears 3:1 against --cb). Close the polygon along the baseline. -->
+<polygon points="80,150 150,110 220,75 290,95 360,50 360,180 80,180" fill="var(--ca)"/>
+<!-- Top edge + points in --ct for shape definition against the --ca fill -->
+<polyline points="80,150 150,110 220,75 290,95 360,50" fill="none" stroke="var(--ct)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="80" cy="150" r="4" fill="var(--ct)"/>
+<circle cx="150" cy="110" r="4" fill="var(--ct)"/>
+<circle cx="220" cy="75" r="4" fill="var(--ct)"/>
+<circle cx="290" cy="95" r="4" fill="var(--ct)"/>
+<circle cx="360" cy="50" r="4" fill="var(--ct)"/>
+<text x="80" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">Jan</text>
+<text x="150" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">Feb</text>
+<text x="220" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">Mar</text>
+<text x="290" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">Apr</text>
+<text x="360" y="198" text-anchor="middle" font-size="11" fill="var(--cm)">May</text>
+</svg>
+<figcaption>Area — cumulative magnitude over time; the fill carries the data, the edge clarifies the shape</figcaption>
+</figure>
+```
+
+### Heatmap pattern
+
+Use for magnitude across two categorical axes (e.g. activity by day×hour, error rate by service×region). Use a **discrete 4-step scale** built from CSS tokens — `var(--cs2)` (low) → `var(--cab)` → `var(--ca)` → `var(--ct)` (high). Each token clears 3:1 against `--cb`; add a 1px `var(--cbr)` border on every cell so adjacent same-tone cells stay separable. Do **not** encode magnitude with opacity — low-opacity cells drop below 3:1 and fail WCAG 1.4.11.
+
+```html
+<figure class="fig">
+<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heat1-title heat1-desc">
+<title id="heat1-title">Heatmap title</title>
+<desc id="heat1-desc">Magnitude across two categorical axes; name the axes, the range, and the hottest cell.</desc>
+<!-- Column labels -->
+<text x="90" y="14" text-anchor="middle" font-size="11" fill="var(--cm)">Col A</text>
+<text x="150" y="14" text-anchor="middle" font-size="11" fill="var(--cm)">Col B</text>
+<text x="210" y="14" text-anchor="middle" font-size="11" fill="var(--cm)">Col C</text>
+<text x="270" y="14" text-anchor="middle" font-size="11" fill="var(--cm)">Col D</text>
+<!-- Row labels -->
+<text x="52" y="55" text-anchor="end" font-size="11" fill="var(--cm)">Row 1</text>
+<text x="52" y="95" text-anchor="end" font-size="11" fill="var(--cm)">Row 2</text>
+<text x="52" y="135" text-anchor="end" font-size="11" fill="var(--cm)">Row 3</text>
+<text x="52" y="175" text-anchor="end" font-size="11" fill="var(--cm)">Row 4</text>
+<!-- Cells — 60x40, 4-step discrete scale. --cbr borders keep same-tone neighbors separable. -->
+<rect x="60" y="30" width="60" height="40" fill="var(--cab)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="120" y="30" width="60" height="40" fill="var(--ca)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="180" y="30" width="60" height="40" fill="var(--ct)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="240" y="30" width="60" height="40" fill="var(--cs2)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="60" y="70" width="60" height="40" fill="var(--cs2)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="120" y="70" width="60" height="40" fill="var(--cab)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="180" y="70" width="60" height="40" fill="var(--ca)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="240" y="70" width="60" height="40" fill="var(--cab)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="60" y="110" width="60" height="40" fill="var(--ca)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="120" y="110" width="60" height="40" fill="var(--ct)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="180" y="110" width="60" height="40" fill="var(--cab)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="240" y="110" width="60" height="40" fill="var(--cs2)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="60" y="150" width="60" height="40" fill="var(--cab)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="120" y="150" width="60" height="40" fill="var(--ca)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="180" y="150" width="60" height="40" fill="var(--cs2)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="240" y="150" width="60" height="40" fill="var(--cab)" stroke="var(--cbr)" stroke-width="1"/>
+<!-- Legend — discrete steps, low (left) to high (right) -->
+<rect x="60" y="210" width="24" height="12" fill="var(--cs2)" stroke="var(--cbr)" stroke-width="1"/>
+<rect x="84" y="210" width="24" height="12" fill="var(--cab)"/>
+<rect x="108" y="210" width="24" height="12" fill="var(--ca)"/>
+<rect x="132" y="210" width="24" height="12" fill="var(--ct)"/>
+<text x="60" y="238" font-size="10" fill="var(--cq)">low</text>
+<text x="156" y="238" text-anchor="end" font-size="10" fill="var(--cq)">high</text>
+</svg>
+<figcaption>Heatmap — magnitude across two axes; 4-step discrete scale (--cs2 → --cab → --ca → --ct)</figcaption>
+</figure>
+```
+
 ---
 
 ## JavaScript
@@ -1568,8 +1928,12 @@ A floreo markdown file has YAML frontmatter with at minimum a `title:` key. Typi
 |---|---|
 | `chart:bar` | Inline SVG vertical bar chart |
 | `chart:bar-h` | Inline SVG horizontal bar chart |
+| `chart:grouped-bar` | Inline SVG grouped/stacked bar chart |
 | `chart:line` | Inline SVG line chart |
+| `chart:area` | Inline SVG area chart (area as primary) |
+| `chart:scatter` | Inline SVG scatter plot |
 | `chart:donut` | Inline SVG donut chart (stroke-dasharray technique) |
+| `chart:heatmap` | Inline SVG heatmap (discrete token scale) |
 | `chart:milestone` | Inline SVG milestone/phases chart |
 | `diagram:flow` | Inline SVG flow diagram |
 | `diagram:timeline` | `.tl` timeline component |
@@ -1638,6 +2002,18 @@ Before writing the final file:
 - [ ] JS (if any) degrades gracefully without it
 - [ ] Content Plan embedded in `<script type="application/floreo" id="content-plan">` before `</body>`
 
+### Automated validation
+
+`scripts/check-floreo.sh` enforces the machine-checkable items above (meta tags, self-containment, embedded Content Plan, `data-floreo-id` on sections, SVG accessibility, dark-mode callout overrides, file-size budget, mobile-responsive `max-width`, hardcoded-hex warnings). Run it before writing or in CI:
+
+```bash
+scripts/check-floreo.sh docs/              # check a directory (recursive)
+scripts/check-floreo.sh docs/foo.html      # check one file
+scripts/check-floreo.sh --strict docs/     # treat warnings as failures too
+```
+
+Exit `0` = pass, `1` = error(s) found, `2` = usage / no files. Gate CI on exit `0`. Items not machine-checkable (visual hierarchy, accent fit, table-vs-chart fit) still require human or Phase 1 review.
+
 ---
 
 ## Updating an Existing Floreo Document
@@ -1650,6 +2026,35 @@ When a floreo document needs new content, a corrected section, or a data refresh
 4. **Write as a new version** — use the `-v2` / `-v3` suffix convention; do not overwrite unless the user explicitly asks
 
 Do not surgically edit compressed HTML markup by hand. The cost of a full regeneration is low and the result is clean. The original file serves as a fallback until the new version is confirmed.
+
+## Bulk Migration
+
+When the base CSS or component patterns change (e.g. a token rename, a new dark-mode override, a print-rule addition), a whole `docs/` directory of floreo documents drifts out of sync. `scripts/migrate-floreo.sh` scales the single-doc update story above to an entire directory.
+
+```bash
+scripts/migrate-floreo.sh report docs/              # inventory every floreo doc
+scripts/migrate-floreo.sh extract docs/             # pull Content Plans → .md for re-render
+scripts/migrate-floreo.sh refresh-css docs/          # mechanically patch the base CSS block
+scripts/migrate-floreo.sh refresh-css docs/ --dry-run   # preview without writing
+```
+
+**Three operations, two strategies:**
+
+| Command | Strategy | When to use |
+|---|---|---|
+| `report` | Inspection | See type, version, Content Plan presence, and size for every doc before deciding. |
+| `extract` | **Regenerate** (recommended) | Pull each doc's embedded Content Plan to a `.md` file, then re-render with `/floreo render docs/<slug>.md`. Produces a clean, fully-current doc. Use when more than the CSS changed. |
+| `refresh-css` | **Patch** (mechanical) | Replace just the base CSS block with the current version from `SKILL.md`. Fast, deterministic, no re-render. Use when only the base CSS changed. Keeps a `.bak` backup; flags docs whose block boundaries can't be located for manual re-render. |
+
+**Recommended workflow after a skill update:**
+
+1. `report docs/` — see what's there and what's stale.
+2. `refresh-css docs/ --dry-run` — preview the mechanical patch.
+3. `refresh-css docs/` — apply it (backups written to `*.bak`).
+4. `check-floreo.sh docs/` — verify the patched docs pass the Quality Checklist.
+5. For docs that still fail (e.g. older SVG accessibility drift), `extract docs/` and re-render those individually.
+
+`extract` is the safe path for any doc with drift beyond the base CSS; `refresh-css` is the fast path for CSS-only updates. Both leave the originals recoverable (`extract` writes new `.md` files; `refresh-css` keeps `.bak` backups).
 
 ---
 
