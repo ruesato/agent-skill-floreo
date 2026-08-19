@@ -1915,10 +1915,10 @@ A floreo markdown file has YAML frontmatter with at minimum a `title:` key. Typi
 
 1. **Read the source file** — load the full markdown content
 2. **Parse frontmatter** — extract `title`, `type`, `accent`, `interactive`, `author`, `date`
-3. **Collect hints** — scan for all `<hint>` tags; note each hint's position and the element it annotates (the preceding or containing block)
+3. **Collect hints** — scan for all `<hint>` tags; note each hint's position, the element it annotates (the preceding or containing block), and its `status` attribute (none / `pending` / `approved` / `resolved` / `rejected`) plus optional `reason`
 4. **Convert intent blocks to HTML components** — see mapping table below
-5. **Apply hints** — use each hint's directive to adjust the generated component
-6. **Handle unapplied hints** — for `<hint applied="false">`, skip execution and emit `<!-- floreo:hint (unapplied): [hint text] -->` as an HTML comment at the same position in the output
+5. **Apply hints** — for each hint, check its status: `pending`, `approved`, or no status → apply the directive to the generated component; `resolved` → strip without applying (author already handled it); `rejected` or legacy `applied="false"` → skip and preserve as a comment
+6. **Handle non-applied hints** — for `rejected` hints (and legacy `applied="false"`), emit `<!-- floreo:hint (rejected): [hint text] — [reason] -->` (or `<!-- floreo:hint (unapplied): [hint text] -->` for legacy) as an HTML comment at the same position in the output. For `resolved` hints, simply strip them — no comment needed since the author has already addressed the underlying issue
 7. **Compose the full document** — wrap converted content in the standard floreo template with the appropriate accent color and interactive features from frontmatter
 8. **Write output** — use the same base filename with `.html` extension (e.g., `docs/q1-review.md` → `docs/q1-review.html`)
 
@@ -1950,11 +1950,22 @@ For any unrecognized block type, render the raw content as a fenced code block �
 
 A hint applies to the element it is **inside** (for block hints) or the **nearest following element** (for prose hints placed before a section or table). Read the hint as a natural language directive and apply it to the generated HTML for that element.
 
+**Hint status and render behavior:**
+
+| Status | Render action | HTML output |
+|---|---|---|
+| *(none)* or `pending` or `approved` | Apply the hint's directive to the element | Stripped from HTML |
+| `resolved` | Strip without applying — the author already addressed the issue by editing the content | Stripped from HTML |
+| `rejected` | Skip and preserve as a comment with the optional `reason` | `<!-- floreo:hint (rejected): [text] — [reason] -->` |
+| `applied="false"` *(legacy)* | Skip and preserve as a comment | `<!-- floreo:hint (unapplied): [text] -->` |
+
 Examples of hint application:
 - `<hint>horizontal layout, muted palette</hint>` on a `chart:bar` → render as `chart:bar-h` with desaturated fill colors
 - `<hint>omit Validate step</hint>` on a `diagram:flow` → remove that node from the SVG
 - `<hint>Sort by Q2 descending. Add totals row.</hint>` after a markdown table → sort the rows before rendering, append a `<tfoot>` totals row
 - `<hint>Lead with the win. Two sentences max.</hint>` before a prose section → rewrite that section's opening paragraph accordingly
+- `<hint status="resolved">Add a totals row.</hint>` on a table → strip the hint; the table already has a totals row (author added it manually)
+- `<hint status="rejected" reason="data is already sorted by Q2">Sort by Q2 descending.</hint>` → skip, emit `<!-- floreo:hint (rejected): Sort by Q2 descending. — data is already sorted by Q2 -->`
 
 When a hint cannot be fully applied (ambiguous, conflicting with design system, or requires data you don't have), apply what you can and add a `<!-- floreo:hint (partial): [original hint] — [what was skipped and why] -->` comment in the HTML.
 

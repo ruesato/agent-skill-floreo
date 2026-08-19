@@ -171,11 +171,20 @@ data: [42, 58, 71, 63]
 Content here...
 ```
 
-Mark a hint as `applied="false"` to skip it during the current render and preserve it as a comment in the HTML for the next pass:
+**Tracking hint state during revision cycles** — add a `status` attribute to mark whether a hint has been acted on:
+
+| Status | Render behavior |
+|---|---|
+| *(none)* / `pending` / `approved` | Apply normally, strip from HTML |
+| `resolved` | Strip without applying (author already fixed it) |
+| `rejected` | Preserve as `<!-- floreo:hint (rejected): … -->` comment |
 
 ```markdown
-<hint applied="false">Restructure as a numbered list once rankings are confirmed.</hint>
+<hint status="resolved">Restructure as a numbered list.</hint>
+<hint status="rejected" reason="audience is non-technical">Add a glossary table.</hint>
 ```
+
+Legacy `applied="false"` is still supported as an alias for `status="rejected"` (without a reason).
 
 ---
 
@@ -191,7 +200,7 @@ Mark a hint as `applied="false"` to skip it during the current render and preser
 
 **Draft phase** (`/floreo:draft`): Produce a floreo markdown file. Pure content — no template overhead. Edit in any text editor or iterate with the agent. `<hint>` tags capture implementation intent inline.
 
-**Render phase** (`/floreo [file.md]`): Read the draft, process intent blocks into HTML components, apply hints, compose the full floreo template. Unapplied hints (`applied="false"`) are preserved as HTML comments for subsequent rounds.
+**Render phase** (`/floreo [file.md]`): Read the draft, process intent blocks into HTML components, apply hints, compose the full floreo template. Hints marked `rejected` (or legacy `applied="false"`) are preserved as HTML comments; `resolved` hints are stripped without applying.
 
 Output (both paths): a single `.html` file with all CSS and JS inline. No CDN. No external fonts. Opens offline.
 

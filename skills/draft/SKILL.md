@@ -188,6 +188,16 @@ Run the dev server
 
 Annotate any element — intent block or prose — with a `<hint>` tag. The render agent reads every hint and applies it during HTML generation. Hints are stripped from the final HTML output.
 
+**Tracking hint state during revision cycles** — add a `status` attribute to mark whether a hint has been acted on. This lets you see at a glance what's still pending vs. resolved when reviewing a draft across multiple render rounds.
+
+| Status | When to use | Render behavior |
+|---|---|---|
+| *(none)* | Default — no decision yet | Apply normally, strip from HTML |
+| `pending` | Not yet acted on (explicit) | Apply normally, strip from HTML |
+| `approved` | Accepted — apply as written | Apply normally, strip from HTML |
+| `resolved` | Addressed by editing content directly | Strip without applying |
+| `rejected` | Considered and declined | Preserve as `<!-- floreo:hint (rejected): … -->` comment |
+
 **Inline hint inside a block:**
 
 ```
@@ -229,7 +239,29 @@ Content here...
 <hint>Sort by Q2 descending. Add a totals row.</hint>
 ```
 
-**Preserving a hint for a future render round** — use `applied="false"` to skip this hint during the current render and preserve it as a comment in the HTML for the next pass:
+**Marking a hint as resolved** — you fixed the underlying issue yourself by editing the content, so the hint is no longer needed:
+
+```markdown
+<hint status="resolved">Restructure this section as a numbered priority list.</hint>
+```
+
+The render agent strips the hint without applying it — the content already reflects the change.
+
+**Marking a hint as approved** — you accept the hint and want it applied as written:
+
+```markdown
+<hint status="approved">Sort by Q2 descending. Add a totals row.</hint>
+```
+
+**Marking a hint as rejected** — you considered the hint but it doesn't apply. An optional `reason` attribute records why:
+
+```markdown
+<hint status="rejected" reason="audience is non-technical, numbered priorities would add noise">Restructure as a numbered priority list.</hint>
+```
+
+The render agent preserves the hint as `<!-- floreo:hint (rejected): Restructure as a numbered priority list. — audience is non-technical … -->` so the decision is visible in the rendered output.
+
+**Legacy: `applied="false"`** — the original mechanism for skipping a hint during render. Still supported as an alias for `status="rejected"` (without a reason). Prefer `status="rejected"` in new drafts for the clearer semantics.
 
 ```markdown
 <hint applied="false">Restructure this section as a numbered priority list once the rankings are confirmed.</hint>
@@ -242,6 +274,6 @@ Content here...
 - **Write prose first.** Block types and hints can be added or refined at any point; content quality comes first.
 - **Placeholder blocks are fine.** Declare intent even without complete data: a `chart:bar` with a note like "data TBD" signals the visual intent without blocking progress.
 - **Hint where you have a strong opinion.** Omit hints where you trust the render agent's judgment — the agent will make good choices for unmarked blocks.
-- **Use `applied="false"` to park ideas.** If something isn't ready to implement but shouldn't be lost, park it as an unapplied hint rather than deleting it.
+- **Use `status` to track hint decisions.** Mark hints `resolved` when you've handled them yourself, `approved` when you want them applied, or `rejected` when they don't apply. Leave hints without a status (or `pending`) when you haven't decided yet. This makes revision-round reviews faster — you can see at a glance what's been acted on.
 - **Frontmatter `interactive:` is a suggestion.** The render agent may add or remove features based on actual content (e.g., `toc` is always added for 4+ sections regardless of the frontmatter value).
 - **One file per document.** Don't split a single logical document across multiple draft files.
