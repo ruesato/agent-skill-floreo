@@ -846,6 +846,7 @@ li{margin-bottom:.25rem}
 strong{color:var(--ct)}
 .ic{background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.toc,.ri-toc,.ri-search,.ri-export{display:none}.pg{max-width:100%}main{display:block}h2{page-break-after:avoid}.sc{page-break-inside:avoid}a[href]{color:inherit;text-decoration:none}}
 ```
 
 ---
@@ -1369,13 +1370,6 @@ Add inside `<header class="hd">` (for the export button) and at the start of `<m
   .ri-toc a{color:var(--cm);text-decoration:none;display:block;padding:.2rem .5rem;border-radius:4px;font-size:.85rem;transition:background .1s}
   .ri-toc a:hover,.ri-toc a.active{background:var(--cab);color:var(--ca)}
 }
-@media print{
-  .ri-toc,.ri-search,.ri-export{display:none}
-  .pg{display:block;max-width:100%}
-  h2{page-break-after:avoid}
-  .sc{page-break-inside:avoid}
-  a[href]{color:inherit;text-decoration:none}
-}
 .ri-search{margin:1rem 0 1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
 .ri-search input{flex:1 1 200px;min-width:0;max-width:400px;padding:.4rem .75rem;border:1px solid var(--cbr);border-radius:6px;font-family:var(--f-b);font-size:.9rem;background:var(--cs);color:var(--ct)}
 .ri-search input:focus{outline:2px solid var(--ca);outline-offset:1px}
@@ -1579,7 +1573,7 @@ A floreo markdown file has YAML frontmatter with at minimum a `title:` key. Typi
 | `chart:milestone` | Inline SVG milestone/phases chart |
 | `diagram:flow` | Inline SVG flow diagram |
 | `diagram:timeline` | `.tl` timeline component |
-| `callout:info` | `.cl` callout with info styling |
+| `callout:info` | `.note` callout with info styling |
 | `callout:warning` | `.warn` callout |
 | `callout:success` | `.tip` callout |
 | `stat-block` | `.stats` stat block |
