@@ -29,19 +29,19 @@ colors:
   dark-rose-removed-bg: "#3f0d12"
 typography:
   display:
-    fontFamily: "Georgia, 'Times New Roman', serif"
-    fontSize: "2.5rem"
+    fontFamily: "Charter, 'Bitstream Charter', 'Iowan Old Style', Georgia, 'Times New Roman', serif"
+    fontSize: "clamp(2rem, 1.5rem + 2vw, 2.75rem)"
     fontWeight: 400
     lineHeight: 1.2
     letterSpacing: "-0.02em"
   headline:
-    fontFamily: "Georgia, 'Times New Roman', serif"
-    fontSize: "1.5rem"
+    fontFamily: "Charter, 'Bitstream Charter', 'Iowan Old Style', Georgia, 'Times New Roman', serif"
+    fontSize: "1.625rem"
     fontWeight: 400
     lineHeight: 1.2
   title:
     fontFamily: "system-ui, -apple-system, sans-serif"
-    fontSize: "1.1rem"
+    fontSize: "1.25rem"
     fontWeight: 600
     lineHeight: 1.2
   body:
@@ -50,7 +50,7 @@ typography:
     fontWeight: 400
     lineHeight: 1.7
   label:
-    fontFamily: "'Courier New', Courier, monospace"
+    fontFamily: "ui-monospace, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace"
     fontSize: "0.75rem"
     fontWeight: 400
     letterSpacing: "0.1em"
@@ -97,7 +97,7 @@ components:
 
 Floreo documents are the books you keep. Not dashboards, not feeds — reading artifacts meant to be consulted again weeks later when context is needed to make a decision or understand a past event. The design system exists to make AI-generated content feel like it was worth writing. Considered layout, unhurried typography, quiet components: everything in service of the information, nothing competing with it.
 
-The palette is warm stone, not clinical white — chosen to feel like paper, not a screen. Headings speak in Georgian serif: a voice with authority but without aggression. Body copy runs in system-ui: native, fast, unobtrusive. The mono face appears only where precision matters — code, metadata, eyebrows, timestamps. Three voices, each in its place, never overlapping.
+The palette is warm stone, not clinical white — chosen to feel like paper, not a screen. Headings speak in a book serif (Charter, falling back to Georgia): a voice with authority but without aggression. Body copy runs in system-ui: native, fast, unobtrusive. The mono face appears only where precision matters — code, metadata, eyebrows, timestamps. Three voices, each in its place, never overlapping.
 
 This system explicitly rejects four things: the SaaS dashboard aesthetic (dark sidebars, metric cards, gradient accents); AI-generated generic output (uniform padding everywhere, identical card grids, the visual signature of no one making choices); the corporate report PDF (gray on gray, correct but forgettable); and the marketing landing page (hero sections, gradient headlines, energy performing in place of substance).
 
@@ -135,23 +135,23 @@ Ink-on-paper warmth. Every neutral tilts toward stone, never toward gray. One va
 
 ## 3. Typography: The Three-Voice Hierarchy
 
-**Display Font:** Georgia, 'Times New Roman', serif
+**Display Font:** Charter, 'Bitstream Charter', 'Iowan Old Style', Georgia, 'Times New Roman', serif
 **Body Font:** system-ui, -apple-system, sans-serif
-**Label / Mono Font:** 'Courier New', Courier, monospace
+**Label / Mono Font:** ui-monospace, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace
 
-**Character:** Georgia signals authority without formality — a reading font, not a display font performing status. System-ui disappears into the content; it is the voice of the information, not of the design. Courier New appears only where precision matters. The three voices never substitute for each other.
+**Character:** Charter signals authority without formality — a reading font, not a display font performing status. Its lining figures keep numbers crisp in stats and headings; Georgia is the fallback where Charter isn't installed. System-ui disappears into the content; it is the voice of the information, not of the design. The platform mono (SF Mono, Menlo, Consolas) appears only where precision matters. Courier New is a last resort: too thin to read at label sizes. The three voices never substitute for each other.
 
 ### Hierarchy
-- **Display** (400 weight, 2.5rem, line-height 1.2, letter-spacing −0.02em): Document title only — one h1 per document. Slightly tracked in for density and presence. Slightly below the scale you would expect; this document should feel like a manuscript, not a poster.
-- **Headline** (400 weight, 1.5rem, line-height 1.2): Section headings (h2). Light weight — a serif at 1.5rem has natural authority without needing emphasis. Underlined with a 1px stone border to mark section transitions.
-- **Title** (600 weight, 1.1rem, line-height 1.2): Sub-section headings (h3). Bold sans — switches register from the serif headings above. The contrast signals "within a section," not "a new chapter."
-- **Body** (400 weight, 1rem, line-height 1.7, max 65–75ch): All running prose. The generous line-height serves both the scanner (who can scan columns cleanly) and the linear reader (who needs visual breathing room).
-- **Label** (400 weight, 0.75rem, letter-spacing 0.1em, UPPERCASE, Courier New): Eyebrow labels above titles, table column headers, timestamps, metadata lines, footer text. The tracked-out mono creates clear register contrast with the prose around it.
+- **Display** (400 weight, fluid 2rem–2.75rem, line-height 1.2, balanced wrapping, letter-spacing −0.02em): Document title only — one h1 per document. Slightly tracked in for density and presence. Slightly below the scale you would expect; this document should feel like a manuscript, not a poster.
+- **Headline** (400 weight, 1.625rem, line-height 1.2): Section headings (h2). Light weight — a serif at this size has natural authority without needing emphasis. Underlined with a 1px stone border to mark section transitions.
+- **Title** (600 weight, 1.25rem, line-height 1.3): Sub-section headings (h3), a full 1.25× step above body so they never read as bold body text. Bold sans — switches register from the serif headings above. The contrast signals "within a section," not "a new chapter."
+- **Body** (400 weight, 1rem, line-height 1.7 light / 1.75 dark, paragraphs and lists capped at 68ch): All running prose. The generous line-height serves both the scanner (who can scan columns cleanly) and the linear reader (who needs visual breathing room).
+- **Label** (400 weight, 0.75rem, letter-spacing 0.1em, UPPERCASE, platform mono): Eyebrow labels above titles, table column headers, timestamps, metadata lines, footer text. The tracked-out mono creates clear register contrast with the prose around it.
 
 ### Named Rules
-**The Three-Voice Rule.** Georgia for headings. System-ui for body. Courier New for metadata and code. Never mix them within a role. A monospaced eyebrow above a serif h1 is deliberate contrast. A monospaced paragraph is a mistake.
+**The Three-Voice Rule.** Serif for headings. System-ui for body. Mono for metadata and code. Never mix them within a role. A monospaced eyebrow above a serif h1 is deliberate contrast. A monospaced paragraph is a mistake.
 
-**The Serif Authority Rule.** h1 and h2 are always Georgia. They carry the document's voice. h3 and below switch to system-ui — not for variety, but to signal information hierarchy. Serif = chapter. Sans = section within the chapter.
+**The Serif Authority Rule.** h1 and h2 are always the serif (`--f-h`). They carry the document's voice. h3 and below switch to system-ui — not for variety, but to signal information hierarchy. Serif = chapter. Sans = section within the chapter.
 
 ## 4. Elevation
 
@@ -175,13 +175,13 @@ Three semantic variants: Note (blue tint, `{colors.accent-tint}`), Warning (ambe
 Surface white background (`{colors.surface-white}`), 1px stone border, 8px radius, 1.25rem internal padding. No shadow. Cards are differentiated from the page by their surface color alone. Use sparingly — the default for groups of related information is a section, not a card grid.
 
 ### Code Blocks
-The only fully dark surface. `{colors.code-surface}` background creates strong figure-ground contrast for technical content; in dark mode it drops to `{colors.dark-code-surface}` so it still sits below the page. Courier New at 0.85rem, 1.25rem padding, 8px radius. Pre-wrapped for long lines. Dark mode: add a 1px `{colors.dark-border}` border so the block remains distinguishable on the dark page.
+The only fully dark surface. `{colors.code-surface}` background creates strong figure-ground contrast for technical content; in dark mode it drops to `{colors.dark-code-surface}` so it still sits below the page. Platform mono at 0.85rem, line-height 1.6, ligatures off, 1.25rem padding, 8px radius. Pre-wrapped for long lines. Dark mode: add a 1px `{colors.dark-border}` border so the block remains distinguishable on the dark page.
 
 ### Tables
-Full-width, collapsed borders. Header row in `{colors.surface-muted}` with Courier New uppercase labels (0.75rem, letter-spacing 0.06em). Data cells in `{colors.ink-mid}`. Last row has no bottom border — the container's border closes the table. Wrapped in a 1px `{colors.stone-border}` border + 8px radius container. Highlighted rows use `{colors.accent-tint}` background on the `<tr>`.
+Full-width, collapsed borders. Header row in `{colors.surface-muted}` with mono uppercase labels (0.75rem, letter-spacing 0.06em). Data cells in `{colors.ink-mid}`. Last row has no bottom border — the container's border closes the table. Wrapped in a 1px `{colors.stone-border}` border + 8px radius container. Highlighted rows use `{colors.accent-tint}` background on the `<tr>`.
 
 ### Stat Block
-A row of 2–4 key numbers in the reading flow, no card containers. Georgia numbers in ink (`{colors.ink-deep}`), all-caps Courier New label below in `{colors.ink-quiet}`. At most one stat carries the `key` class and takes accent text (`--cat`); the rest stay ink so the accent keeps its meaning. Wider gaps than component defaults (2.5rem) so each number reads as its own figure.
+A row of 2–4 key numbers in the reading flow, no card containers. Serif lining numbers in ink (`{colors.ink-deep}`), all-caps mono label below in `{colors.ink-quiet}`. At most one stat carries the `key` class and takes accent text (`--cat`); the rest stay ink so the accent keeps its meaning. Wider gaps than component defaults (2.5rem) so each number reads as its own figure.
 
 ### Diff Table
 Rows tinted by change type (emerald added, rose removed, amber changed) with a leading mono `+` / `−` / `~` marker in the first cell. The marker, not the tint, carries the meaning; no side stripes.
@@ -190,18 +190,18 @@ Rows tinted by change type (emerald added, rose removed, amber changed) with a l
 For high-stakes documents only: the header sits on an 8% tint of the document accent mixed into the page, 8px radius, no bottom rule. Text keeps its ink colors. Never a solid accent fill with white text.
 
 ### Timeline
-Vertical sequence with a 1px `{colors.stone-border}` line drawn through 15px accent-colored circles. Timestamps in `{colors.ink-quiet}` Courier New, 0.75rem. Event titles in bold system-ui. Descriptions in body regular. The structure is data-forward; the decoration is the 15px dot.
+Vertical sequence with a 1px `{colors.stone-border}` line drawn through 15px accent-colored circles. Timestamps in `{colors.ink-quiet}` mono, 0.75rem. Event titles in bold system-ui. Descriptions in body regular. The structure is data-forward; the decoration is the 15px dot.
 
 ## 6. Do's and Don'ts
 
 ### Do:
-- **Do** use Georgia at 2.5rem, weight 400 for the document title. The reading experience depends on that display moment landing with the right authority.
+- **Do** use the serif at weight 400, fluid 2rem–2.75rem, for the document title. The reading experience depends on that display moment landing with the right authority.
 - **Do** vary the document accent (`--ca`) per document type. The accent is the document's identity; it should be different for an incident report vs. a research brief.
 - **Do** keep accent use below 10% of any surface. Its scarcity is the signal.
 - **Do** tint all neutrals warm toward stone. `#1c1917` not `#111111`. `#fafaf9` not `#fafafa`. The chroma is low but the warmth is measurable.
 - **Do** use the three-step tonal stack (parchment → surface → muted) as the only depth mechanism.
 - **Do** max body line length at 65–75ch. Prose on an uncontrolled 860px container is unreadable.
-- **Do** use Courier New uppercase labels for eyebrows, table headers, timestamps, and metadata. These are the document's navigational signposts.
+- **Do** use mono uppercase labels for eyebrows, table headers, timestamps, and metadata. These are the document's navigational signposts.
 - **Do** embed the floreo Content Plan in `<script type="application/floreo">` before `</body>`. Future agents must be able to update the document without reverse-engineering markup.
 - **Do** respect `prefers-color-scheme: dark` and `prefers-reduced-motion`. Both are non-negotiable baseline accessibility.
 

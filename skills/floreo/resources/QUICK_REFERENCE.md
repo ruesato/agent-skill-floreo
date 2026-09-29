@@ -4,7 +4,8 @@
 `.pg` page wrapper · `.hd` header · `.fn` footer · `.sc` section  
 `.card` card · `.grid` card grid · `.tbl` table · `.tw` table wrapper  
 `.note` info callout · `.warn` warning callout · `.tip` tip callout  
-`.fig` figure/chart · `.code` code block
+`.fig` figure/chart · `.code` code block · `.kv` key-value list · `.bdg` status badge  
+`.stats`/`.stat`/`.stat.key` number row · `.da`/`.dr`/`.dc` diff rows
 
 ## CSS variable tokens
 `--cb` bg · `--cs` surface · `--cs2` subtle surface (table headers, row dividers) · `--cbr` border  

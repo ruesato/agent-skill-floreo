@@ -942,13 +942,15 @@ System fonts — no external dependencies, instant load:
 
 ```css
 :root{
-  --f-h:Georgia,'Times New Roman',serif;
+  --f-h:Charter,'Bitstream Charter','Iowan Old Style',Georgia,'Times New Roman',serif;
   --f-b:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  --f-m:'Courier New',Courier,monospace
+  --f-m:ui-monospace,Menlo,Consolas,'Liberation Mono','Courier New',monospace
 }
 ```
 
-**Serif Authority Rule:** `h1` and `h2` use `--f-h` (Georgia) — section-level authority. `h3` and below use `--f-b` (system-ui) — they are within a section, not starting a new chapter. Never apply `--f-h` to `h3` or below. Use `--f-m` for code, metadata, labels, eyebrows.
+Every stack is installed-fonts only, so documents stay self-contained. `--f-h` prefers Charter, a sturdy book serif with lining figures, and falls back to Georgia where Charter is missing. `--f-m` prefers the platform's own code face (SF Mono via `ui-monospace`, Menlo, Consolas) over Courier New, which is too thin to read at label sizes.
+
+**Serif Authority Rule:** `h1` and `h2` use `--f-h` (the serif) — section-level authority. `h3` and below use `--f-b` (system-ui) — they are within a section, not starting a new chapter. Never apply `--f-h` to `h3` or below. Use `--f-m` for code, metadata, labels, eyebrows.
 
 Type scale (rem): `--t-xs:.75` `--t-sm:.875` `--t-md:1` `--t-lg:1.125` `--t-xl:1.25` `--t-2xl:1.5` `--t-3xl:2` `--t-4xl:3`
 
@@ -1030,41 +1032,44 @@ Include this compressed block in every floreo document. Extend as needed:
 
 ```css
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#736c66;--ca:#2563eb;--cat:color-mix(in srgb,var(--ca) 65%,var(--ct));--cab:#dbeafe;--con:#fafaf9;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a;--cr-bg:#ffe4e6;--cc:#1c1917;--cct:#f5f5f4}
+:root{--f-h:Charter,'Bitstream Charter','Iowan Old Style',Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,'Segoe UI',sans-serif;--f-m:ui-monospace,Menlo,Consolas,'Liberation Mono','Courier New',monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#736c66;--ca:#2563eb;--cat:color-mix(in srgb,var(--ca) 65%,var(--ct));--cab:#dbeafe;--con:#fafaf9;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a;--cr-bg:#ffe4e6;--cc:#1c1917;--cct:#f5f5f4}
 :root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px}
 :root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:2rem;--t-4xl:3rem}
-@media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#a8a29e;--cat:color-mix(in srgb,var(--ca) 45%,var(--ct));--cab:#082f3e;--cw-bg:#3d1a00;--cg-bg:#052e16;--cr-bg:#3f0d12;--cc:#0c0a09}.code{border:1px solid var(--cbr)}}
+@media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#a8a29e;--cat:color-mix(in srgb,var(--ca) 45%,var(--ct));--cab:#082f3e;--cw-bg:#3d1a00;--cg-bg:#052e16;--cr-bg:#3f0d12;--cc:#0c0a09}.code{border:1px solid var(--cbr)}body{line-height:1.75}}
 body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
 .pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
-h1,h2{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
-h3,h4{font-family:var(--f-b);line-height:1.2;color:var(--ct)}
-h1{font-size:2.5rem;font-weight:400;letter-spacing:-.02em;margin-bottom:.4rem}
-h2{font-size:1.5rem;font-weight:400;margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid var(--cbr)}
-h3{font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
-p{margin-bottom:1rem;color:var(--cm)}
-.sc{margin-bottom:3rem}
+h1,h2{font-family:var(--f-h);line-height:1.2;color:var(--ct);text-wrap:balance}
+h3,h4{font-family:var(--f-b);line-height:1.3;color:var(--ct);text-wrap:balance}
+h1{font-size:clamp(2rem,1.5rem + 2vw,2.75rem);font-weight:400;letter-spacing:-.02em;margin-bottom:.5rem}
+h2{font-size:1.625rem;font-weight:400;margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid var(--cbr)}
+h3{font-size:1.25rem;font-weight:600;margin-bottom:.4rem}
+p{margin-bottom:1rem;color:var(--cm);text-wrap:pretty}
+p,ul,ol,.sub,dl{max-width:68ch}
+.sc{margin-bottom:clamp(3rem,2rem + 3vw,4.5rem)}
+:not(h2)+h3{margin-top:2rem}
 .hd{padding-bottom:2rem;margin-bottom:3rem;border-bottom:2px solid var(--cbr)}
 .fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
 .ey{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cat);margin-bottom:.75rem}
-.sub{font-size:1.1rem;color:var(--cm)}
-.note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;font-size:.95rem;color:var(--ct)}
+.sub{font-size:1.25rem;line-height:1.5;color:var(--cm)}
+.note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.25rem 0;font-size:.95rem;color:var(--ct)}
 .note{background:var(--cab)}
 .warn{background:var(--cw-bg)}
 .tip{background:var(--cg-bg)}
 .tw{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px}
-.tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs)}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs);font-variant-numeric:tabular-nums}
 .tbl thead{background:var(--cs2)}
 .tbl th{text-align:left;padding:.6rem 1rem;font-family:var(--f-m);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cm);border-bottom:1px solid var(--cbr)}
 .tbl td{padding:.6rem 1rem;border-bottom:1px solid var(--cs2);color:var(--cm);vertical-align:top}
 .tbl tr:last-child td{border-bottom:none}
 .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:1.5rem 0}
 .card{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem}
-.code{background:var(--cc);color:var(--cct);padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;overflow-wrap:anywhere}
-.fig{margin:1.5rem 0;text-align:center}
-.fig svg{max-width:100%;height:auto}
-figcaption{font-size:.8rem;color:var(--cq);margin-top:.5rem;font-style:italic;text-align:center}
+.code{background:var(--cc);color:var(--cct);padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;line-height:1.6;font-variant-ligatures:none;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.fig{margin:2rem 0}
+.fig svg{display:block;max-width:100%;height:auto}
+figcaption{font-size:.85rem;color:var(--cq);margin-top:.75rem;max-width:68ch}
 a{color:var(--cat);text-decoration:none;transition:color .15s ease-out}
 a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--ca);outline-offset:2px;border-radius:2px}
 ul,ol{padding-left:1.5rem;margin-bottom:1rem;color:var(--cm)}
 li{margin-bottom:.25rem}
 strong{color:var(--ct)}
@@ -1175,15 +1180,27 @@ Highlight a row: add `style="background:var(--cab)"` to `<tr>`.
 ### Key-value metadata
 
 ```html
-<dl style="display:grid;grid-template-columns:auto 1fr;gap:.25rem 1rem;font-size:.9rem">
-  <dt style="color:var(--cq);font-family:var(--f-m)">Key</dt><dd style="color:var(--cm)">Value</dd>
-</dl>
+<dl class="kv"><dt>Key<dd>Value</dl>
+```
+
+Additional CSS:
+
+```css
+.kv{display:grid;grid-template-columns:auto 1fr;gap:.25rem 1.25rem;font-size:.9rem;margin:1.25rem 0}
+.kv dt{color:var(--cq);font-family:var(--f-m);font-size:.85rem}
+.kv dd{color:var(--cm)}
 ```
 
 ### Status badge
 
 ```html
-<span style="background:var(--cab);color:var(--cat);font-size:.7rem;font-family:var(--f-m);letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;font-weight:600">STATUS</span>
+<span class="bdg">Status</span>
+```
+
+Additional CSS:
+
+```css
+.bdg{display:inline-block;background:var(--cab);color:var(--cat);font-size:.7rem;font-family:var(--f-m);letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;font-weight:600;vertical-align:.1em}
 ```
 
 ### Stat block
@@ -1203,7 +1220,7 @@ Additional CSS:
 ```css
 .stats{display:flex;gap:1.25rem 2.5rem;flex-wrap:wrap;margin:1.75rem 0 2rem}
 .stat{min-width:0}
-.sn{display:block;font-family:var(--f-h);font-size:2.25rem;font-weight:400;color:var(--ct);line-height:1}
+.sn{display:block;font-family:var(--f-h);font-size:2.25rem;font-weight:400;color:var(--ct);line-height:1;font-variant-numeric:lining-nums tabular-nums}
 .key .sn{color:var(--cat)}
 .sl{display:block;font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-top:.4rem}
 ```
@@ -1229,7 +1246,9 @@ Additional CSS:
 
 ```css
 .tl{list-style:none;padding:0;margin:1.5rem 0}
-.tli{display:flex;gap:1rem;padding-bottom:1.5rem;position:relative}
+.tli{display:flex;gap:1rem;padding-bottom:1.25rem;position:relative}
+.tli:last-child{padding-bottom:0}
+.tli p,.sbd p,.card>:last-child,.clpb>:last-child{margin-bottom:0}
 .tli:not(:last-child)::before{content:'';position:absolute;left:7px;top:16px;bottom:0;width:1px;background:var(--cbr)}
 .tld{width:15px;height:15px;border-radius:50%;background:var(--ca);flex-shrink:0;margin-top:4px}
 .tlt{display:block;font-family:var(--f-m);font-size:.75rem;color:var(--cq);margin-bottom:.2rem}
@@ -1256,7 +1275,8 @@ Additional CSS:
 
 ```css
 .sps{list-style:none;padding:0;margin:1.5rem 0}
-.step{display:flex;gap:1rem;margin-bottom:1.5rem}
+.step{display:flex;gap:1rem;margin-bottom:1.25rem}
+.step:last-child{margin-bottom:0}
 .spn{width:32px;height:32px;border-radius:50%;background:var(--ca);color:var(--con);font-family:var(--f-m);font-size:.875rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
 .sbd{flex:1}
 .sbd h3{margin-bottom:.25rem}
@@ -1284,6 +1304,7 @@ Additional CSS:
 ```css
 .spl{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
 @media(max-width:600px){.spl{grid-template-columns:1fr}}
+.spl .code{margin:0}
 .slbl{display:inline-block;font-family:var(--f-m);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;margin-bottom:.5rem}
 .slb{background:var(--cw-bg);color:var(--ct)}
 .sla{background:var(--cg-bg);color:var(--ct)}
@@ -1332,6 +1353,7 @@ Additional CSS:
 
 ```css
 .da{background:var(--cg-bg)}.dr{background:var(--cr-bg)}.dc{background:var(--cw-bg)}
+:is(.da,.dr,.dc) td{color:var(--ct)}
 :is(.da,.dr,.dc) td:first-child::before{display:inline-block;width:1.25em;font-family:var(--f-m);font-weight:600;color:var(--ct)}
 .da td:first-child::before{content:'+';content:'+'/'Added: '}
 .dr td:first-child::before{content:'\2212';content:'\2212'/'Removed: '}
@@ -1344,7 +1366,7 @@ Auto-generated from `<h2>` headings via ~20 lines of JS. Place near the top of `
 
 **Default rule:** include when the document has 4 or more `<h2>` sections. Declare this in the Content Plan's `INTERACTIVE:` field as `toc`.
 
-**Responsive layout:** on viewports ≥1100px the ToC moves into a sticky right-hand sidebar alongside the document body — it stays visible no matter how far the user scrolls. On narrower viewports it renders inline as a card.
+**Responsive layout:** on viewports ≥1100px the ToC moves into a sticky right-hand sidebar alongside the document body — it stays visible no matter how far the user scrolls. On narrower viewports it renders inline as a plain numbered list above the first section, no container.
 
 ```html
 <nav class="toc" aria-label="Contents">
@@ -1356,7 +1378,7 @@ Auto-generated from `<h2>` headings via ~20 lines of JS. Place near the top of `
 Additional CSS:
 
 ```css
-.toc{padding:1.25rem 1.5rem;margin:1.5rem 0;display:inline-block;min-width:220px}
+.toc{margin:0 0 2.5rem}
 .toch{font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-bottom:.5rem}
 .tocl{padding-left:1.25rem;margin:0}
 .tocl li{margin-bottom:.2rem}
@@ -1378,10 +1400,13 @@ JS (add to the `<script>` block):
     li.innerHTML='<a href="#'+h.id+'">'+h.textContent+'</a>';
     list.appendChild(li);
   });
+  const first=list.querySelector('a');if(first){first.classList.add('active');first.setAttribute('aria-current','true')}
   const obs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       const a=list.querySelector('a[href="#'+e.target.id+'"]');
-      if(a)a.classList.toggle('active',e.isIntersecting);
+      if(!a||!e.isIntersecting)return;
+      list.querySelectorAll('a.active').forEach(x=>{x.classList.remove('active');x.removeAttribute('aria-current')});
+      a.classList.add('active');a.setAttribute('aria-current','true');
     });
   },{rootMargin:'-10% 0px -75% 0px'});
   document.querySelectorAll('main h2').forEach(h=>obs.observe(h));
@@ -1395,7 +1420,7 @@ JS (add to the `<script>` block):
 Use inline SVG for all charts, diagrams, and illustrations. Never embed raster images for data visualization.
 
 **SVG rules:**
-- `viewBox="0 0 W H"` — no fixed `width`/`height` on the `<svg>` element; CSS controls size
+- `viewBox="0 0 W H"` plus `width="W"` (no `height`) — the width attribute gives the chart its natural size so `font-size="12"` renders at 12px; CSS `max-width:100%;height:auto` shrinks it on narrow screens. Without it the chart stretches to the column and every label balloons
 - Use `fill="var(--ca)"` and other CSS variables inside SVG
 - Include `<title>` and `<desc>` for accessibility — set `role="img"` on the `<svg>` and `aria-labelledby="TITLE-ID DESC-ID"` pointing to both. Use unique IDs per figure (e.g. `bar1-title`, `bar2-title`) when a document has multiple charts, the same convention as arrowhead marker IDs.
 - Keep coordinates clean (integer pixels, consistent scale)
@@ -1405,7 +1430,7 @@ Use inline SVG for all charts, diagrams, and illustrations. Never embed raster i
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="bar1-title bar1-desc">
+<svg viewBox="0 0 400 220" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="bar1-title bar1-desc">
   <title id="bar1-title">Chart title</title>
   <desc id="bar1-desc">One-sentence summary of what the chart compares and the key takeaway.</desc>
   <!-- Y-axis gridlines -->
@@ -1425,7 +1450,7 @@ Use inline SVG for all charts, diagrams, and illustrations. Never embed raster i
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flow1-title flow1-desc">
+<svg viewBox="0 0 500 120" width="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flow1-title flow1-desc">
   <title id="flow1-title">Flow diagram</title>
   <desc id="flow1-desc">Describe the steps and the direction of flow.</desc>
   <!-- Box -->
@@ -1448,7 +1473,7 @@ Use for trends over time or sequential values. The area fill is optional — rem
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="line1-title line1-desc">
+<svg viewBox="0 0 400 220" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="line1-title line1-desc">
 <title id="line1-title">Trend over time</title>
 <desc id="line1-desc">Describe the metric, the time range, and the overall direction of the trend.</desc>
 <line x1="44" y1="10" x2="44" y2="180" stroke="var(--cbr)" stroke-width="1"/>
@@ -1481,7 +1506,7 @@ Use for parts of a whole. Technique: stroke-dasharray on a circle (simpler than 
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="donut1-title donut1-desc">
+<svg viewBox="0 0 200 200" width="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="donut1-title donut1-desc">
 <title id="donut1-title">Proportion breakdown</title>
 <desc id="donut1-desc">Name the whole, list the segments in order with their percentages, and state the largest share.</desc>
 <!-- r=45, circumference≈283. Formula: length=pct×283 | offset=-(sum of prior lengths) -->
@@ -1494,8 +1519,8 @@ Use for parts of a whole. Technique: stroke-dasharray on a circle (simpler than 
   stroke-dasharray="71 283" stroke-dashoffset="-170" transform="rotate(-90 100 100)"/>
 <!-- Center hole + label -->
 <circle cx="100" cy="100" r="28" fill="var(--cb)"/>
-<text x="100" y="96" text-anchor="middle" font-size="20" font-family="Georgia,'Times New Roman',serif" fill="var(--ca)">60%</text>
-<text x="100" y="112" text-anchor="middle" font-size="9" font-family="'Courier New',monospace" fill="var(--cq)" letter-spacing="2">PRIMARY</text>
+<text x="100" y="96" text-anchor="middle" font-size="20" font-family="var(--f-h)" fill="var(--ca)">60%</text>
+<text x="100" y="112" text-anchor="middle" font-size="9" font-family="var(--f-m)" fill="var(--cq)" letter-spacing="2">PRIMARY</text>
 </svg>
 <figcaption>Caption describing what the proportions represent</figcaption>
 </figure>
@@ -1507,29 +1532,29 @@ Use for project timelines, release schedules, and roadmaps. Filled circles = com
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ms1-title ms1-desc">
+<svg viewBox="0 0 560 100" width="560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ms1-title ms1-desc">
 <title id="ms1-title">Project milestones</title>
 <desc id="ms1-desc">List the phases with dates and note which are complete versus planned.</desc>
 <line x1="60" y1="38" x2="500" y2="38" stroke="var(--cbr)" stroke-width="2"/>
 <!-- Completed milestone -->
 <circle cx="120" cy="38" r="8" fill="var(--cg)"/>
 <text x="120" y="60" text-anchor="middle" font-size="11" fill="var(--cm)">Phase 1</text>
-<text x="120" y="74" text-anchor="middle" font-size="10" font-family="'Courier New',monospace" fill="var(--cq)">May 1</text>
+<text x="120" y="74" text-anchor="middle" font-size="10" font-family="var(--f-m)" fill="var(--cq)">May 1</text>
 <!-- Completed milestone -->
 <circle cx="250" cy="38" r="8" fill="var(--cg)"/>
 <text x="250" y="60" text-anchor="middle" font-size="11" fill="var(--cm)">Phase 2</text>
-<text x="250" y="74" text-anchor="middle" font-size="10" font-family="'Courier New',monospace" fill="var(--cq)">Jun 15</text>
+<text x="250" y="74" text-anchor="middle" font-size="10" font-family="var(--f-m)" fill="var(--cq)">Jun 15</text>
 <!-- TODAY marker -->
 <line x1="320" y1="20" x2="320" y2="56" stroke="var(--ca)" stroke-width="1.5" stroke-dasharray="3 2"/>
-<text x="320" y="15" text-anchor="middle" font-size="9" font-family="'Courier New',monospace" fill="var(--ca)">TODAY</text>
+<text x="320" y="15" text-anchor="middle" font-size="9" font-family="var(--f-m)" fill="var(--ca)">TODAY</text>
 <!-- Upcoming milestone (open circle) -->
 <circle cx="380" cy="38" r="8" fill="var(--cb)" stroke="var(--cbr)" stroke-width="2"/>
 <text x="380" y="60" text-anchor="middle" font-size="11" fill="var(--cm)">Phase 3</text>
-<text x="380" y="74" text-anchor="middle" font-size="10" font-family="'Courier New',monospace" fill="var(--cq)">Aug 1</text>
+<text x="380" y="74" text-anchor="middle" font-size="10" font-family="var(--f-m)" fill="var(--cq)">Aug 1</text>
 <!-- Upcoming milestone -->
 <circle cx="470" cy="38" r="8" fill="var(--cb)" stroke="var(--cbr)" stroke-width="2"/>
 <text x="470" y="60" text-anchor="middle" font-size="11" fill="var(--cm)">Launch</text>
-<text x="470" y="74" text-anchor="middle" font-size="10" font-family="'Courier New',monospace" fill="var(--cq)">Sep 30</text>
+<text x="470" y="74" text-anchor="middle" font-size="10" font-family="var(--f-m)" fill="var(--cq)">Sep 30</text>
 </svg>
 <figcaption>Project milestones — filled circles complete, open circles planned</figcaption>
 </figure>
@@ -1541,7 +1566,7 @@ Use for comparing 2–4 series across categories. Grouped places series side-by-
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 460 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="gbar1-title gbar1-desc">
+<svg viewBox="0 0 460 240" width="460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="gbar1-title gbar1-desc">
 <title id="gbar1-title">Grouped bar chart title</title>
 <desc id="gbar1-desc">Compare two series across categories; name the series and state which category leads.</desc>
 <line x1="40" y1="10" x2="40" y2="190" stroke="var(--cbr)" stroke-width="1"/>
@@ -1577,7 +1602,7 @@ Use for correlation between two continuous variables. Each point is a circle at 
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scat1-title scat1-desc">
+<svg viewBox="0 0 400 240" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scat1-title scat1-desc">
 <title id="scat1-title">Scatter plot title</title>
 <desc id="scat1-desc">Correlation between two variables; name the axes and describe the pattern (cluster, trend, outlier).</desc>
 <line x1="44" y1="10" x2="44" y2="190" stroke="var(--cbr)" stroke-width="1"/>
@@ -1606,7 +1631,7 @@ Use for cumulative magnitude or volume over time where the filled region is the 
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="area1-title area1-desc">
+<svg viewBox="0 0 400 220" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="area1-title area1-desc">
 <title id="area1-title">Area chart title</title>
 <desc id="area1-desc">Magnitude accumulated over time; name the metric, the range, and the peak.</desc>
 <line x1="44" y1="10" x2="44" y2="180" stroke="var(--cbr)" stroke-width="1"/>
@@ -1638,7 +1663,7 @@ Use for magnitude across two categorical axes (e.g. activity by day×hour, error
 
 ```html
 <figure class="fig">
-<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heat1-title heat1-desc">
+<svg viewBox="0 0 360 260" width="360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heat1-title heat1-desc">
 <title id="heat1-title">Heatmap title</title>
 <desc id="heat1-desc">Magnitude across two categorical axes; name the axes, the range, and the hottest cell.</desc>
 <!-- Column labels -->
@@ -1768,10 +1793,13 @@ mark.ri-hl.ri-hl-cur{outline:2px solid var(--ct);outline-offset:1px}
       li.innerHTML='<a href="#'+h.id+'">'+h.textContent+'</a>';
       tocList.appendChild(li);
     });
+    const first=tocList.querySelector('a');if(first){first.classList.add('active');first.setAttribute('aria-current','true')}
     const obs=new IntersectionObserver(entries=>{
       entries.forEach(e=>{
         const a=tocList.querySelector('a[href="#'+e.target.id+'"]');
-        if(a)a.classList.toggle('active',e.isIntersecting);
+        if(!a||!e.isIntersecting)return;
+        tocList.querySelectorAll('a.active').forEach(x=>{x.classList.remove('active');x.removeAttribute('aria-current')});
+        a.classList.add('active');a.setAttribute('aria-current','true');
       });
     },{rootMargin:'-10% 0px -75% 0px'});
     headings.forEach(h=>obs.observe(h));
@@ -2011,8 +2039,8 @@ Before writing the final file:
 - [ ] `<title>` is meaningful and specific
 - [ ] Floreo meta tags present (`floreo:type`, `floreo:created`, `floreo:model`, `floreo:version`)
 - [ ] Accent color (`--ca`) matches document purpose
-- [ ] Visual hierarchy is clear: h1 > h2 (Georgia) → h3 (system-ui), spacing creates sections
-- [ ] `h3`/`h4` use `--f-b` (system-ui), NOT `--f-h` (Georgia) — Serif Authority Rule
+- [ ] Visual hierarchy is clear: h1 > h2 (serif, `--f-h`) → h3 (system-ui), spacing creates sections
+- [ ] `h3`/`h4` use `--f-b` (system-ui), NOT `--f-h` (serif) — Serif Authority Rule
 - [ ] No side-stripe accents anywhere (callouts, diff rows, cards) — tints and markers only
 - [ ] Dark mode overrides present for `--cab`, `--cw-bg`, `--cg-bg` in the dark media query
 - [ ] Tables used for comparative data (not prose lists)
