@@ -8,17 +8,25 @@ colors:
   stone-border: "#e7e5e4"
   ink-deep: "#1c1917"
   ink-mid: "#57534e"
-  ink-quiet: "#a8a29e"
+  ink-quiet: "#736c66"
   accent: "#2563eb"
+  accent-text: "color-mix(in srgb, accent 65%, ink-deep)"
   accent-tint: "#dbeafe"
+  on-accent: "#fafaf9"
   amber-warning: "#d97706"
   amber-warning-bg: "#fef3c7"
   emerald-tip: "#16a34a"
   emerald-tip-bg: "#dcfce7"
+  rose-removed-bg: "#ffe4e6"
+  code-surface: "#1c1917"
+  code-text: "#f5f5f4"
   dark-base: "#1c1917"
   dark-surface: "#292524"
   dark-surface-muted: "#211f1e"
   dark-border: "#44403c"
+  dark-ink-quiet: "#a8a29e"
+  dark-code-surface: "#0c0a09"
+  dark-rose-removed-bg: "#3f0d12"
 typography:
   display:
     fontFamily: "Georgia, 'Times New Roman', serif"
@@ -105,7 +113,7 @@ This system explicitly rejects four things: the SaaS dashboard aesthetic (dark s
 Ink-on-paper warmth. Every neutral tilts toward stone, never toward gray. One variable accent per document.
 
 ### Primary
-- **Variable Document Accent** (`{colors.accent}`, default #2563eb): The document's identity badge. Changes per type: crimson (#dc2626) for incident reports, violet (#7c3aed) for decisions, teal (#0891b2) for research, green (#16a34a) for retrospectives. Used on at most 10% of any given surface. Tint backgrounds (`{colors.accent-tint}`) may extend it as a whisper.
+- **Variable Document Accent** (`{colors.accent}`, default #2563eb): The document's identity badge. Changes per type: crimson (#dc2626) for incident reports, violet (#7c3aed) for decisions, teal (#0891b2) for research, green (#16a34a) for retrospectives. Used on at most 10% of any given surface. Tint backgrounds (`{colors.accent-tint}`) may extend it as a whisper. When the accent is text (links, eyebrows, badges, stat numbers) use **Accent Text** (`{colors.accent-text}`, `--cat`): the accent mixed 65% toward ink in light mode and 45% toward near-white in dark, which clears 4.5:1 for every Default and Deep accent in both themes. Raw `--ca` is for fills only.
 
 ### Neutral
 - **Parchment Warm** (`{colors.parchment-warm}`, #fafaf9): Page background. Near-white with a barely perceptible stone undertone. Prevents the screen-glare coldness of pure white.
@@ -114,7 +122,7 @@ Ink-on-paper warmth. Every neutral tilts toward stone, never toward gray. One va
 - **Stone Border** (`{colors.stone-border}`, #e7e5e4): All borders and dividers. Present but not heavy.
 - **Ink Deep** (`{colors.ink-deep}`, #1c1917): Primary text. Near-black with a warm brown undertone. Never `#000`.
 - **Ink Mid** (`{colors.ink-mid}`, #57534e): Body copy. Lightened from deep ink to reduce fatigue over long reads.
-- **Ink Quiet** (`{colors.ink-quiet}`, #a8a29e): Metadata, timestamps, captions, footer text. Disappears at distance; readable up close.
+- **Ink Quiet** (`{colors.ink-quiet}`, #736c66; dark #a8a29e): Metadata, timestamps, captions, footer text. Quiet, but never below 4.5:1 on any surface; it carries real information.
 
 ### States
 - **Amber Warning** (`{colors.amber-warning}`, #d97706) on **Amber Mist** (`{colors.amber-warning-bg}`, #fef3c7): Warning callouts. Warm amber reads cautionary without red's urgency.
@@ -167,13 +175,19 @@ Three semantic variants: Note (blue tint, `{colors.accent-tint}`), Warning (ambe
 Surface white background (`{colors.surface-white}`), 1px stone border, 8px radius, 1.25rem internal padding. No shadow. Cards are differentiated from the page by their surface color alone. Use sparingly — the default for groups of related information is a section, not a card grid.
 
 ### Code Blocks
-The only fully dark surface. `{colors.ink-deep}` background creates strong figure-ground contrast for technical content. Courier New at 0.85rem, 1.25rem padding, 8px radius. Pre-wrapped for long lines. Dark mode: add a 1px `{colors.dark-border}` border so the block remains distinguishable on the dark page.
+The only fully dark surface. `{colors.code-surface}` background creates strong figure-ground contrast for technical content; in dark mode it drops to `{colors.dark-code-surface}` so it still sits below the page. Courier New at 0.85rem, 1.25rem padding, 8px radius. Pre-wrapped for long lines. Dark mode: add a 1px `{colors.dark-border}` border so the block remains distinguishable on the dark page.
 
 ### Tables
 Full-width, collapsed borders. Header row in `{colors.surface-muted}` with Courier New uppercase labels (0.75rem, letter-spacing 0.06em). Data cells in `{colors.ink-mid}`. Last row has no bottom border — the container's border closes the table. Wrapped in a 1px `{colors.stone-border}` border + 8px radius container. Highlighted rows use `{colors.accent-tint}` background on the `<tr>`.
 
 ### Stat Block
-Large Georgia number in the document accent color. All-caps Courier New label below. No card container — stats float in the reading flow on a surface card background. Use a flex row for groups. Minimum width 140px per stat to prevent label truncation.
+A row of 2–4 key numbers in the reading flow, no card containers. Georgia numbers in ink (`{colors.ink-deep}`), all-caps Courier New label below in `{colors.ink-quiet}`. At most one stat carries the `key` class and takes accent text (`--cat`); the rest stay ink so the accent keeps its meaning. Wider gaps than component defaults (2.5rem) so each number reads as its own figure.
+
+### Diff Table
+Rows tinted by change type (emerald added, rose removed, amber changed) with a leading mono `+` / `−` / `~` marker in the first cell. The marker, not the tint, carries the meaning; no side stripes.
+
+### Cover Header (variation)
+For high-stakes documents only: the header sits on an 8% tint of the document accent mixed into the page, 8px radius, no bottom rule. Text keeps its ink colors. Never a solid accent fill with white text.
 
 ### Timeline
 Vertical sequence with a 1px `{colors.stone-border}` line drawn through 15px accent-colored circles. Timestamps in `{colors.ink-quiet}` Courier New, 0.75rem. Event titles in bold system-ui. Descriptions in body regular. The structure is data-forward; the decoration is the 15px dot.

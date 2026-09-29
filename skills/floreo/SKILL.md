@@ -963,26 +963,35 @@ Adapt `--ca` (accent) to the document's purpose or brand:
   --cbr:#e7e5e4;  /* border */
   --ct:#1c1917;   /* primary text */
   --cm:#57534e;   /* muted/secondary text */
-  --cq:#a8a29e;   /* quiet/meta text */
+  --cq:#736c66;   /* quiet/meta text — 4.5:1 minimum on every light surface */
   --ca:#2563eb;   /* accent — vary by document */
+  --cat:color-mix(in srgb,var(--ca) 65%,var(--ct)); /* accent as text — derived, never set by hand */
   --cab:#dbeafe;  /* accent background tint */
+  --con:#fafaf9;  /* text on a solid accent fill — same in both themes */
   --cw-bg:#fef3c7; --cw:#d97706;  /* warning amber */
-  --cg-bg:#dcfce7; --cg:#16a34a   /* success green */
+  --cg-bg:#dcfce7; --cg:#16a34a;  /* success green */
+  --cr-bg:#ffe4e6;                /* removed / destructive tint */
+  --cc:#1c1917; --cct:#f5f5f4     /* code block surface and text */
 }
 ```
 
-**Dark mode — always override callout backgrounds.** The pastel tints (`--cab`, `--cw-bg`, `--cg-bg`) become unreadable with near-white text in dark mode. Add these to the dark mode `:root` block:
+**Accent as text uses `--cat`, not `--ca`.** Links, eyebrows, active ToC items, badge text and stat numbers use `--cat`. It mixes the accent toward the ink color so it clears 4.5:1 on the page, surfaces and `--cab` in both themes for every accent in the Default and Deep columns below. `--ca` stays for fills: dots, bars, numbered circles, highlights. Never hard-code a hex where a token exists; it breaks dark mode.
+
+**Dark mode — always override callout backgrounds.** The pastel tints (`--cab`, `--cw-bg`, `--cg-bg`, `--cr-bg`) become unreadable with near-white text in dark mode. Add these to the dark mode `:root` block:
 
 ```css
 @media(prefers-color-scheme:dark){:root{
   /* ... other dark tokens ... */
+  --cat:color-mix(in srgb,var(--ca) 45%,var(--ct)); /* lighter mix for dark surfaces */
   --cab:#082f3e;   /* dark teal — readable with #fafaf9 text */
   --cw-bg:#3d1a00; /* dark amber */
-  --cg-bg:#052e16  /* dark green */
+  --cg-bg:#052e16; /* dark green */
+  --cr-bg:#3f0d12; /* dark rose */
+  --cc:#0c0a09     /* code sits darker than the page */
 }}
 ```
 
-Common accent values by document type — pick a shade to create visual variety within a category:
+Common accent values by document type — pick a shade to create visual variety within a category. Light shades are for fills and charts only; as `--ca` they fail text contrast even through `--cat`:
 
 | Category | Light | Default | Deep |
 |---|---|---|---|
@@ -1005,7 +1014,7 @@ When using a brand color, verify contrast against `--cb` (background) and `--cs`
 
 Beyond color, vary document layout to prevent monotony at scale:
 
-- **Cover header** — large accent-background hero for high-stakes documents (proposals, major incident reports): set `.hd{background:var(--ca);color:#fff;padding:3rem;border-radius:8px}` and invert heading/subtitle colors
+- **Cover header** — a quiet accent-tinted band for high-stakes documents (proposals, major incident reports): `.hd{background:color-mix(in srgb,var(--ca) 8%,var(--cb));padding:2.5rem 2rem;border-radius:8px;border-bottom:none}`. The tint derives from the document's own accent and adapts to dark mode on its own. Keep heading and subtitle in their normal ink colors; never a solid accent fill with white text, which reads as a marketing hero
 - **Dense data** — reduce padding for information-heavy reference docs: `.sc{margin-bottom:1.5rem}` and `.tbl td{padding:.4rem .75rem}`
 - **Two-column body** — for comparison docs, `<div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">` wrapping parallel `<section>` elements
 
@@ -1021,10 +1030,10 @@ Include this compressed block in every floreo document. Extend as needed:
 
 ```css
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#a8a29e;--ca:#2563eb;--cab:#dbeafe;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a}
+:root{--f-h:Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,sans-serif;--f-m:'Courier New',Courier,monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#736c66;--ca:#2563eb;--cat:color-mix(in srgb,var(--ca) 65%,var(--ct));--cab:#dbeafe;--con:#fafaf9;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a;--cr-bg:#ffe4e6;--cc:#1c1917;--cct:#f5f5f4}
 :root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px}
 :root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:2rem;--t-4xl:3rem}
-@media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#78716c;--cab:#082f3e;--cw-bg:#3d1a00;--cg-bg:#052e16}.code{border:1px solid var(--cbr)}}
+@media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#a8a29e;--cat:color-mix(in srgb,var(--ca) 45%,var(--ct));--cab:#082f3e;--cw-bg:#3d1a00;--cg-bg:#052e16;--cr-bg:#3f0d12;--cc:#0c0a09}.code{border:1px solid var(--cbr)}}
 body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
 .pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
 h1,h2{font-family:var(--f-h);line-height:1.2;color:var(--ct)}
@@ -1036,13 +1045,13 @@ p{margin-bottom:1rem;color:var(--cm)}
 .sc{margin-bottom:3rem}
 .hd{padding-bottom:2rem;margin-bottom:3rem;border-bottom:2px solid var(--cbr)}
 .fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
-.ey{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ca);margin-bottom:.75rem}
+.ey{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cat);margin-bottom:.75rem}
 .sub{font-size:1.1rem;color:var(--cm)}
 .note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;font-size:.95rem;color:var(--ct)}
 .note{background:var(--cab)}
 .warn{background:var(--cw-bg)}
 .tip{background:var(--cg-bg)}
-.tw{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px;overflow:hidden}
+.tw{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px}
 .tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs)}
 .tbl thead{background:var(--cs2)}
 .tbl th{text-align:left;padding:.6rem 1rem;font-family:var(--f-m);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cm);border-bottom:1px solid var(--cbr)}
@@ -1050,11 +1059,11 @@ p{margin-bottom:1rem;color:var(--cm)}
 .tbl tr:last-child td{border-bottom:none}
 .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:1.5rem 0}
 .card{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem}
-.code{background:#1c1917;color:#f5f5f4;padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;word-break:break-all}
+.code{background:var(--cc);color:var(--cct);padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;overflow-wrap:anywhere}
 .fig{margin:1.5rem 0;text-align:center}
 .fig svg{max-width:100%;height:auto}
 figcaption{font-size:.8rem;color:var(--cq);margin-top:.5rem;font-style:italic;text-align:center}
-a{color:var(--ca);text-decoration:none;transition:color .15s ease-out}
+a{color:var(--cat);text-decoration:none;transition:color .15s ease-out}
 a:hover{text-decoration:underline}
 ul,ol{padding-left:1.5rem;margin-bottom:1rem;color:var(--cm)}
 li{margin-bottom:.25rem}
@@ -1174,16 +1183,16 @@ Highlight a row: add `style="background:var(--cab)"` to `<tr>`.
 ### Status badge
 
 ```html
-<span style="background:var(--cab);color:var(--ca);font-size:.7rem;font-family:var(--f-m);letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;font-weight:600">STATUS</span>
+<span style="background:var(--cab);color:var(--cat);font-size:.7rem;font-family:var(--f-m);letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;font-weight:600">STATUS</span>
 ```
 
 ### Stat block
 
-Large metric + label — for dashboards, KPI summaries, and key numbers.
+A row of key numbers set in the reading flow — for incident impact, KPI summaries, and results. No cards: the numbers sit on the page like figures in a report. Numbers are ink; add `key` to the one stat the reader must not miss and only that one takes the accent. Use 2–4 stats; more belongs in a table.
 
 ```html
 <div class="stats">
-  <div class="stat"><span class="sn">1,248</span><span class="sl">Requests/sec</span></div>
+  <div class="stat key"><span class="sn">1,248</span><span class="sl">Requests/sec</span></div>
   <div class="stat"><span class="sn">42ms</span><span class="sl">P50 latency</span></div>
   <div class="stat"><span class="sn">99.9%</span><span class="sl">Uptime</span></div>
 </div>
@@ -1192,9 +1201,10 @@ Large metric + label — for dashboards, KPI summaries, and key numbers.
 Additional CSS:
 
 ```css
-.stats{display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0}
-.stat{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem 1.5rem;min-width:140px}
-.sn{display:block;font-family:var(--f-h);font-size:2.5rem;font-weight:400;color:var(--ca);line-height:1}
+.stats{display:flex;gap:1.25rem 2.5rem;flex-wrap:wrap;margin:1.75rem 0 2rem}
+.stat{min-width:0}
+.sn{display:block;font-family:var(--f-h);font-size:2.25rem;font-weight:400;color:var(--ct);line-height:1}
+.key .sn{color:var(--cat)}
 .sl{display:block;font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-top:.4rem}
 ```
 
@@ -1247,7 +1257,7 @@ Additional CSS:
 ```css
 .sps{list-style:none;padding:0;margin:1.5rem 0}
 .step{display:flex;gap:1rem;margin-bottom:1.5rem}
-.spn{width:32px;height:32px;border-radius:50%;background:var(--ca);color:#fff;font-family:var(--f-m);font-size:.875rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.spn{width:32px;height:32px;border-radius:50%;background:var(--ca);color:var(--con);font-family:var(--f-m);font-size:.875rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
 .sbd{flex:1}
 .sbd h3{margin-bottom:.25rem}
 ```
@@ -1259,11 +1269,11 @@ Two-column comparison — for code migrations, config changes, and before/after 
 ```html
 <div class="spl">
   <div>
-    <span class="slbl split-before">Before</span>
+    <span class="slbl slb">Before</span>
     <pre class="code">old value or code</pre>
   </div>
   <div>
-    <span class="slbl split-after">After</span>
+    <span class="slbl sla">After</span>
     <pre class="code">new value or code</pre>
   </div>
 </div>
@@ -1275,8 +1285,8 @@ Additional CSS:
 .spl{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
 @media(max-width:600px){.spl{grid-template-columns:1fr}}
 .slbl{display:inline-block;font-family:var(--f-m);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;margin-bottom:.5rem}
-.slb{background:var(--cw-bg);color:var(--cw)}
-.sla{background:var(--cg-bg);color:var(--cg)}
+.slb{background:var(--cw-bg);color:var(--ct)}
+.sla{background:var(--cg-bg);color:var(--ct)}
 ```
 
 ### Collapsible section
@@ -1305,7 +1315,7 @@ details[open]>.clph::after{content:'▾'}
 
 ### Diff table
 
-Red/green row highlighting — for changelogs, migrations, and schema diffs. Extends `.tbl`; include the standard table CSS.
+Tinted rows with a leading `+` / `−` / `~` marker — for changelogs, migrations, and schema diffs. The marker carries the meaning for readers who can't separate the tints and is announced to screen readers; the tint only reinforces it. Extends `.tbl`; include the standard table CSS.
 
 ```html
 <div class="tw"><table class="tbl">
@@ -1321,9 +1331,11 @@ Red/green row highlighting — for changelogs, migrations, and schema diffs. Ext
 Additional CSS:
 
 ```css
-.da{background:#f0fdf4}.da td:first-child{border-left:3px solid var(--cg)}
-.dr{background:#fff1f2}.dr td:first-child{border-left:3px solid #ef4444}
-.dc{background:var(--cw-bg)}.dc td:first-child{border-left:3px solid var(--cw)}
+.da{background:var(--cg-bg)}.dr{background:var(--cr-bg)}.dc{background:var(--cw-bg)}
+:is(.da,.dr,.dc) td:first-child::before{display:inline-block;width:1.25em;font-family:var(--f-m);font-weight:600;color:var(--ct)}
+.da td:first-child::before{content:'+';content:'+'/'Added: '}
+.dr td:first-child::before{content:'\2212';content:'\2212'/'Removed: '}
+.dc td:first-child::before{content:'~';content:'~'/'Changed: '}
 ```
 
 ### Table of contents
@@ -1349,7 +1361,7 @@ Additional CSS:
 .tocl{padding-left:1.25rem;margin:0}
 .tocl li{margin-bottom:.2rem}
 .tocl a{color:var(--cm);font-size:.9rem;text-decoration:none;display:block;padding:.15rem .25rem;border-radius:3px}
-.tocl a:hover,.tocl a.active{color:var(--ca);background:var(--cab)}
+.tocl a:hover,.tocl a.active{color:var(--cat);background:var(--cab)}
 @media(min-width:1100px){.pg{max-width:1080px}main{display:grid;grid-template-columns:1fr 220px;gap:0 3rem;align-items:start}.toc{grid-column:2;grid-row:1/999;position:sticky;top:2rem;margin:0;display:block}.sc{grid-column:1}}
 @media print{main{display:block}.toc{display:none}}
 ```
@@ -1728,19 +1740,19 @@ Add inside `<header class="hd">` (for the export button) and at the start of `<m
   .ri-toc ol{list-style:none;padding:0;margin:0}
   .ri-toc li{margin-bottom:.2rem}
   .ri-toc a{color:var(--cm);text-decoration:none;display:block;padding:.2rem .5rem;border-radius:4px;font-size:.85rem;transition:background .1s}
-  .ri-toc a:hover,.ri-toc a.active{background:var(--cab);color:var(--ca)}
+  .ri-toc a:hover,.ri-toc a.active{background:var(--cab);color:var(--cat)}
 }
 .ri-search{margin:1rem 0 1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
 .ri-search input{flex:1 1 200px;min-width:0;max-width:400px;padding:.4rem .75rem;border:1px solid var(--cbr);border-radius:6px;font-family:var(--f-b);font-size:.9rem;background:var(--cs);color:var(--ct)}
 .ri-search input:focus{outline:2px solid var(--ca);outline-offset:1px}
 .ri-search-ct{font-size:.8rem;color:var(--cq);white-space:nowrap;min-width:3ch}
 .ri-search-nav{background:var(--cs);border:1px solid var(--cbr);border-radius:4px;padding:.2rem .45rem;font-size:.75rem;cursor:pointer;color:var(--cm);line-height:1}
-.ri-search-nav:hover:not(:disabled){background:var(--cab);color:var(--ca)}
+.ri-search-nav:hover:not(:disabled){background:var(--cab);color:var(--cat)}
 .ri-search-nav:disabled{opacity:.35;cursor:default}
-mark.ri-hl{background:var(--ca);color:var(--cb);border-radius:2px;padding:0 2px}
+mark.ri-hl{background:var(--ca);color:var(--con);border-radius:2px;padding:0 2px}
 mark.ri-hl.ri-hl-cur{outline:2px solid var(--ct);outline-offset:1px}
 .ri-export{font-family:var(--f-m);font-size:.75rem;color:var(--cq);cursor:pointer;text-decoration:underline dotted;background:none;border:none;padding:0;margin-top:.5rem}
-.ri-export:hover{color:var(--ca)}
+.ri-export:hover{color:var(--cat)}
 ```
 
 ### JS additions
@@ -2001,7 +2013,7 @@ Before writing the final file:
 - [ ] Accent color (`--ca`) matches document purpose
 - [ ] Visual hierarchy is clear: h1 > h2 (Georgia) → h3 (system-ui), spacing creates sections
 - [ ] `h3`/`h4` use `--f-b` (system-ui), NOT `--f-h` (Georgia) — Serif Authority Rule
-- [ ] Callouts use background-tint only — no `border-left` accent stripe
+- [ ] No side-stripe accents anywhere (callouts, diff rows, cards) — tints and markers only
 - [ ] Dark mode overrides present for `--cab`, `--cw-bg`, `--cg-bg` in the dark media query
 - [ ] Tables used for comparative data (not prose lists)
 - [ ] Callouts (`.note`, `.warn`, `.tip`) surface key insights

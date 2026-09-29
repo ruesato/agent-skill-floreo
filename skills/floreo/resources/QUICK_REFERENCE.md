@@ -9,11 +9,12 @@
 ## CSS variable tokens
 `--cb` bg · `--cs` surface · `--cs2` subtle surface (table headers, row dividers) · `--cbr` border  
 `--ct` text · `--cm` muted · `--cq` quiet  
-`--ca` accent · `--cab` accent-bg tint · `--cw-bg`/`--cw` warn amber · `--cg-bg`/`--cg` success green  
+`--ca` accent fill · `--cat` accent as text (derived; use for links, eyebrows, badges) · `--cab` accent-bg tint · `--con` text on accent fill  
+`--cw-bg`/`--cw` warn amber · `--cg-bg`/`--cg` success green · `--cr-bg` removed/destructive tint · `--cc`/`--cct` code surface/text  
 `--f-h` heading font · `--f-b` body font · `--f-m` mono font  
 `--s1`–`--s8` spacing (4px→64px) · `--t-xs`–`--t-4xl` type scale (.75rem→3rem)
 
-Dark mode auto-activates via `@media(prefers-color-scheme:dark)` — overrides `--cb`, `--cs`, `--cs2`, `--cbr`, `--ct`, `--cm`, `--cq`
+Dark mode auto-activates via `@media(prefers-color-scheme:dark)` — overrides `--cb`, `--cs`, `--cs2`, `--cbr`, `--ct`, `--cm`, `--cq`, `--cat`, `--cab`, `--cw-bg`, `--cg-bg`, `--cr-bg`, `--cc`. Never hard-code hex where a token exists
 
 ## Accent color by doc type
 `#2563eb` technical (default) · `#dc2626` warning/incident · `#16a34a` success  
