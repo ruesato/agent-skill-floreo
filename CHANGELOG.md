@@ -6,8 +6,16 @@ All notable changes to floreo are documented here. Follows [Keep a Changelog](ht
 
 ## [Unreleased]
 
+---
+
+## [1.3.0] — 2026-09-29
+
 ### Added
 
+- **SkillSpector CI gate** — every skill under `skills/` is scanned by NVIDIA SkillSpector on push and pull request via `scripts/scan-skills.sh`; the build fails on any non-suppressed finding. Reviewed false positives live in `.skillspector-baseline.yaml` with written reasons.
+- **Template tokens** — `--cat` (accent as text, derived with `color-mix()` so every Default/Deep accent clears 4.5:1 in both themes), `--con` (text on accent fills), `--cr-bg` (removed/destructive tint), `--cc`/`--cct` (code surface and text).
+- **`.kv` and `.bdg` component classes** — key-value metadata and status badge no longer rely on inline `style` attributes.
+- **`docs/how-floreo-works-2026-09-29.html`** — project overview rendered with the updated template.
 - **Content Plan templates** — five new templates: Meeting Notes, Weekly Status Update, Design Review, Runbook/SOP, and Technical Spec/RFC. Each ships pre-filled `DOCUMENT`/`AUDIENCE`/`PURPOSE`/`ACCENT` and section scaffolding matching the existing template format, bringing the library from 9 to 14 types.
 - **SVG chart vocabulary** — four new inline-SVG chart patterns: grouped/stacked bar (multi-series with `--ca`/`--ct` contrast), scatter plot (two-variable correlation), area-as-primary (cumulative magnitude with `--ca` fill + `--ct` edge), and heatmap (4-step discrete token scale `--cs2` → `--cab` → `--ca` → `--ct`, no opacity encoding). Visual-treatment table, available-types list, and intent-block mapping updated with `chart:grouped-bar`, `chart:area`, `chart:scatter`, `chart:heatmap`.
 - **`scripts/check-floreo.sh`** — automated Quality Checklist validator. Enforces meta tags, self-containment, embedded Content Plan, `data-floreo-id` on sections, SVG accessibility (`role`/`title`/`desc`/`aria-labelledby`), dark-mode callout overrides, file-size budget, mobile-responsive `max-width`, and hardcoded-hex warnings. Supports `--strict` (warnings as failures) and directory recursion; exit `0`/`1`/`2` for CI gating.
@@ -18,6 +26,22 @@ All notable changes to floreo are documented here. Follows [Keep a Changelog](ht
 
 - **Repo hygiene** — untracked personal local-dev files from the published plugin tree: `.claude/skills/` (debug-issue, explore-codebase, refactor-safely, review-changes graph skills), `.claude/settings.json`, `.mcp.json`, `.opencode.json`. These depend on the code-review-graph MCP server and bd/hooks wiring irrelevant to floreo consumers. Added to `.gitignore` and removed from git tracking; files remain on disk for local dev.
 - **Docs** — documented the `get_minimal_context` graph tool in the code-review-graph MCP tools section of `AGENTS.md` and `CLAUDE.md` (was referenced by the 4 graph skills as a mandatory first call but missing from the tool inventory table).
+- **Typography** — heading serif stack is now Charter → Georgia (lining figures); mono stack prefers `ui-monospace`, Menlo, Consolas over Courier New. Prose capped at 68ch, h3 raised to 1.25rem, fluid h1, balanced/pretty wrapping, 1.75 line-height in dark mode.
+- **Layout rhythm** — fluid section spacing, space above h3, no doubled margins inside timelines, procedures, cards, and collapsibles; before/after labels attach to their code blocks; the inline ToC drops its container padding.
+- **Stat block** — card-free row of ink numbers; an optional `.key` stat takes the accent (replaces bordered accent-colored cards).
+- **Cover header variation** — an 8% accent tint via `color-mix()` with ink text instead of a solid accent fill with `#fff`.
+- **Diff table** — tinted rows with announced `+` / `−` / `~` markers replace 3px side stripes; row text is ink, not gray.
+- **SVG charts** — patterns carry a `width` attribute equal to the viewBox width so labels render at their set size; chart text uses the `--f-h`/`--f-m` tokens; figures and captions are left-aligned.
+- **Table of contents** — exactly one active entry, marked with `aria-current`; the first entry is active on load.
+
+### Fixed
+
+- **Dark mode** — code blocks no longer share the page background, and diff rows no longer render light text on hard-coded light tints (1.4:1 → 14:1+).
+- **Contrast** — `--cq` raised to `#736c66` (light) and `#a8a29e` (dark): metadata, timestamps, captions, and footers go from 2.41:1 to 4.95:1+. Before/after labels, badges, and links meet 4.5:1 in both themes.
+- **Before/after example** — used `split-before`/`split-after` classes that the CSS never defined; now `.slb`/`.sla`.
+- **Wide tables** — `.tw` set `overflow:hidden` after `overflow-x:auto`, clipping wide tables on mobile.
+- **Code wrapping** — `word-break:break-all` broke every word mid-letter; now `overflow-wrap:anywhere`.
+- **Keyboard focus** — added a `:focus-visible` ring; links and summaries had no visible focus state.
 
 ---
 
