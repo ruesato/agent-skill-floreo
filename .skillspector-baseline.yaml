@@ -52,11 +52,11 @@ fingerprints:
     status and its render behavior; "rejected" is the one case where a comment
     is intentionally kept, and the prose at draft/SKILL.md:262 explains why
     ("so the decision is visible in the rendered output").
-- hash: sha256:8d55ca511b4fb2d440d558cae664175bc81c9a6abcab90e3cc9a6b1fd86ada85
+- hash: sha256:b46a66704e431641f6dc04142b41a91b3598fc41ef67de7ef7a04edb6aa646bf
   rule_id: P2
   file: SKILL.md
   reason: >-
-    False positive in skills/floreo/SKILL.md line 1401. P2 "Hidden Instructions"
+    False positive in skills/floreo/SKILL.md line 1438. P2 "Hidden Instructions"
     matched an HTML comment annotating a fenced ```html code example: `<!-- Bars
     — single series uses one fill; for two series use --ca and --cm (both clear
     3:1) -->`. The skill uses such comments throughout its SVG/HTML examples as
@@ -72,16 +72,16 @@ fingerprints:
     heatmap); only the two whose prose most resembles an instruction were
     flagged. The comment contains color-guidance prose, not a directive to
     perform an action.
-- hash: sha256:18c1887677c1ff37f746e33b15c992f4da3ac7d338e031dcd022e071937bb76c
+- hash: sha256:d97dbff8456005d77eb02bce0a67858231dfb7b982d087647d9f141efe149337
   rule_id: P2
   file: SKILL.md
   reason: >-
-    False positive in skills/floreo/SKILL.md line 1713. P2 "Hidden Instructions"
+    False positive in skills/floreo/SKILL.md line 1750. P2 "Hidden Instructions"
     matched an HTML comment annotating a fenced ```html code example: `<!-- At
     start of main, before first section -->`. Same root cause as the
-    floreo:1401 finding: a teaching annotation inside a code fence labeling
+    floreo:1438 finding: a teaching annotation inside a code fence labeling
     where the search/ToC markup goes. The prose immediately above the code
-    fence (floreo/SKILL.md:1707) already states "Add inside `<header class="hd">`
+    fence (floreo/SKILL.md:1744) already states "Add inside `<header class="hd">`
     (for the export button) and at the start of `<main>` (for search and sticky
     ToC)" — the comment is a redundant placement marker, not an instruction.
     Never reaches generated output per the skill's no-HTML-comments rule
