@@ -1,0 +1,486 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="floreo:type" content="bauhaus-legacy">
+<meta name="floreo:created" content="2026-10-14">
+<meta name="floreo:model" content="claude-sonnet-4-6">
+<meta name="floreo:version" content="1">
+<title>Bauhaus After Bauhaus — 1933 → Today</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --k:#0a0a0a;--p:#f3ecdc;--w:#fffef9;--r:#d40000;--y:#f5c518;--b:#0050b3;
+  --f-h:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --f-b:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --f-m:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
+  --t-xs:.7rem;--t-sm:.85rem;--t-md:1rem;--t-lg:1.15rem;--t-xl:1.35rem;--t-2xl:1.85rem;--t-3xl:2.75rem;--t-4xl:clamp(3.2rem,8vw,6.5rem);--t-5xl:clamp(4rem,12vw,9rem);
+  --u:8px;
+  --s1:calc(var(--u)*1);--s2:calc(var(--u)*2);--s3:calc(var(--u)*3);--s4:calc(var(--u)*4);
+  --s5:calc(var(--u)*6);--s6:calc(var(--u)*8);--s7:calc(var(--u)*12);--s8:calc(var(--u)*16);
+}
+@media(prefers-color-scheme:dark){:root{--k:#f3ecdc;--p:#0a0a0a;--w:#151513;--r:#ff2d2d;--y:#ffd400;--b:#2680ff}}
+html{background:var(--p)}
+body{
+  font-family:var(--f-b);background:var(--p);color:var(--k);line-height:1.55;padding:0;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  position:relative;overflow-x:hidden;
+}
+.bauhaus-stage{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:.32}
+.bauhaus-stage > *{position:absolute;display:block;will-change:transform}
+.bg-circle{width:24vmax;height:24vmax;border-radius:50%;background:var(--b);left:-14vmax;top:-8vmax;filter:blur(1.5px);animation:drift 26s ease-in-out infinite}
+.bg-square{width:20vmax;height:20vmax;background:var(--r);right:-9vmax;bottom:-6vmax;filter:blur(1px);animation:spin 60s linear infinite;transform-origin:50% 50%}
+.bg-diag{width:160vmax;height:4px;background:var(--k);left:-30vmax;top:48vh;transform:rotate(-18deg);animation:slide 22s ease-in-out infinite alternate}
+.bg-triangle{width:0;height:0;border-left:10vmax solid transparent;border-right:10vmax solid transparent;border-bottom:17vmax solid var(--y);right:12vw;top:-7vmax;filter:blur(1px);animation:pulse 18s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(3vw,-2vh) scale(1.04)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slide{from{transform:rotate(-18deg) translateX(-5vw)}to{transform:rotate(-18deg) translateX(5vw)}}
+@keyframes pulse{0%,100%{opacity:.85;transform:translateY(0)}50%{opacity:1;transform:translateY(-1.5vh)}}
+@media(prefers-reduced-motion:reduce){.bg-circle,.bg-square,.bg-diag,.bg-triangle{animation:none}}
+.pg{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:var(--s6) var(--s5) var(--s8)}
+.bleed{max-width:none;margin:0;padding:0}
+.cover{position:relative;padding:var(--s8) var(--s5) var(--s7);margin:0 calc(-1 * var(--s5)) var(--s7);background:var(--p);overflow:hidden;border-bottom:6px solid var(--k)}
+.cover::before{content:"";position:absolute;left:0;right:0;bottom:-6px;height:6px;background:var(--k)}
+.cover-mark{position:absolute;font-family:var(--f-m);font-size:var(--t-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--k);opacity:.75}
+.cover-mark.tl{top:var(--s4);left:var(--s5)}.cover-mark.tr{top:var(--s4);right:var(--s5);text-align:right}
+.cover-mark.bl{bottom:var(--s4);left:var(--s5)}.cover-mark.br{bottom:var(--s4);right:var(--s5);text-align:right}
+.cover-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(8,minmax(7vh,1fr));gap:var(--s3);min-height:62vh;position:relative}
+.shape{position:absolute;display:block}
+.shape.circle{width:18vmin;height:18vmin;border-radius:50%;background:var(--b)}
+.shape.square{background:var(--r)}
+.shape.tri{width:0;height:0;border-left:9vmin solid transparent;border-right:9vmin solid transparent;border-bottom:15vmin solid var(--y)}
+.shape.bar{height:3px;background:var(--k);width:60%}
+.shape.ink-bar{height:6px;background:var(--k);width:100%}
+.cover h1{font-family:var(--f-h);font-size:var(--t-5xl);font-weight:700;line-height:.9;letter-spacing:-.04em;color:var(--k);text-transform:lowercase;grid-column:1 / span 9;grid-row:2 / span 4;align-self:end;position:relative;z-index:3}
+.cover h1 .row-1{display:block}.cover h1 .row-2{display:block;color:var(--r)}.cover h1 .row-3{display:block;padding-left:2ch}
+.cover-sub{grid-column:1 / span 7;grid-row:7 / span 2;font-family:var(--f-m);font-size:var(--t-sm);line-height:1.5;color:var(--k);text-transform:lowercase;letter-spacing:.02em;max-width:42ch;position:relative;z-index:3}
+.cover-meta{grid-column:9 / span 4;grid-row:7 / span 1;font-family:var(--f-m);font-size:var(--t-xs);text-transform:uppercase;letter-spacing:.18em;color:var(--k);text-align:right;align-self:end;z-index:3;position:relative}
+.toc{margin:0 0 var(--s7);padding:var(--s5) 0;border-top:2px solid var(--k);border-bottom:2px solid var(--k);position:relative}
+.toc-label{font-family:var(--f-m);font-size:var(--t-xs);letter-spacing:.25em;text-transform:uppercase;margin-bottom:var(--s3);color:var(--k)}
+.toc ol{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s2) var(--s4)}
+.toc li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--s3);padding:var(--s2) 0;border-top:1px solid var(--k);font-family:var(--f-h);font-size:var(--t-lg);text-transform:lowercase;color:var(--k)}
+.toc li:last-child{border-bottom:1px solid var(--k)}
+.toc-num{font-family:var(--f-m);font-size:var(--t-xs);letter-spacing:.12em;color:var(--k);opacity:.6}
+.toc-mark{width:14px;height:14px;display:inline-block;flex-shrink:0}
+.toc-mark.c{border-radius:50%;background:var(--b)}.toc-mark.s{background:var(--r)}
+.toc-mark.t{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--y)}
+.toc-mark.b{background:var(--k);height:4px;width:18px;align-self:center}
+.toc a{color:inherit;text-decoration:none;text-transform:lowercase;transition:color .12s linear}
+.toc a:hover{color:var(--r)}
+.sc{margin-bottom:var(--s8);position:relative}
+.sc-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:var(--s4);margin-bottom:var(--s5);padding-bottom:var(--s3);border-bottom:3px solid var(--k)}
+.sc-num{font-family:var(--f-m);font-size:var(--t-xs);letter-spacing:.25em;text-transform:uppercase;color:var(--k);opacity:.6;margin-bottom:var(--s1)}
+h2{font-family:var(--f-h);font-weight:700;font-size:var(--t-4xl);line-height:.92;letter-spacing:-.035em;text-transform:lowercase;color:var(--k);margin:0}
+h2 .accent-r{color:var(--r)}h2 .accent-y{color:var(--y);text-shadow:0 0 0 var(--k)}h2 .accent-b{color:var(--b)}
+.sc-shape{width:clamp(60px,9vw,110px);height:clamp(60px,9vw,110px);flex-shrink:0}
+.sc-shape.c{border-radius:50%;background:var(--b)}
+.sc-shape.s{background:var(--r)}
+.sc-shape.t{width:0;height:0;border-left:clamp(30px,4.5vw,55px) solid transparent;border-right:clamp(30px,4.5vw,55px) solid transparent;border-bottom:clamp(52px,7.8vw,95px) solid var(--y);background:transparent}
+@media(prefers-color-scheme:dark){h2 .accent-y{color:var(--y);text-shadow:none}}
+h3{font-family:var(--f-h);font-weight:700;font-size:var(--t-2xl);line-height:1.05;letter-spacing:-.02em;text-transform:lowercase;color:var(--k);margin-top:var(--s5);margin-bottom:var(--s2);display:flex;align-items:center;gap:var(--s2)}
+h3::before{content:"";display:inline-block;width:14px;height:14px;background:var(--r);flex-shrink:0}
+h3 + p{margin-top:0}
+p{margin-bottom:var(--s3);max-width:68ch;color:var(--k);font-size:var(--t-md);line-height:1.6}
+strong{font-weight:700;color:var(--k)}em{font-style:italic;color:var(--k)}
+a{color:var(--r);text-decoration:none;border-bottom:2px solid var(--y);transition:background .12s linear}
+a:hover{background:var(--y);color:var(--k)}
+ul,ol{margin:0 0 var(--s3);padding-left:var(--s4);max-width:68ch}
+li{margin-bottom:var(--s1);line-height:1.55}
+li::marker{color:var(--r);font-weight:700}
+code{font-family:var(--f-m);font-size:.92em;background:var(--k);color:var(--p);padding:1px 6px;border-radius:0}
+.code{background:var(--k);color:var(--p);padding:var(--s3) var(--s4);font-family:var(--f-m);font-size:var(--t-sm);line-height:1.65;overflow-x:auto;margin:var(--s3) 0;white-space:pre-wrap;border-left:8px solid var(--r)}
+.tbl-w{overflow-x:auto;margin:var(--s3) 0;border:2px solid var(--k)}
+.tbl{width:100%;border-collapse:collapse;font-size:var(--t-sm);background:var(--w)}
+.tbl thead th{background:var(--r);color:var(--p);text-align:left;padding:var(--s2) var(--s3);font-family:var(--f-m);font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;border-right:2px solid var(--k)}
+.tbl thead th:last-child{border-right:none}
+.tbl td{padding:var(--s2) var(--s3);border-bottom:1px solid var(--k);border-right:1px solid var(--k);vertical-align:top;color:var(--k)}
+.tbl td:last-child{border-right:none}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:var(--p)}
+.glyph{display:inline-block;margin-right:var(--s1);vertical-align:middle}
+.glyph.c{width:14px;height:14px;border-radius:50%;background:var(--b)}
+.glyph.s{width:14px;height:14px;background:var(--r)}
+.glyph.t{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--y)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--s5) var(--s4);margin:var(--s5) 0;padding:var(--s4) 0;border-top:3px solid var(--k);border-bottom:3px solid var(--k);position:relative}
+.stats::before{content:"";position:absolute;left:50%;top:-3px;width:18px;height:18px;background:var(--y);transform:translateX(-50%) rotate(45deg)}
+.stat{display:flex;flex-direction:column;gap:var(--s1);min-width:0}
+.stat-k{font-family:var(--f-m);font-size:var(--t-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--k);opacity:.7}
+.stat-v{font-family:var(--f-h);font-weight:700;font-size:var(--t-2xl);line-height:1.05;letter-spacing:-.025em;color:var(--k);word-wrap:break-word}
+.stat-v.r{color:var(--r)}.stat-v.b{color:var(--b)}
+.stat-v.y{color:var(--k);-webkit-text-stroke:1.5px var(--y);text-stroke:1.5px var(--y);text-shadow:0 0 0 transparent}
+.note,.warn,.tip,.info{padding:var(--s4);margin:var(--s3) 0;font-size:var(--t-md);line-height:1.55;max-width:68ch;position:relative;border:2px solid var(--k)}
+.note{background:var(--b);color:var(--w)}.warn{background:var(--r);color:var(--w)}
+.tip{background:var(--y);color:var(--k)}.info{background:var(--k);color:var(--w)}
+.note strong,.warn strong,.tip strong,.info strong{color:inherit;text-transform:lowercase;letter-spacing:.02em}
+.note::before,.warn::before,.tip::before,.info::before{content:"";position:absolute;top:-2px;left:-2px;width:22px;height:22px;background:var(--k);z-index:-1}
+.note::after,.warn::after,.tip::after,.info::after{content:"";position:absolute;top:8px;left:8px;width:8px;height:8px;background:var(--y);transform:rotate(45deg)}
+.warn::after{background:var(--b)}.tip::after{background:var(--r)}.info::after{background:var(--y)}
+.note,.warn,.tip,.info{isolation:isolate}
+.steps{list-style:none;padding:0;margin:var(--s3) 0;counter-reset:stp;display:grid;gap:var(--s3);max-width:none}
+.steps li{counter-increment:stp;display:grid;grid-template-columns:auto 1fr;gap:var(--s3);align-items:start;padding:var(--s2) 0;border-top:2px solid var(--k);font-size:var(--t-md)}
+.steps li:last-child{border-bottom:2px solid var(--k)}
+.steps li::before{content:counter(stp,decimal-leading-zero);font-family:var(--f-m);font-size:var(--t-sm);font-weight:700;letter-spacing:.05em;color:var(--r);min-width:2.5ch;padding-top:2px}
+.steps li::marker{content:""}
+.fig{margin:var(--s4) 0;text-align:left;max-width:none}
+.fig svg{max-width:100%;height:auto;display:block}
+figcaption{font-family:var(--f-m);font-size:var(--t-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--k);opacity:.65;margin-top:var(--s2)}
+.diagonal-rule{height:80px;margin:var(--s7) calc(-1 * var(--s5));background:var(--k);transform:rotate(-3deg);position:relative;overflow:hidden}
+.diagonal-rule::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:var(--r);clip-path:polygon(0 0,42% 0,38% 100%,0 100%)}
+.diagonal-rule::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:var(--y);clip-path:polygon(72% 0,76% 0,72% 100%,68% 100%)}
+.divider{height:8px;margin:var(--s7) 0;background:var(--k);position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:var(--s1)}
+.divider::before{content:""}
+.divider > i{display:block;height:8px}
+.divider > i:nth-child(3n){background:var(--r)}.divider > i:nth-child(5n){background:var(--y)}.divider > i:nth-child(7n){background:var(--b)}
+.fn{margin-top:var(--s8);padding:var(--s4) 0 var(--s6);border-top:3px solid var(--k);display:grid;grid-template-columns:1fr auto;align-items:end;gap:var(--s4);font-family:var(--f-m);font-size:var(--t-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--k);opacity:.7}
+.fn .marks{display:flex;gap:var(--s1);align-items:center}
+.fn .marks .s{width:14px;height:14px;background:var(--r)}
+.fn .marks .c{width:14px;height:14px;border-radius:50%;background:var(--b)}
+.fn .marks .t{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--y);background:transparent}
+.fn .credits{font-family:var(--f-m);letter-spacing:.18em;text-transform:uppercase}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;transition:none!important}}
+</style>
+</head><body>
+<!-- ambient motion background — references moholy-nagy, richter, kandinsky -->
+<div class="bauhaus-stage" aria-hidden="true">
+  <div class="bg-circle"></div>
+  <div class="bg-square"></div>
+  <div class="bg-diag"></div>
+  <div class="bg-triangle"></div>
+</div>
+
+<div class="pg">
+
+<!-- ============== COVER ============== -->
+<header class="cover">
+  <span class="cover-mark tl">design reference · no. 02</span>
+  <span class="cover-mark tr">bauhaus / 1933 → today</span>
+  <div class="cover-grid">
+    <div class="shape circle" style="left:62%;top:8%;width:18vmin;height:18vmin;background:var(--b)"></div>
+    <div class="shape square" style="left:78%;top:55%;width:14vmin;height:14vmin;background:var(--r)"></div>
+    <div class="shape tri" style="left:48%;top:62%;border-bottom-color:var(--y)"></div>
+    <div class="shape bar" style="left:0;top:78%;width:48%;height:3px;background:var(--k)"></div>
+    <div class="shape ink-bar" style="left:0;top:calc(78% + 12px);width:30%;height:6px;background:var(--k)"></div>
+    <h1 style="font-size:clamp(2.8rem,8.2vw,6.4rem)">
+      <span class="row-1">after</span>
+      <span class="row-2">bauhaus,</span>
+      <span class="row-3">1933 → today</span>
+    </h1>
+    <p class="cover-sub">the diaspora and its descendants — through new bauhaus chicago, black mountain college, hfg ulm, swiss style, the cold war reopening, and the 2019 centenary.</p>
+    <p class="cover-meta">02 — 14 — 10 — 2026<br>floreo · bauhaus baseline</p>
+  </div>
+  <span class="cover-mark bl">circle · square · triangle</span>
+  <span class="cover-mark br">gropius · mies · albers · moholy</span>
+</header>
+
+<!-- ============== TOC ============== -->
+<nav class="toc" aria-label="table of contents">
+  <p class="toc-label">contents · lowercase · 9 sections</p>
+  <ol>
+    <li><span class="toc-num">01</span><span class="toc-mark s"></span><a href="#closure">what happened in 1933</a></li>
+    <li><span class="toc-num">02</span><span class="toc-mark c"></span><a href="#chronology">a chronology, compressed</a></li>
+    <li><span class="toc-num">03</span><span class="toc-mark t"></span><a href="#new-bauhaus">new bauhaus, chicago</a></li>
+    <li><span class="toc-num">04</span><span class="toc-mark b"></span><a href="#black-mountain">black mountain college</a></li>
+    <li><span class="toc-num">05</span><span class="toc-mark s"></span><a href="#iit">mies at IIT</a></li>
+    <li><span class="toc-num">06</span><span class="toc-mark c"></span><a href="#harvard">gropius at harvard</a></li>
+    <li><span class="toc-num">07</span><span class="toc-mark t"></span><a href="#ulm">hfg ulm</a></li>
+    <li><span class="toc-num">08</span><span class="toc-mark b"></span><a href="#swiss">the swiss style</a></li>
+    <li><span class="toc-num">09</span><span class="toc-mark s"></span><a href="#east-germany">east german reopening</a></li>
+    <li><span class="toc-num">10</span><span class="toc-mark c"></span><a href="#centenary">centenary, 2019</a></li>
+    <li><span class="toc-num">11</span><span class="toc-mark t"></span><a href="#today">today</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============== CLOSURE ============== -->
+<section class="sc" data-floreo-id="closure">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 01</p>
+      <h2>what happened <span class="accent-r">in 1933</span></h2>
+    </div>
+    <div class="sc-shape s" aria-hidden="true"></div>
+  </div>
+  <p>the bauhaus had been under political pressure for years. the weimar school moved to dessau in 1925, and the dessau school moved to berlin in 1932 — both moves driven by hostile city governments. when the nazis came to national power in january 1933, the writing was on the wall. the school was sealed by the gestapo in april 1933. on july 20, 1933, mies van der rohe and the remaining faculty voted to dissolve the school rather than submit to nazi control. the bauhaus closed after fourteen years.</p>
+  <p>the masters scattered. <strong>walter gropius</strong>, <strong>lászló moholy-nagy</strong>, <strong>herbert bayer</strong>, <strong>josef albers</strong>, and <strong>mies van der rohe</strong> all eventually reached the united states. marcel breuer joined gropius in practice. ludwig hilberseimer, who had taught urban planning at the bauhaus, followed. the school's american diaspora was the single most consequential act of intellectual transfer in twentieth-century design.</p>
+
+  <div class="stats" role="group" aria-label="closure at a glance">
+    <div class="stat"><span class="stat-k">closed by nazis</span><span class="stat-v r">1933</span></div>
+    <div class="stat"><span class="stat-k">masters to the us</span><span class="stat-v">5+</span></div>
+    <div class="stat"><span class="stat-k">schools founded in america</span><span class="stat-v b">3</span></div>
+    <div class="stat"><span class="stat-k">institutions still operating</span><span class="stat-v y">4</span></div>
+    <div class="stat"><span class="stat-k">centenary exhibitions (2019)</span><span class="stat-v">600+</span></div>
+  </div>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== CHRONOLOGY ============== -->
+<section class="sc" data-floreo-id="chronology">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 02</p>
+      <h2>a <span class="accent-b">chronology</span>, compressed</h2>
+    </div>
+    <div class="sc-shape c" aria-hidden="true"></div>
+  </div>
+  <p>the post-bauhaus story spans ninety years and at least four continents. the dates below are the load-bearing ones — the moments where the school's dna passed into a new institution, a new city, or a new medium.</p>
+
+  <div class="tbl-w">
+    <table class="tbl">
+      <thead><tr><th>year</th><th>event</th></tr></thead>
+      <tbody>
+        <tr><td>1933</td><td>bauhaus sealed by gestapo · masters emigrate</td></tr>
+        <tr><td>1937</td><td>new bauhaus founded in chicago by moholy-nagy</td></tr>
+        <tr><td>1937</td><td>gropius appointed chair at harvard gsd</td></tr>
+        <tr><td>1938</td><td>mies appointed director of architecture at armour institute (later iit)</td></tr>
+        <tr><td>1949</td><td>josef albers moves to yale · teaches until 1958</td></tr>
+        <tr><td>1953</td><td>hfg ulm founded by inge scholl, otl aicher, max bill</td></tr>
+        <tr><td>1957</td><td>black mountain college closes</td></tr>
+        <tr><td>1958</td><td>mies retires from iit</td></tr>
+        <tr><td>1968</td><td>hfg ulm closed under political pressure</td></tr>
+        <tr><td>1976</td><td>bauhaus building in dessau reopens as a gdr cultural centre</td></tr>
+        <tr><td>1979</td><td>bauhaus archive opens its berlin building</td></tr>
+        <tr><td>1994</td><td>bauhaus dessau foundation founded by federal government</td></tr>
+        <tr><td>2019</td><td>bauhaus museum weimar + bauhaus museum dessau both open for centenary</td></tr>
+        <tr><td>2026</td><td>bauhaus a globally diffused design vocabulary</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== NEW BAUHAUS ============== -->
+<section class="sc" data-floreo-id="new-bauhaus">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 03</p>
+      <h2>the <span class="accent-r">new bauhaus</span>, chicago</h2>
+    </div>
+    <div class="sc-shape t" aria-hidden="true"></div>
+  </div>
+  <p>lászló moholy-nagy founded the <strong>new bauhaus</strong> in chicago in october 1937 with the support of the association of arts and industries. the school's name was direct — it was meant to be a continuation, not an homage. walter gropius and other former bauhaus figures served on the advisory board. moholy recruited faculty from his bauhaus-era circle: györgy kepes joined from london, alexander archipenko taught sculpture, and the school opened with the same preliminary course structure the original had used.</p>
+  <p>the school closed after twelve months for lack of funds. moholy reopened it in 1939 as the <strong>school of design</strong>, with backing from walter paepcke and the container corporation of america. in 1944 it was rechartered as the <strong>institute of design</strong> — its eventual name. moholy died in 1946; serge chemayeff took over briefly, then jay doblin and charles eames's circle carried the school through the postwar period. in 1949 the institute merged with the illinois institute of technology, where mies was already heading architecture. the two bauhaus-derived schools shared a campus for decades.</p>
+  <p>the institute of design still exists as part of iit. it is the longest continuously operating bauhaus-descended institution in the world.</p>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== BLACK MOUNTAIN ============== -->
+<section class="sc" data-floreo-id="black-mountain">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 04</p>
+      <h2>black <span class="accent-b">mountain</span> college</h2>
+    </div>
+    <div class="sc-shape s" aria-hidden="true"></div>
+  </div>
+  <p>the alberses were the first bauhaus masters to arrive in the united states. josef albers had taught the preliminary course at the original bauhaus; anni albers ran the weaving workshop. in 1933, the year of the school's closure, they were recruited by john andrew rice to teach at <strong>black mountain college</strong> in north carolina — a small liberal-arts school founded on the same progressive principles as the bauhaus.</p>
+  <p>josef albers taught there from 1933 to 1949, running a colour course that became the seed of his later book <em>interaction of color</em>. black mountain's faculty rolls over the late 1930s and 1940s are a who's who of the postwar american avant-garde: walter gropius visited, buckminster fuller taught, john cage and merce cunningham established the college's performing-arts program, and robert rauschenberg and cy twombly were alumni. the college closed in 1957 under financial pressure, but its alumni seeded the rest of the century. rauschenberg's "combine" paintings, cage's chance operations, and cunningham's dance all carry the bauhaus's gesture toward total art.</p>
+
+  <div class="info">
+    <strong>info — </strong>black mountain is the only one of the four american bauhaus-descended schools where the school's progressive, anti-authoritarian dna survived long enough to seed an entire generation of artists. the iit and chicago bauhaus institutions became design schools in the conventional sense. black mountain became a cultural movement.
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== IIT ============== -->
+<section class="sc" data-floreo-id="iit">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 05</p>
+      <h2>mies at <span class="accent-r">iit</span></h2>
+    </div>
+    <div class="sc-shape c" aria-hidden="true"></div>
+  </div>
+  <p>mies van der rohe arrived in chicago in 1938 to run the architecture school at the armour institute of technology. armour merged with the lewis institute in 1940 to form the <strong>illinois institute of technology</strong>, and mies led the college of architecture until 1958. in those twenty years he designed most of the iit campus — twenty-two buildings — including <strong>s.r. crown hall</strong> (1956), which is now a national historic landmark and one of the most influential buildings of the twentieth century.</p>
+  <p>mies's teaching program replaced the beaux-arts model with a drawing- and building-centered curriculum that became the template for architectural education in the postwar united states. his motto — <em>less is more</em> — is the most quoted line from any bauhaus descendant. his students — including philip johnson, i.m. pei, and a generation of chicago architects — defined the glass-box corporate architecture of the 1960s and 1970s.</p>
+
+  <div class="stats" role="group" aria-label="mies at iit">
+    <div class="stat"><span class="stat-k">buildings at iit</span><span class="stat-v r">22</span></div>
+    <div class="stat"><span class="stat-k">years leading iit</span><span class="stat-v">20</span></div>
+    <div class="stat"><span class="stat-k">major students</span><span class="stat-v b">johnson · pei · tigerman</span></div>
+    <div class="stat"><span class="stat-k">crown hall</span><span class="stat-v y">1956</span></div>
+  </div>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== HARVARD ============== -->
+<section class="sc" data-floreo-id="harvard">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 06</p>
+      <h2>gropius at <span class="accent-b">harvard</span></h2>
+    </div>
+    <div class="sc-shape t" aria-hidden="true"></div>
+  </div>
+  <p>walter gropius was appointed chair of the department of architecture at the <strong>harvard graduate school of design</strong> in 1937, the same year moholy-nagy opened the new bauhaus in chicago. he held the position until 1952. marcel breuer joined him in practice and taught alongside him.</p>
+  <p>gropius's most consequential contribution was the <em>architectural collaborative</em>, his partnership with a generation of young architects that exported the bauhaus approach to institutional and educational buildings across north america. the gsd curriculum he installed — modular planning, prefabrication, interdisciplinary studios — became the model for every postwar american architecture school. the harvard gsd still carries his influence in its pedagogy, even though the buildings around its campus are mostly neo-georgian rather than modernist.</p>
+</section>
+
+<div class="divider" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== HFG ULM ============== -->
+<section class="sc" data-floreo-id="ulm">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 07</p>
+      <h2>hfg <span class="accent-r">ulm</span> — germany's second bauhaus</h2>
+    </div>
+    <div class="sc-shape s" aria-hidden="true"></div>
+  </div>
+  <p>the <strong>hochschule für gestaltung ulm</strong> (hfg ulm) opened in 1953, twenty years after the original bauhaus, and it explicitly framed itself as the school's successor. walter gropius attended the opening ceremony. the school's first rector was the swiss architect <strong>max bill</strong>, a former bauhaus student who designed the hfg's iconic campus buildings (1953–55). the other founders were <strong>inge aicher-scholl</strong> (sister of the white rose resistance members hans and sophie scholl) and <strong>otl aicher</strong>, who would later design the visual identity for the 1972 munich olympics.</p>
+  <p>hfg ulm is the most rigorous of the bauhaus descendants. where the original school had treated design as art informed by craft, ulm treated design as a <strong>methodological discipline</strong> grounded in mathematics, sociology, and behavioural science. this was a deliberate break — max bill's artistic-intuition bauhaus was replaced by what came to be called the <strong>ulm model</strong>, formalized under the rectorship of tomás maldonado in the late 1950s.</p>
+  <p>the school closed in 1968 after political fights with the state government of baden-württemberg, but its graduates reshaped european design. otl aicher's work for braun and for the munich olympics; hans gugelot's product design for braun (the sk4 record player, the t3 pocket radio); the corporate identity systems for lufthansa and erco — all of these are ulm products. the ulm model remains the most influential design-education curriculum of the postwar period.</p>
+
+  <div class="tip">
+    <strong>tip — </strong>hfg ulm is the school the original bauhaus could have become if it had stayed open long enough to absorb information theory, semiotics, and operations research. it treats the bauhaus's craft orientation as a starting point, not an ending point.
+  </div>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== SWISS STYLE ============== -->
+<section class="sc" data-floreo-id="swiss">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 08</p>
+      <h2>the <span class="accent-b">swiss</span> style</h2>
+    </div>
+    <div class="sc-shape c" aria-hidden="true"></div>
+  </div>
+  <p>the <strong>swiss style</strong> (also called the <strong>international typographic style</strong>) is the bauhaus's most successful formal descendant. it emerged in the 1950s and 1960s from two swiss design schools — the <strong>kunstgewerbeschule zürich</strong> and the <strong>allgemeine gewerbeschule basel</strong> — where former bauhaus students and their students taught.</p>
+  <p>the founding figure was <strong>ernst keller</strong>, who taught at the zürich school from 1918 and is often called the "father of swiss style." his students included <strong>josef müller-brockmann</strong> and <strong>armin hofmann</strong>, both of whom became the movement's most published figures. jan tschichold, who had fled nazi germany in 1933, lived in basel from 1933 onward and taught at the basel school before moving to london in 1946. the swiss style codified what the bauhaus had started: <strong>mathematically rigorous grid systems, asymmetric layout, sans-serif type (notably helvetica), and photography over illustration</strong>.</p>
+  <p>müller-brockmann's book <em>grid systems in graphic design</em> (1981) is the most influential design textbook of the late twentieth century, and hofmann's <em>graphic design manual</em> (1965) is its companion. the swiss style's grid logic is the direct ancestor of every css grid layout, every design system at a major tech company, and every editorial design convention that calls itself "modern."</p>
+
+  <div class="warn">
+    <strong>warn — </strong>swiss style design is often taught as if it has no political content. it does. the "objective" voice, the absence of authorial expression, the rational grid — these were deliberate choices about what a designed object should be <em>for</em>, and they were responses to the propaganda machinery of the 1930s. treat the style as a political artifact, not a neutral tool.
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== EAST GERMANY ============== -->
+<section class="sc" data-floreo-id="east-germany">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 09</p>
+      <h2>the <span class="accent-r">east german</span> reopening</h2>
+    </div>
+    <div class="sc-shape t" aria-hidden="true"></div>
+  </div>
+  <p>the bauhaus building in dessau stayed closed for decades after 1933. the east german government initially rejected the bauhaus as "formalist" — incompatible with socialist realism. the position changed after a 1960s political realignment, and on <strong>december 4, 1976</strong> — fifty years to the day after the building's 1926 opening — the refurbished bauhaus building reopened in dessau as the <strong>"wissenschaftlich-kulturelles zentrum"</strong> (scientific-cultural centre) under the east german construction ministry.</p>
+  <p>the reopening was a state act. the bauhaus was rehabilitated as part of the gdr's cultural heritage, presented as an example of german design that the workers' state could claim and the frg could not monopolize. the 1976 reopening is the foundational date for the bauhaus's postwar institutional life — it predates the bauhaus archive building in berlin (1979) and the stiftung bauhaus dessau (1994).</p>
+  <p>after german reunification in 1990, the bauhaus dessau foundation was reconstituted as a federal institution. the bauhaus museum dessau opened on <strong>september 8, 2019</strong> — eight days before the bauhaus archive reopened its own new permanent exhibition. the two new museums marked the centenary with the most ambitious bauhaus exhibition program ever staged.</p>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== CENTENARY ============== -->
+<section class="sc" data-floreo-id="centenary">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 10</p>
+      <h2>the <span class="accent-b">centenary</span>, 2019</h2>
+    </div>
+    <div class="sc-shape s" aria-hidden="true"></div>
+  </div>
+  <p>the bauhaus turned 100 in 2019. the german federal government and three states (saxony-anhalt, thuringia, berlin) funded a national centenary program with over <strong>600 exhibitions and events</strong> across germany. three anchor institutions opened new buildings or exhibitions:</p>
+
+  <div class="tbl-w">
+    <table class="tbl">
+      <thead><tr><th>institution</th><th>what opened</th><th>architect</th></tr></thead>
+      <tbody>
+        <tr><td>bauhaus museum weimar</td><td>new permanent exhibition</td><td>heike hanada</td></tr>
+        <tr><td>bauhaus museum dessau</td><td>new museum building</td><td>addenda architects</td></tr>
+        <tr><td>bauhaus-archiv berlin</td><td>expanded permanent exhibition</td><td>walter gropius (1979 building)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>the international program was larger still. the <strong>bauhaus imaginista</strong> project, organized by the goethe-institut with the bauhaus dessau foundation, sent four major exhibitions to china, japan, russia, and brazil. moma (new york), lacma (los angeles), the v&a (london), and dozens of other museums staged bauhaus shows. the bauhaus imaginista project in particular challenged the school's identification with germany alone — showing how its ideas had been translated, adapted, and transformed in other cultures.</p>
+
+  <div class="stats" role="group" aria-label="centenary scale">
+    <div class="stat"><span class="stat-k">centenary year</span><span class="stat-v r">2019</span></div>
+    <div class="stat"><span class="stat-k">new museums opened</span><span class="stat-v">2</span></div>
+    <div class="stat"><span class="stat-k">exhibitions in germany</span><span class="stat-v b">600+</span></div>
+    <div class="stat"><span class="stat-k">imaginista countries</span><span class="stat-v y">china · japan · russia · brazil</span></div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== TODAY ============== -->
+<section class="sc" data-floreo-id="today">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 11</p>
+      <h2>today — what the <span class="accent-r">bauhaus is now</span></h2>
+    </div>
+    <div class="sc-shape c" aria-hidden="true"></div>
+  </div>
+  <p>the bauhaus is no longer a school, an aesthetic, or a movement. it is a <strong>design vocabulary</strong> — a set of assumptions shared by most working designers about what good design looks like. the assumptions are: type should be sans-serif, layouts should be asymmetric, grids should be felt but not seen, color should be restrained, function should drive form. most of these assumptions originated at the bauhaus or in its direct descendants.</p>
+  <p>the vocabulary survives in places its makers would have recognized. <strong>helvetica</strong> — the typeface most associated with swiss style — is the default corporate face. the <strong>grid logic</strong> müller-brockmann codified is the foundation of every css layout system. the <strong>preliminary course</strong> albers taught at black mountain is the template for every design-school foundation year. the <strong>institutional model</strong> gropius installed at harvard gsd is the template for every architecture school in north america.</p>
+  <p>the vocabulary is also routinely critiqued. the bauhaus's emphasis on geometric form and primary color has been criticized as universalist — as if circle, square, and triangle were everyone's primitives. its craft-and-industry framing has been critiqued as technocratic. its racial and gender politics have been thoroughly re-examined — the school's 2019 exhibitions confronted the legacy more directly than any prior anniversary.</p>
+  <p>the bauhaus is now where every canonical design language ends up: studied, taught, adapted, critiqued, and remixed. the school's original fourteen years produced a design vocabulary that has been running for ninety years. that is the real bauhaus legacy.</p>
+
+  <div class="note">
+    <strong>note — </strong>this is the companion document to <em>bauhaus — a visual &amp; motion reference</em>. that document covers the school's design language. this one covers where the language went after the school closed.
+  </div>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== SOURCES ============== -->
+<section class="sc" data-floreo-id="sources">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 12</p>
+      <h2><span class="accent-r">sources</span></h2>
+    </div>
+    <div class="sc-shape t" aria-hidden="true"></div>
+  </div>
+  <ul>
+    <li><a href="https://id.iit.edu/new-bauhaus/">institute of design — about the new bauhaus</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Institute_of_Design_at_the_Illinois_Institute_of_Technology">wikipedia — institute of design at IIT</a></li>
+    <li><a href="https://www.blackmountaincollege.org/josef-albers/">black mountain college museum — josef albers</a></li>
+    <li><a href="https://arch.iit.edu/history">iit school of architecture — history and legacy</a></li>
+    <li><a href="https://www.miessociety.org/history">mies van der rohe society — history</a></li>
+    <li><a href="https://www.bauhaus.de/en/discover/article/the-bauhaus-in-exile/">bauhaus.de — the bauhaus in exile</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Ulm_School_of_Design">wikipedia — ulm school of design (hfg ulm)</a></li>
+    <li><a href="https://www.hfg-ulm.de/en/hfg-ulm/history/">hfg ulm — history</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Swiss_Style_(design)">wikipedia — swiss style (design)</a></li>
+    <li><a href="https://swissgrid.posterhouse.org/">poster house — the swiss grid</a></li>
+    <li><a href="https://bauhaus-dessau.de/en/institution/portrait/">stiftung bauhaus dessau — institutional history</a></li>
+    <li><a href="https://www.smow.com/blog/2016/12/bauhaus-in-east-germany-the-formalism-debate/">smow blog — bauhaus in east germany: the formalism debate</a></li>
+    <li><a href="https://www.bauhaus.de/en/visit/exhibitions/bauhaus-centenary-2019/">bauhaus.de — centenary 2019</a></li>
+    <li><a href="https://www.wallpaper.com/architecture/bauhaus-exhibitions-2019">wallpaper* — bauhaus exhibitions in 2019</a></li>
+    <li><a href="https://www.bauhaus-imaginista.org/">bauhaus imaginista — international project</a></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ============== FOOTER ============== -->
+<footer class="fn">
+  <div class="credits">
+    generated 2026-10-14<br>
+    floreo · bauhaus baseline · v1
+  </div>
+  <div class="marks" aria-hidden="true">
+    <span class="s"></span>
+    <span class="c"></span>
+    <span class="t"></span>
+  </div>
+</footer>
+
+</div>
+
+<script type="application/floreo" id="content-plan">
+DOCUMENT: Bauhaus After Bauhaus — 1933 → Today
+AUDIENCE: Designers and historians tracing the bauhaus diaspora
+PURPOSE: Companion to the visual & motion reference — covers institutional history 1933 to today
+ACCENT: bauhaus primary triad (red #d40000 / yellow #f5c518 / blue #0050b3)
+TEMPLATE: bauhaus-baseline
+</script>
+</body></html>

@@ -1,0 +1,912 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="floreo:type" content="bauhaus-baseline">
+<meta name="floreo:created" content="2026-10-14">
+<meta name="floreo:model" content="claude-sonnet-4-6">
+<meta name="floreo:version" content="1">
+<title>Bauhaus — A Visual & Motion Reference</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* the canonical primary triad — kandinsky's color-form correspondence */
+  --k:#0a0a0a;       /* deep ink, near-black, warm */
+  --p:#f3ecdc;       /* warm cream paper stock */
+  --w:#fffef9;       /* page highlight */
+  --r:#d40000;       /* primary red — the square */
+  --y:#f5c518;       /* primary yellow — the triangle */
+  --b:#0050b3;       /* primary blue — the circle */
+
+  /* type stacks — geometric grotesque first, fallback to system sans */
+  --f-h:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --f-b:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --f-m:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
+
+  /* scale — bauhaus compositions are bold, never subtle */
+  --t-xs:.7rem;--t-sm:.85rem;--t-md:1rem;--t-lg:1.15rem;--t-xl:1.35rem;--t-2xl:1.85rem;--t-3xl:2.75rem;--t-4xl:clamp(3.2rem,8vw,6.5rem);--t-5xl:clamp(4rem,12vw,9rem);
+
+  /* spatial units — modular grid driven by a single base unit */
+  --u:8px;
+  --s1:calc(var(--u)*1);--s2:calc(var(--u)*2);--s3:calc(var(--u)*3);--s4:calc(var(--u)*4);
+  --s5:calc(var(--u)*6);--s6:calc(var(--u)*8);--s7:calc(var(--u)*12);--s8:calc(var(--u)*16);
+}
+@media(prefers-color-scheme:dark){
+  :root{--k:#f3ecdc;--p:#0a0a0a;--w:#151513;--r:#ff2d2d;--y:#ffd400;--b:#2680ff}
+}
+html{background:var(--p)}
+body{
+  font-family:var(--f-b);
+  background:var(--p);
+  color:var(--k);
+  line-height:1.55;
+  padding:0;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* === MOTION BACKGROUND — ambient bauhaus film === */
+/* a circle that drifts (moholy-nagy light), a square that rotates (richter 21),
+   a diagonal line that translates (richter 23), a triangle that morphs (kandinsky).
+   sized peripheral + low opacity so the geometry is felt, not read over. */
+.bauhaus-stage{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:.32}
+.bauhaus-stage > *{position:absolute;display:block;will-change:transform}
+.bg-circle{
+  width:24vmax;height:24vmax;border-radius:50%;
+  background:var(--b);
+  left:-14vmax;top:-8vmax;
+  filter:blur(1.5px);
+  animation:drift 26s ease-in-out infinite;
+}
+.bg-square{
+  width:20vmax;height:20vmax;
+  background:var(--r);
+  right:-9vmax;bottom:-6vmax;
+  filter:blur(1px);
+  animation:spin 60s linear infinite;
+  transform-origin:50% 50%;
+}
+.bg-diag{
+  width:160vmax;height:4px;
+  background:var(--k);
+  left:-30vmax;top:48vh;
+  transform:rotate(-18deg);
+  animation:slide 22s ease-in-out infinite alternate;
+}
+.bg-triangle{
+  width:0;height:0;
+  border-left:10vmax solid transparent;
+  border-right:10vmax solid transparent;
+  border-bottom:17vmax solid var(--y);
+  right:12vw;top:-7vmax;
+  filter:blur(1px);
+  animation:pulse 18s ease-in-out infinite;
+}
+@keyframes drift{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(3vw,-2vh) scale(1.04)}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slide{
+  from{transform:rotate(-18deg) translateX(-5vw)}
+  to{transform:rotate(-18deg) translateX(5vw)}
+}
+@keyframes pulse{
+  0%,100%{opacity:.85;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(-1.5vh)}
+}
+@media(prefers-reduced-motion:reduce){
+  .bg-circle,.bg-square,.bg-diag,.bg-triangle{animation:none}
+}
+
+/* === LAYOUT === */
+.pg{
+  position:relative;z-index:1;
+  max-width:1180px;
+  margin:0 auto;
+  padding:var(--s6) var(--s5) var(--s8);
+}
+.bleed{max-width:none;margin:0;padding:0}
+
+/* === COVER — bleed-edge geometric composition === */
+.cover{
+  position:relative;
+  padding:var(--s8) var(--s5) var(--s7);
+  margin:0 calc(-1 * var(--s5)) var(--s7);
+  background:var(--p);
+  overflow:hidden;
+  border-bottom:6px solid var(--k);
+}
+.cover::before{
+  content:"";position:absolute;left:0;right:0;bottom:-6px;height:6px;background:var(--k);
+}
+.cover-mark{
+  position:absolute;
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--k);
+  opacity:.75;
+}
+.cover-mark.tl{top:var(--s4);left:var(--s5)}
+.cover-mark.tr{top:var(--s4);right:var(--s5);text-align:right}
+.cover-mark.bl{bottom:var(--s4);left:var(--s5)}
+.cover-mark.br{bottom:var(--s4);right:var(--s5);text-align:right}
+.cover-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:repeat(8,minmax(7vh,1fr));
+  gap:var(--s3);
+  min-height:62vh;
+  position:relative;
+}
+.shape{position:absolute;display:block}
+.shape.circle{width:18vmin;height:18vmin;border-radius:50%;background:var(--b)}
+.shape.square{background:var(--r)}
+.shape.tri{
+  width:0;height:0;
+  border-left:9vmin solid transparent;
+  border-right:9vmin solid transparent;
+  border-bottom:15vmin solid var(--y);
+}
+.shape.bar{height:3px;background:var(--k);width:60%}
+.shape.ink-bar{height:6px;background:var(--k);width:100%}
+
+.cover h1{
+  font-family:var(--f-h);
+  font-size:var(--t-5xl);
+  font-weight:700;
+  line-height:.9;
+  letter-spacing:-.04em;
+  color:var(--k);
+  text-transform:lowercase;
+  grid-column:1 / span 9;
+  grid-row:2 / span 4;
+  align-self:end;
+  position:relative;
+  z-index:3;
+}
+.cover h1 .row-1{display:block}
+.cover h1 .row-2{display:block;color:var(--r)}
+.cover h1 .row-3{display:block;padding-left:2ch}
+.cover-sub{
+  grid-column:1 / span 7;
+  grid-row:7 / span 2;
+  font-family:var(--f-m);
+  font-size:var(--t-sm);
+  line-height:1.5;
+  color:var(--k);
+  text-transform:lowercase;
+  letter-spacing:.02em;
+  max-width:42ch;
+  position:relative;
+  z-index:3;
+}
+.cover-meta{
+  grid-column:9 / span 4;
+  grid-row:7 / span 1;
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color:var(--k);
+  text-align:right;
+  align-self:end;
+  z-index:3;
+  position:relative;
+}
+
+/* === TOC — primary-color blocks === */
+.toc{
+  margin:0 0 var(--s7);
+  padding:var(--s5) 0;
+  border-top:2px solid var(--k);
+  border-bottom:2px solid var(--k);
+  position:relative;
+}
+.toc-label{
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  margin-bottom:var(--s3);
+  color:var(--k);
+}
+.toc ol{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:var(--s2) var(--s4);
+}
+.toc li{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:var(--s3);
+  padding:var(--s2) 0;
+  border-top:1px solid var(--k);
+  font-family:var(--f-h);
+  font-size:var(--t-lg);
+  text-transform:lowercase;
+  color:var(--k);
+}
+.toc li:last-child{border-bottom:1px solid var(--k)}
+.toc-num{
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  letter-spacing:.12em;
+  color:var(--k);
+  opacity:.6;
+}
+.toc-mark{
+  width:14px;height:14px;
+  display:inline-block;
+  flex-shrink:0;
+}
+.toc-mark.c{border-radius:50%;background:var(--b)}
+.toc-mark.s{background:var(--r)}
+.toc-mark.t{
+  width:0;height:0;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-bottom:12px solid var(--y);
+}
+.toc-mark.b{background:var(--k);height:4px;width:18px;align-self:center}
+.toc a{
+  color:inherit;
+  text-decoration:none;
+  text-transform:lowercase;
+  transition:color .12s linear;
+}
+.toc a:hover{color:var(--r)}
+
+/* === SECTION HEADERS — asymmetric with geometric anchor === */
+.sc{
+  margin-bottom:var(--s8);
+  position:relative;
+}
+.sc-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:end;
+  gap:var(--s4);
+  margin-bottom:var(--s5);
+  padding-bottom:var(--s3);
+  border-bottom:3px solid var(--k);
+}
+.sc-num{
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  color:var(--k);
+  opacity:.6;
+  margin-bottom:var(--s1);
+}
+h2{
+  font-family:var(--f-h);
+  font-weight:700;
+  font-size:var(--t-4xl);
+  line-height:.92;
+  letter-spacing:-.035em;
+  text-transform:lowercase;
+  color:var(--k);
+  margin:0;
+}
+h2 .accent-r{color:var(--r)}
+h2 .accent-y{color:var(--y);text-shadow:0 0 0 var(--k)}
+h2 .accent-b{color:var(--b)}
+.sc-shape{
+  width:clamp(60px,9vw,110px);
+  height:clamp(60px,9vw,110px);
+  flex-shrink:0;
+}
+.sc-shape.c{border-radius:50%;background:var(--b)}
+.sc-shape.s{background:var(--r)}
+.sc-shape.t{
+  width:0;height:0;
+  border-left:clamp(30px,4.5vw,55px) solid transparent;
+  border-right:clamp(30px,4.5vw,55px) solid transparent;
+  border-bottom:clamp(52px,7.8vw,95px) solid var(--y);
+  background:transparent;
+}
+@media(prefers-color-scheme:dark){
+  h2 .accent-y{color:var(--y);text-shadow:none}
+}
+
+/* === H3 === */
+h3{
+  font-family:var(--f-h);
+  font-weight:700;
+  font-size:var(--t-2xl);
+  line-height:1.05;
+  letter-spacing:-.02em;
+  text-transform:lowercase;
+  color:var(--k);
+  margin-top:var(--s5);
+  margin-bottom:var(--s2);
+  display:flex;
+  align-items:center;
+  gap:var(--s2);
+}
+h3::before{
+  content:"";
+  display:inline-block;
+  width:14px;height:14px;
+  background:var(--r);
+  flex-shrink:0;
+}
+h3 + p{margin-top:0}
+
+/* === PROSE === */
+p{
+  margin-bottom:var(--s3);
+  max-width:68ch;
+  color:var(--k);
+  font-size:var(--t-md);
+  line-height:1.6;
+}
+strong{font-weight:700;color:var(--k)}
+em{font-style:italic;color:var(--k)}
+a{color:var(--r);text-decoration:none;border-bottom:2px solid var(--y);transition:background .12s linear}
+a:hover{background:var(--y);color:var(--k)}
+ul,ol{margin:0 0 var(--s3);padding-left:var(--s4);max-width:68ch}
+li{margin-bottom:var(--s1);line-height:1.55}
+li::marker{color:var(--r);font-weight:700}
+
+code{
+  font-family:var(--f-m);
+  font-size:.92em;
+  background:var(--k);
+  color:var(--p);
+  padding:1px 6px;
+  border-radius:0;
+}
+.code{
+  background:var(--k);
+  color:var(--p);
+  padding:var(--s3) var(--s4);
+  font-family:var(--f-m);
+  font-size:var(--t-sm);
+  line-height:1.65;
+  overflow-x:auto;
+  margin:var(--s3) 0;
+  white-space:pre-wrap;
+  border-left:8px solid var(--r);
+}
+
+/* === TABLES — primary-color header row === */
+.tbl-w{
+  overflow-x:auto;
+  margin:var(--s3) 0;
+  border:2px solid var(--k);
+}
+.tbl{
+  width:100%;
+  border-collapse:collapse;
+  font-size:var(--t-sm);
+  background:var(--w);
+}
+.tbl thead th{
+  background:var(--r);
+  color:var(--p);
+  text-align:left;
+  padding:var(--s2) var(--s3);
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  border-right:2px solid var(--k);
+}
+.tbl thead th:last-child{border-right:none}
+.tbl td{
+  padding:var(--s2) var(--s3);
+  border-bottom:1px solid var(--k);
+  border-right:1px solid var(--k);
+  vertical-align:top;
+  color:var(--k);
+}
+.tbl td:last-child{border-right:none}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:var(--p)}
+.glyph{display:inline-block;margin-right:var(--s1);vertical-align:middle}
+.glyph.c{width:14px;height:14px;border-radius:50%;background:var(--b)}
+.glyph.s{width:14px;height:14px;background:var(--r)}
+.glyph.t{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--y)}
+
+/* === STAT BLOCK — geometric, not generic === */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:var(--s5) var(--s4);
+  margin:var(--s5) 0;
+  padding:var(--s4) 0;
+  border-top:3px solid var(--k);
+  border-bottom:3px solid var(--k);
+  position:relative;
+}
+.stats::before{
+  content:"";position:absolute;left:50%;top:-3px;width:18px;height:18px;
+  background:var(--y);transform:translateX(-50%) rotate(45deg);
+}
+.stat{display:flex;flex-direction:column;gap:var(--s1);min-width:0}
+.stat-k{
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--k);
+  opacity:.7;
+}
+.stat-v{
+  font-family:var(--f-h);
+  font-weight:700;
+  font-size:var(--t-2xl);
+  line-height:1.05;
+  letter-spacing:-.025em;
+  color:var(--k);
+  word-wrap:break-word;
+}
+.stat-v.r{color:var(--r)}
+.stat-v.b{color:var(--b)}
+.stat-v.y{
+  color:var(--k);
+  -webkit-text-stroke:1.5px var(--y);
+  text-stroke:1.5px var(--y);
+  text-shadow:0 0 0 transparent;
+}
+
+/* === CALLOUTS — full primary-color blocks === */
+.note,.warn,.tip,.info{
+  padding:var(--s4);
+  margin:var(--s3) 0;
+  font-size:var(--t-md);
+  line-height:1.55;
+  max-width:68ch;
+  position:relative;
+  border:2px solid var(--k);
+}
+.note{background:var(--b);color:var(--w)}
+.warn{background:var(--r);color:var(--w)}
+.tip{background:var(--y);color:var(--k)}
+.info{background:var(--k);color:var(--w)}
+.note strong,.warn strong,.tip strong,.info strong{color:inherit;text-transform:lowercase;letter-spacing:.02em}
+.note::before,.warn::before,.tip::before,.info::before{
+  content:"";position:absolute;top:-2px;left:-2px;width:22px;height:22px;
+  background:var(--k);z-index:-1;
+}
+.note::after,.warn::after,.tip::after,.info::after{
+  content:"";position:absolute;top:8px;left:8px;width:8px;height:8px;
+  background:var(--y);transform:rotate(45deg);
+}
+.warn::after{background:var(--b)}
+.tip::after{background:var(--r)}
+.info::after{background:var(--y)}
+.note,.warn,.tip,.info{isolation:isolate}
+
+/* === STEPS — numbered geometric markers === */
+.steps{
+  list-style:none;
+  padding:0;
+  margin:var(--s3) 0;
+  counter-reset:stp;
+  display:grid;
+  gap:var(--s3);
+  max-width:none;
+}
+.steps li{
+  counter-increment:stp;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:var(--s3);
+  align-items:start;
+  padding:var(--s2) 0;
+  border-top:2px solid var(--k);
+  font-size:var(--t-md);
+}
+.steps li:last-child{border-bottom:2px solid var(--k)}
+.steps li::before{
+  content:counter(stp,decimal-leading-zero);
+  font-family:var(--f-m);
+  font-size:var(--t-sm);
+  font-weight:700;
+  letter-spacing:.05em;
+  color:var(--r);
+  min-width:2.5ch;
+  padding-top:2px;
+}
+.steps li::marker{content:""}
+
+/* === DIAGRAMS / FIGURES === */
+.fig{margin:var(--s4) 0;text-align:left;max-width:none}
+.fig svg{max-width:100%;height:auto;display:block}
+figcaption{
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--k);
+  opacity:.65;
+  margin-top:var(--s2);
+}
+
+/* === DIAGONAL CUT — bauhaus page divider === */
+.diagonal-rule{
+  height:80px;
+  margin:var(--s7) calc(-1 * var(--s5));
+  background:var(--k);
+  transform:rotate(-3deg);
+  position:relative;
+  overflow:hidden;
+}
+.diagonal-rule::after{
+  content:"";position:absolute;top:0;left:0;right:0;bottom:0;
+  background:var(--r);
+  clip-path:polygon(0 0,42% 0,38% 100%,0 100%);
+}
+.diagonal-rule::before{
+  content:"";position:absolute;top:0;left:0;right:0;bottom:0;
+  background:var(--y);
+  clip-path:polygon(72% 0,76% 0,72% 100%,68% 100%);
+}
+
+/* === SECTION DIVIDERS — color anchors === */
+.divider{
+  height:8px;
+  margin:var(--s7) 0;
+  background:var(--k);
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:var(--s1);
+}
+.divider::before{content:""}
+.divider > i{display:block;height:8px}
+.divider > i:nth-child(3n){background:var(--r)}
+.divider > i:nth-child(5n){background:var(--y)}
+.divider > i:nth-child(7n){background:var(--b)}
+
+/* === FOOTER === */
+.fn{
+  margin-top:var(--s8);
+  padding:var(--s4) 0 var(--s6);
+  border-top:3px solid var(--k);
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:end;
+  gap:var(--s4);
+  font-family:var(--f-m);
+  font-size:var(--t-xs);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--k);
+  opacity:.7;
+}
+.fn .marks{display:flex;gap:var(--s1);align-items:center}
+.fn .marks .s{width:14px;height:14px;background:var(--r)}
+.fn .marks .c{width:14px;height:14px;border-radius:50%;background:var(--b)}
+.fn .marks .t{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--y);background:transparent}
+.fn .credits{font-family:var(--f-m);letter-spacing:.18em;text-transform:uppercase}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition:none!important}
+}
+</style>
+</head><body>
+<!-- ambient motion background — references moholy-nagy, richter, kandinsky -->
+<div class="bauhaus-stage" aria-hidden="true">
+  <div class="bg-circle"></div>
+  <div class="bg-square"></div>
+  <div class="bg-diag"></div>
+  <div class="bg-triangle"></div>
+</div>
+
+<div class="pg">
+
+<!-- ============== COVER ============== -->
+<header class="cover">
+  <span class="cover-mark tl">design reference · no. 01</span>
+  <span class="cover-mark tr">bauhaus / dessau / 1919–1933</span>
+  <div class="cover-grid">
+    <!-- geometric composition references schlemmer's triadic ballet and kandinsky's correspondence -->
+    <div class="shape circle" style="left:62%;top:8%;width:18vmin;height:18vmin;background:var(--b)"></div>
+    <div class="shape square" style="left:78%;top:55%;width:14vmin;height:14vmin;background:var(--r)"></div>
+    <div class="shape tri" style="left:48%;top:62%;border-bottom-color:var(--y)"></div>
+    <div class="shape bar" style="left:0;top:78%;width:48%;height:3px;background:var(--k)"></div>
+    <div class="shape ink-bar" style="left:0;top:calc(78% + 12px);width:30%;height:6px;background:var(--k)"></div>
+    <h1>
+      <span class="row-1">bauhaus</span>
+      <span class="row-2">a visual &amp;</span>
+      <span class="row-3">motion reference</span>
+    </h1>
+    <p class="cover-sub">typography, page layout, color, and the abstract films — condensed for designers who want to translate bauhaus principles into modern digital artifacts.</p>
+    <p class="cover-meta">01 — 14 — 10 — 2026<br>floreo · bauhaus baseline</p>
+  </div>
+  <span class="cover-mark bl">circle · square · triangle</span>
+  <span class="cover-mark br">bayer · moholy-nagy</span>
+</header>
+
+<!-- ============== TOC ============== -->
+<nav class="toc" aria-label="table of contents">
+  <p class="toc-label">contents · lowercase · 6 sections</p>
+  <ol>
+    <li><span class="toc-num">01</span><span class="toc-mark t"></span><a href="#origins">origins</a></li>
+    <li><span class="toc-num">02</span><span class="toc-mark s"></span><a href="#three-form">the three-form system</a></li>
+    <li><span class="toc-num">03</span><span class="toc-mark c"></span><a href="#typography">typography — lowercase &amp; geometric</a></li>
+    <li><span class="toc-num">04</span><span class="toc-mark b"></span><a href="#layout">page layout — asymmetric &amp; modular</a></li>
+    <li><span class="toc-num">05</span><span class="toc-mark s"></span><a href="#color">color — the primary triad</a></li>
+    <li><span class="toc-num">06</span><span class="toc-mark t"></span><a href="#motion">motion — the abstract films</a></li>
+    <li><span class="toc-num">07</span><span class="toc-mark b"></span><a href="#rules">composition rules</a></li>
+    <li><span class="toc-num">08</span><span class="toc-mark c"></span><a href="#applications">applications</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============== ORIGINS ============== -->
+<section class="sc" data-floreo-id="origins">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 01</p>
+      <h2><span class="accent-r">o</span>rigins</h2>
+    </div>
+    <div class="sc-shape s" aria-hidden="true"></div>
+  </div>
+  <p>the bauhaus opened in weimar in 1919 as a school that refused to separate art from craft. walter gropius founded it on the idea that architects, painters, and printers should train together, and that geometric form — circle, square, triangle — was a universal language that connected them. by the time it moved to dessau in 1925 and finally closed under pressure in 1933, it had produced a body of graphic design, typography, film, and product design whose vocabulary still shapes every interface we eventually publish.</p>
+  <p>three names carry most of the visual thinking. <strong>herbert bayer</strong> designed the school's signature lowercase universal alphabet and most of its printed materials. <strong>lászló moholy-nagy</strong> brought photography, photomontage, and the idea that light itself was a material. <strong>oskar schlemmer</strong> turned the human body into a moving geometric diagram in his triadic ballet. each worked from the same premise: reduce form to its smallest useful unit, then recombine.</p>
+
+  <div class="stats" role="group" aria-label="school at a glance">
+    <div class="stat"><span class="stat-k">years active</span><span class="stat-v r">1919–1933</span></div>
+    <div class="stat"><span class="stat-k">founders</span><span class="stat-v">gropius · itten · klee · kandinsky</span></div>
+    <div class="stat"><span class="stat-k">graphic designers</span><span class="stat-v b">bayer · tschichold</span></div>
+    <div class="stat"><span class="stat-k">motion designers</span><span class="stat-v y">richter · fischinger · eggeling</span></div>
+    <div class="stat"><span class="stat-k">canonical typeface</span><span class="stat-v">bayer's universal · 1925</span></div>
+  </div>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== THREE-FORM SYSTEM ============== -->
+<section class="sc" data-floreo-id="three-form">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 02</p>
+      <h2>the <span class="accent-b">three-form</span> system</h2>
+    </div>
+    <div class="sc-shape c" aria-hidden="true"></div>
+  </div>
+  <p>kandinsky's color-form correspondence became the school's foundational diagram. three colors, three shapes, three temperaments. it is reductive, but the school used it everywhere — from signage to children's furniture — and the assignments still feel right today.</p>
+
+  <div class="tbl-w">
+    <table class="tbl">
+      <thead>
+        <tr><th>color</th><th>form</th><th>temperament</th><th>used for</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="glyph t"></span>yellow</td><td>triangle</td><td>sharp, active, outward</td><td>accents, callouts, warning energy</td></tr>
+        <tr><td><span class="glyph s"></span>red</td><td>square</td><td>heavy, grounded, present</td><td>headlines, identity marks, body</td></tr>
+        <tr><td><span class="glyph c"></span>blue</td><td>circle</td><td>deep, calm, infinite</td><td>backgrounds, large masses, link pages</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>johannes itten taught the preliminary course and brought a parallel system: seven color contrasts (hue, light–dark, cold–warm, complementary, simultaneous, saturation, extension) and a twelve-hue color sphere. the two systems never quite agreed, and the productive tension between them produced the school's most interesting work.</p>
+
+  <div class="note">
+    <strong>note — </strong>the bauhaus never published a single visual style guide, only a series of working diagrams. what looks like a unified aesthetic was actually a tight set of constraints that every designer at the school was solving simultaneously.
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== TYPOGRAPHY ============== -->
+<section class="sc" data-floreo-id="typography">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 03</p>
+      <h2>typography — lowercase &amp; <span class="accent-r">geometric</span></h2>
+    </div>
+    <div class="sc-shape t" aria-hidden="true"></div>
+  </div>
+
+  <p>herbert bayer's 1925 <strong>universal alphabet</strong> proposed a single-case alphabet — no capitals, no minuscules, just one set of geometric letterforms built from circles and straight strokes. he argued the distinction was redundant, an artifact of manuscript culture that slowed reading. the school adopted the lowercase as its house style and redesigned signage across the buildings accordingly.</p>
+
+  <p>the letterforms themselves were drawn from the same primitives as the school's furniture: a circle forms the bowl of the <strong>b</strong>, <strong>d</strong>, <strong>p</strong>, <strong>q</strong>, <strong>o</strong>; a single vertical stroke carries the <strong>i</strong>, <strong>l</strong>, <strong>t</strong>; horizontals close the <strong>e</strong>, <strong>f</strong>. the bauhaus never standardized a single typeface, but the <strong>bauhaus</strong> look is recognizable across decades of student work because everyone was working from the same vocabulary of forms.</p>
+
+  <div class="info">
+    <strong>info — </strong>the lowercase-only stance didn't survive past 1933, but its visual logic did: every typeface that descends from the school — futura (1927), bayer universal (1925), erbar (1922), even later revivals like ff bau — strips capitals down to the same primitives the lowercase set used.
+  </div>
+
+  <p>the practical lesson for a designer today: lowercase + a geometric grotesque reads as deliberately modernist without becoming period-costume. it signals clarity and function over decoration.</p>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== LAYOUT ============== -->
+<section class="sc" data-floreo-id="layout">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 04</p>
+      <h2>page layout — <span class="accent-b">asymmetric</span> &amp; modular</h2>
+    </div>
+    <div class="sc-shape s" aria-hidden="true"></div>
+  </div>
+
+  <p>bauhaus layout is the place where the school's principles become operational. the 1923 bauhaus exhibition poster is the canonical example: a stark vertical hierarchy with type set flush left at a few specific sizes, a single red mark at one corner, and a black diagonal that cuts the page at a precise angle. nothing is centered. nothing is decorative. every element earns its position by being load-bearing.</p>
+
+  <p>the grid underneath was never published as a system, but you can reverse it from the work. a modular base unit — usually a single character width — drove both the typographic scale and the spacing of shapes. headlines snapped to the grid at multiples of that unit. margins were wide but inconsistent from page to page, creating the tension that makes a bauhaus page feel alive.</p>
+
+  <div class="tip">
+    <strong>tip — </strong>render the page itself with: (1) flush-left ragged-right type, (2) a black or red diagonal element bleeding off at least one edge, (3) at least one shape detached from the text column, (4) generous but intentional negative space.
+  </div>
+
+  <p>the lesson: a bauhaus layout is structured, but never static. the grid is the safety net for asymmetric decisions. every off-axis placement is deliberate, and the page reads as dynamic because the geometry is.</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="bauhaus composition diagram">
+      <rect x="0" y="0" width="600" height="240" fill="var(--p)"/>
+      <rect x="40" y="40" width="220" height="32" fill="var(--k)"/>
+      <rect x="40" y="88" width="180" height="14" fill="var(--r)"/>
+      <rect x="40" y="118" width="320" height="6" fill="var(--k)"/>
+      <rect x="40" y="138" width="260" height="6" fill="var(--k)"/>
+      <rect x="40" y="156" width="200" height="6" fill="var(--k)"/>
+      <circle cx="500" cy="90" r="48" fill="var(--b)"/>
+      <polygon points="460,200 500,140 540,200" fill="var(--y)"/>
+      <line x1="0" y1="220" x2="600" y2="180" stroke="var(--k)" stroke-width="2"/>
+      <rect x="360" y="180" width="80" height="40" fill="none" stroke="var(--k)" stroke-width="2"/>
+    </svg>
+    <figcaption>fig. 01 — modular composition · flush-left type · off-axis shapes · diagonal cut</figcaption>
+  </figure>
+</section>
+
+<div class="divider" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== COLOR ============== -->
+<section class="sc" data-floreo-id="color">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 05</p>
+      <h2>color — the <span class="accent-r">primary</span> triad</h2>
+    </div>
+    <div class="sc-shape c" aria-hidden="true"></div>
+  </div>
+
+  <p>the bauhaus palette is small and unyielding: red, yellow, blue, black, white, and a paper-tone cream that grounds everything. no pastels, no secondaries mixed from the primaries, no greys beyond the warm-toned neutrals the school used as paper stock. the discipline is the design.</p>
+
+  <p>kandinsky's assignments give the palette an internal logic that persists. red carries the heaviest information; yellow catches the eye but holds less weight; blue recedes and carries the largest masses. black is the type and the structural lines; white and cream are the silence between.</p>
+
+  <div class="tip">
+    <strong>tip — </strong>for a digital document, the practical equivalent of the cream paper stock is a slightly warm off-white background — never pure #ffffff, never a grey. the warmth is felt before it is noticed, and it keeps the primary colors from looking synthetic.
+  </div>
+
+  <p>the temptation is to add a fourth color. don't. the triad is the design.</p>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== MOTION ============== -->
+<section class="sc" data-floreo-id="motion">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 06</p>
+      <h2>motion — the <span class="accent-b">abstract</span> films</h2>
+    </div>
+    <div class="sc-shape t" aria-hidden="true"></div>
+  </div>
+
+  <p>the bauhaus made very little film itself, but the school's ideas drove the abstract film movement of the 1920s, and that work remains the most direct precedent for any kinetic design we do today. four films are worth knowing.</p>
+
+  <h3>richter — rhythmus 21 (1921)</h3>
+  <p>hans richter's <strong>rhythmus 21</strong> is the first completely abstract film. it contains only squares and rectangles expanding, contracting, and shifting across the frame. no diagonals. no curves. the motion is mechanical — stop-motion on rectangular forms — and the rhythm comes from the rate at which the shapes arrive and disappear. richter made it as a dadaist in zurich, and it is the cleanest expression of the school's geometric vocabulary in motion.</p>
+  <p>the lesson for kinetic design: pure geometric forms moving at carefully chosen rates produce rhythm without music. the cadence of arrival and departure is enough.</p>
+
+  <h3>richter — rhythmus 23 (1923)</h3>
+  <p>two years later richter added diagonal lines to the square field. the film is built entirely from the interplay of squares and diagonals, often superimposed. the diagonals carry speed; the squares carry weight. the film nearly caused a riot at its berlin premiere because the audience expected a conventional movie and received thirty seconds of pure geometric tension.</p>
+  <p>the lesson: a diagonal across a rectangle is not just decoration — it is a change of state. it activates a static form.</p>
+
+  <h3>fischinger — studien / composition in blue (1935)</h3>
+  <p>oskar fischinger worked in the orbit of the bauhaus without ever being a member. his <strong>studien</strong> series and <strong>composition in blue</strong> (1935) are the most musical of the abstract films: geometric shapes move in time to a soundtrack, translating musical structure into visual structure. the shapes are primitive — circles, squares, triangles, lines — but the choreography makes them feel alive.</p>
+  <p>the lesson: a simple vocabulary, animated carefully, can carry complex rhythm. the viewer reads the rhythm even without hearing the sound.</p>
+
+  <h3>moholy-nagy — light-space modulator (1930)</h3>
+  <p>lászló moholy-nagy's <strong>light-space modulator</strong> is a kinetic sculpture — a mobile apparatus of gears, balls, revolving discs, screens, and perforated plates — that casts shifting patterns of light and shadow. the film <strong>lichtspiel: schwarz-weiß-grau</strong> (1930) recorded the modulator's output for audiences who would never see the machine in person. it is the most spectacular realization of the school's core belief: light itself is a material you can compose with.</p>
+  <p>the lesson: motion doesn't have to come from the screen. light through moving shapes is motion. in a digital artifact, this is the difference between animating an element and revealing it through a moving mask.</p>
+</section>
+
+<div class="divider" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== RULES ============== -->
+<section class="sc" data-floreo-id="rules">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 07</p>
+      <h2><span class="accent-r">composition</span> rules</h2>
+    </div>
+    <div class="sc-shape s" aria-hidden="true"></div>
+  </div>
+  <p>from the work above, four rules repeat often enough to call them a system.</p>
+
+  <ol class="steps">
+    <li><strong>reduce to primitives first.</strong> circle, square, triangle, line. if a shape can be reduced further, reduce it.</li>
+    <li><strong>use the primary triad only.</strong> red, yellow, blue — plus black, white, and a warm cream. no pastels.</li>
+    <li><strong>set type lowercase and geometric.</strong> ragged-right. flush left. snap to a single modular unit.</li>
+    <li><strong>compose asymmetrically.</strong> off-axis placement, deliberate diagonals, shapes that escape the column.</li>
+  </ol>
+
+  <p>every bauhaus artifact obeys these, and they are the practical checklist for translating the school's work into a modern design.</p>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== APPLICATIONS ============== -->
+<section class="sc" data-floreo-id="applications">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 08</p>
+      <h2>applications — how to <span class="accent-b">use</span> this</h2>
+    </div>
+    <div class="sc-shape c" aria-hidden="true"></div>
+  </div>
+
+  <p>the bauhaus aesthetic has been borrowed so often it has become a cliché — the conference slide deck with a red circle in the corner, the startup landing page with helvetica and primary colors. most of these uses miss the point. they reach for the surface and skip the system.</p>
+
+  <p>the school's actual contribution is the <strong>discipline of reduction</strong>. pick a small vocabulary — three shapes, three colors, one typeface — and use them exhaustively. let every other choice follow from those. the visual signature falls out of the discipline, not the styling.</p>
+
+  <div class="warn">
+    <strong>warn — </strong>the most common bauhaus pastiche fails because it borrows the decoration (a yellow triangle here, a red square there) without the underlying modular grid. the result reads as 2010 dribbble, not 1923 weimar. if the elements aren't snapped to a base unit, they're not bauhaus — they're just shapes.
+  </div>
+
+  <p>for a digital document, this means: pick your three forms, pick your three colors, pick your one typeface, set your modular unit, and stop. everything else is detail. the geometry does the work.</p>
+</section>
+
+<div class="diagonal-rule" aria-hidden="true"></div>
+
+<!-- ============== SOURCES ============== -->
+<section class="sc" data-floreo-id="sources">
+  <div class="sc-head">
+    <div>
+      <p class="sc-num">section 09</p>
+      <h2><span class="accent-r">sources</span></h2>
+    </div>
+    <div class="sc-shape t" aria-hidden="true"></div>
+  </div>
+  <p>the canonical bauhaus posters and the lichtspiel film are held in major museum collections; moma, the harvard art museums, and the bauhaus archive berlin hold the most relevant material. the abstract films by richter, eggeling, and fischinger are widely available through the museum of modern art's film library and the center for visual music in los angeles. herbert bayer's type specimens and itten's color sphere diagrams are reproduced in standard design history references.</p>
+
+  <ul>
+    <li><a href="https://www.moma.org/collection/artists/399">moma — herbert bayer</a></li>
+    <li><a href="https://www.moma.org/interactives/exhibitions/2012/inventingabstraction/?work=188">moma — inventing abstraction: rhythmus 21</a></li>
+    <li><a href="https://harvardartmuseums.org/art/299819">harvard art museums — light prop for an electric stage</a></li>
+    <li><a href="https://www.getty.edu/research/exhibitions_events/exhibitions/bauhaus/new_artist/form_color/color/">getty — bauhaus: form &amp; color</a></li>
+    <li><a href="https://letterformarchive.org/news/bauhaus-typefaces-part-two/">letterform archive — typefaces inspired by the bauhaus</a></li>
+    <li><a href="https://unframed.lacma.org/2012/04/26/oskar-fischinger-and-california-abstract-animation">lacma — oskar fischinger</a></li>
+    <li><a href="https://exhibitions.letterformarchive.org/bauhaus/exhibit/introduction">letterform archive — bauhaus typography at 100</a></li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ============== FOOTER ============== -->
+<footer class="fn">
+  <div class="credits">
+    generated 2026-10-14<br>
+    floreo · bauhaus baseline · v1
+  </div>
+  <div class="marks" aria-hidden="true">
+    <span class="s"></span>
+    <span class="c"></span>
+    <span class="t"></span>
+  </div>
+</footer>
+
+</div>
+
+<script type="application/floreo" id="content-plan">
+DOCUMENT: Bauhaus — A Visual & Motion Reference
+AUDIENCE: Designers translating bauhaus principles to digital artifacts
+PURPOSE: Reference for typography, layout, color, and motion principles
+ACCENT: bauhaus primary triad (red #d40000 / yellow #f5c518 / blue #0050b3)
+TEMPLATE: bauhaus-baseline
+</script>
+</body></html>
