@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="floreo:type" content="session-close"><meta name="floreo:created" content="2026-10-27">
+<meta name="floreo:model" content="minimax-m3"><meta name="floreo:version" content="1">
+<title>Session Close — Swiss Baseline Template — 2026-10-27</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--f-h:Charter,'Bitstream Charter','Iowan Old Style',Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,'Segoe UI',sans-serif;--f-m:ui-monospace,Menlo,Consolas,'Liberation Mono','Courier New',monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#736c66;--ca:#2563eb;--cat:color-mix(in srgb,var(--ca) 65%,var(--ct));--cab:#dbeafe;--con:#fafaf9;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a;--cr-bg:#ffe4e6;--cc:#1c1917;--cct:#f5f5f4}
+:root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px}
+:root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:2rem;--t-4xl:3rem}
+@media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#a8a29e;--cat:color-mix(in srgb,var(--ca) 45%,var(--ct));--cab:#082f3e;--cw-bg:#3d1a00;--cg-bg:#052e16;--cr-bg:#3f0d12;--cc:#0c0a09}.code{border:1px solid var(--cbr)}body{line-height:1.75}}
+body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
+.pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
+h1,h2{font-family:var(--f-h);line-height:1.2;color:var(--ct);text-wrap:balance}
+h3,h4{font-family:var(--f-b);line-height:1.3;color:var(--ct);text-wrap:balance}
+h1{font-size:clamp(2rem,1.5rem + 2vw,2.75rem);font-weight:400;letter-spacing:-.02em;margin-bottom:.5rem}
+h2{font-size:1.625rem;font-weight:400;margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid var(--cbr)}
+h3{font-size:1.25rem;font-weight:600;margin-bottom:.4rem}
+p{margin-bottom:1rem;color:var(--cm);text-wrap:pretty}
+p,ul,ol,.sub,dl{max-width:68ch}
+.sc{margin-bottom:clamp(3rem,2rem + 3vw,4.5rem)}
+:not(h2)+h3{margin-top:2rem}
+.hd{padding-bottom:2rem;margin-bottom:3rem;border-bottom:2px solid var(--cbr)}
+.fn{border-top:1px solid var(--cbr);padding-top:1.5rem;font-size:.8rem;color:var(--cq);font-family:var(--f-m)}
+.ey{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cat);margin-bottom:.75rem}
+.sub{font-size:1.25rem;line-height:1.5;color:var(--cm)}
+.note,.warn,.tip{padding:1rem 1.25rem;border-radius:8px;margin:1.25rem 0;font-size:.95rem;color:var(--ct)}
+.note{background:var(--cab)}
+.warn{background:var(--cw-bg)}
+.tip{background:var(--cg-bg)}
+.tw{overflow-x:auto;margin:1.5rem 0;border:1px solid var(--cbr);border-radius:8px}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--cs);font-variant-numeric:tabular-nums}
+.tbl thead{background:var(--cs2)}
+.tbl th{text-align:left;padding:.6rem 1rem;font-family:var(--f-m);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cm);border-bottom:1px solid var(--cbr)}
+.tbl td{padding:.6rem 1rem;border-bottom:1px solid var(--cs2);color:var(--cm);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:1.5rem 0}
+.card{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem}
+.code{background:var(--cc);color:var(--cct);padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;line-height:1.6;font-variant-ligatures:none;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.fig{margin:2rem 0}
+.fig svg{display:block;max-width:100%;height:auto}
+figcaption{font-size:.85rem;color:var(--cq);margin-top:.75rem;max-width:68ch}
+a{color:var(--cat);text-decoration:none;transition:color .15s ease-out}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--ca);outline-offset:2px;border-radius:2px}
+ul,ol{padding-left:1.5rem;margin-bottom:1rem;color:var(--cm)}
+li{margin-bottom:.25rem}
+strong{color:var(--ct)}
+.ic{background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.toc,.ri-toc,.ri-search,.ri-export{display:none}.pg{max-width:100%}main{display:block}h2{page-break-after:avoid}.sc{page-break-inside:avoid}a[href]{color:inherit;text-decoration:none}}
+.stats{display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0}
+.stat{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem 1.5rem;min-width:140px}
+.sn{display:block;font-family:var(--f-h);font-size:2.5rem;font-weight:400;color:var(--cat);line-height:1}
+.sl{display:block;font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-top:.4rem}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:.25rem 1.25rem;font-size:.9rem;margin:1.25rem 0}
+.kv dt{color:var(--cq);font-family:var(--f-m);font-size:.85rem}
+.kv dd{color:var(--cm)}
+.toc{margin:0 0 2.5rem}
+.toch{font-family:var(--f-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cq);margin-bottom:.5rem}
+.tocl{padding-left:1.25rem;margin:0}
+.tocl li{margin-bottom:.2rem}
+.tocl a{color:var(--cm);font-size:.9rem;text-decoration:none;display:block;padding:.15rem .25rem;border-radius:3px}
+.tocl a:hover,.tocl a.active{color:var(--cat);background:var(--cab)}
+@media(min-width:1100px){.pg{max-width:1080px}main{display:grid;grid-template-columns:1fr 220px;gap:0 3rem;align-items:start}.toc{grid-column:2;grid-row:1/999;position:sticky;top:2rem;margin:0;display:block}.sc{grid-column:1}}
+@media print{main{display:block}.toc{display:none}}
+</style>
+</head><body>
+<div class="pg">
+<header class="hd">
+<p class="ey">Session-Close Summary · 2026-10-27</p>
+<h1>Swiss Baseline Template</h1>
+<p class="sub">A new Swiss Style document template, grounded in sourced research rather than in the look of the style.</p>
+</header>
+<main>
+<nav class="toc" aria-label="Contents"><p class="toch">Contents</p><ol id="toc-list" class="tocl"></ol></nav>
+
+<section class="sc" data-floreo-id="session-objective">
+<h2>Session Objective</h2>
+<p>Design and ship a Swiss Style / International Typographic Style document template alongside the existing <code class="ic">bauhaus-baseline</code>, focused on grid systems as they apply to web design, minimalism and clarity. The template had to be grounded in canonical sources rather than in a description of what Swiss Style looks like — the working hypothesis being that the movement's contribution is a method (one centre, radii at module multiples, hierarchy by size and weight) and not a surface (Helvetica, red, white space).</p>
+</section>
+
+<section class="sc" data-floreo-id="work-completed">
+<h2>Work Completed</h2>
+<div class="stats">
+<div class="stat"><span class="sn">2</span><span class="sl">Files Shipped</span></div>
+<div class="stat"><span class="sn">9</span><span class="sl">Sections</span></div>
+<div class="stat"><span class="sn">3</span><span class="sl">Figures</span></div>
+<div class="stat"><span class="sn">12</span><span class="sl">Cited Sources</span></div>
+</div>
+<ul>
+<li><strong>docs/baseline/swiss-baseline.html</strong> — the template. Twelve visible columns on a 24px baseline, 24px gutter, 4px spacing unit; a Helvetica Neue grotesque stack; sharp corners and hairline rules instead of tinted callout boxes; black and white with one red. Three inline SVG figures: grid anatomy, the construction of the 1955 Beethoven poster, and the type scale set on the baseline.</li>
+<li><strong>docs/swiss-design-reference.md</strong> — the draft source that fills the template, in floreo markdown with intent blocks, mirroring the shipped prose.</li>
+<li><strong>CHANGELOG.md</strong> — an <code class="ic">Unreleased</code> entry describing the template and its sources.</li>
+<li><strong>Research</strong> — verified against the Swiss federal government's official history of the style, Poster House's <em>The Swiss Grid</em> exhibition, Niggli (the publisher), MDN CSS Grid, modularscale.com, Material Design 3 spacing tokens, and WCAG 2.2.</li>
+<li><strong>Four defects found and fixed during the build</strong> — the table of contents pointed at section IDs that did not exist; the steps list broke because bare text after a <code class="ic">&lt;strong&gt;</code> became its own grid item; the column overlay never rendered because the nested grid's row height was auto; and the figure order did not match the caption numbers.</li>
+<li><strong>Verification</strong> — <code class="ic">scripts/check-floreo.sh</code> clean; every text and non-text colour pair computed for both themes; browser pass at 1440px and 390px with no horizontal overflow; print stylesheet collapses to the paper palette.</li>
+</ul>
+</section>
+
+<section class="sc" data-floreo-id="issues-updated">
+<h2>Issues Updated</h2>
+<div class="tw"><table class="tbl">
+<thead><tr><th>Issue ID</th><th>Title</th><th>Status</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>agent-skill-effective-docs-b5d</td><td>feat(floreo): add swiss-style baseline template and design reference</td><td>closed</td><td>Template and draft source shipped; validator clean; contrast verified</td></tr>
+<tr><td>agent-skill-effective-docs-63v</td><td>floreo: derive --cab accent tint from --ca</td><td>open</td><td>Untouched — unrelated to this session, and still the only ready issue</td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section class="sc" data-floreo-id="key-decisions">
+<h2>Key Decisions</h2>
+<ul>
+<li><strong>A sibling baseline template, not a change to the core design system.</strong> The Bauhaus template set the precedent: a standalone artefact in <code class="ic">docs/baseline/</code> plus a draft source, with no edits to <code class="ic">skills/floreo/SKILL.md</code>. Registering Swiss as a core template would require re-baselining the SkillSpector fingerprints — a larger change than the work justifies.</li>
+<li><strong>Kept the core token vocabulary and changed only the values.</strong> <code class="ic">--ca</code>, <code class="ic">--cab</code>, <code class="ic">--cw-bg</code>, <code class="ic">--cg-bg</code>, <code class="ic">--f-h</code>, <code class="ic">--s1</code>–<code class="ic">--s8</code> and the <code class="ic">.pg</code> / <code class="ic">.sc</code> / <code class="ic">.note</code> / <code class="ic">.tbl</code> class names all stay as documented, so the template passes the validator and stays compatible with the contract in <code class="ic">QUICK_REFERENCE.md</code>. The Bauhaus template diverges from this and fails the validator on six counts; Swiss deliberately does not.</li>
+<li><strong>The grid is visible but faint.</strong> The column overlay sits at 2.2% ink. At 5% it read as stripes rather than as structure — the intent is that you feel the grid, not read it.</li>
+<li><strong>Callouts became rules.</strong> The core system's tinted callouts are a deliberate anti-Bootstrap choice, so they do not travel into a Swiss template; callouts are a 2px top rule with an uppercase label, and the tint tokens are spent on diff rows and table highlighting instead.</li>
+<li><strong>Stated the palette doctrine as "sparing colour", not "one red".</strong> The sources say sparing; the document says so, and then uses red as the worked example. The heading keeps the memorable phrasing, the prose corrects it.</li>
+<li><strong>Sourced the poster from the artefact rather than from memory.</strong> Fetching the 1955 Beethoven poster and reading the geometry off it corrected two things: the conductor was Carl Schuricht, not Karajan, and the poster is entirely monochrome — no red at all.</li>
+<li><strong>Dropped the <em>Die gute Form</em> details I had planned.</strong> They were wrong on all three counts: it was Max Bill, for the Swiss Werkbund, at the Mustermesse Basel and the Kunstgewerbemuseum Zürich — not a Kunsthalle exhibition, and not a Hüsemann curatorial. This is why the details were checked before being written down.</li>
+</ul>
+</section>
+
+<section class="sc" data-floreo-id="blockers-open-questions">
+<h2>Blockers &amp; Open Questions</h2>
+<div class="warn"><strong>Warning:</strong> two research sub-agents were killed mid-flight after they fanned out to sixteen sub-agents and hit rate limits. Two of their topics — Expo 67 Swiss graphics, and Swiss colour palettes by designer — never landed. Neither is load-bearing for the document, but a deeper canon pass would want them, and the fan-out should be capped next time.</div>
+<ul>
+<li><strong>Sources disagree on which face Zürich used.</strong> The Swiss government's history says Helvetica; Poster House says Akzidenz-Grotesk. Both agree on Basel and Univers. The document presents both readings and offers a reconciliation explicitly labelled as inference. Not resolvable from the sources consulted.</li>
+<li><strong>The book's numeric grid tables were not read.</strong> Only the 8-to-32 field range came from a publisher blurb. No specific millimetre gutters are asserted anywhere in the document, and that gap should stay visible rather than be filled from a secondary source.</li>
+<li><strong>agent-skill-effective-docs-63v remains open</strong> and is the only ready issue on the board.</li>
+</ul>
+</section>
+
+<section class="sc" data-floreo-id="next-session-kickoff">
+<h2>Next Session Kickoff</h2>
+<p>Nothing is blocked — the template is finished and shipped to its branch. Two optional follow-ups, in order of value:</p>
+<ol>
+<li><strong>Pick up the one ready issue.</strong> <code class="ic">bd ready</code> returns agent-skill-effective-docs-63v: <code class="ic">--cab</code> is fixed at a blue tint regardless of the document accent. The fix is one <code class="ic">color-mix()</code> per theme in the base CSS block in <code class="ic">skills/floreo/SKILL.md</code>, then re-verifying <code class="ic">--cat</code> on <code class="ic">--cab</code> contrast for every Default and Deep accent in both themes, and keeping the <code class="ic">check-floreo.sh</code> dark-mode override requirement satisfied.</li>
+<li><strong>If the Swiss canon should go deeper,</strong> the gaps are Expo 67, the poster series dates, and the German original's numeric grid tables. Fetch the Niggli PDF rather than the designopendata archive.</li>
+</ol>
+<pre class="code"><code>git pull --rebase &amp;&amp; bd dolt pull
+bd ready
+bd show agent-skill-effective-docs-63v
+./scripts/check-floreo.sh docs/baseline/</code></pre>
+</section>
+
+</main>
+<footer class="fn">
+floreo · session-close · agent-skill-effective-docs-b5d · 2026-10-27 · branch feat/swiss-baseline-template
+</footer>
+</div>
+<script type="application/floreo" id="content-plan">
+DOCUMENT: Session Close — Swiss Baseline Template — 2026-10-27
+AUDIENCE: Next agent or human resuming this work
+PURPOSE: Transfer context so work can resume without re-discovery
+ACCENT: #2563eb
+</script>
+<script>
+(function(){
+  const list=document.getElementById('toc-list');
+  if(!list)return;
+  document.querySelectorAll('main h2').forEach((h,i)=>{
+    if(!h.id)h.id='s'+i;
+    const li=document.createElement('li');
+    li.innerHTML='<a href="#'+h.id+'">'+h.textContent+'</a>';
+    list.appendChild(li);
+  });
+  const first=list.querySelector('a');if(first){first.classList.add('active');first.setAttribute('aria-current','true')}
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      const a=list.querySelector('a[href="#'+e.target.id+'"]');
+      if(!a||!e.isIntersecting)return;
+      list.querySelectorAll('a.active').forEach(x=>{x.classList.remove('active');x.removeAttribute('aria-current')});
+      a.classList.add('active');a.setAttribute('aria-current','true');
+    });
+  },{rootMargin:'-10% 0px -75% 0px'});
+  document.querySelectorAll('main h2').forEach(h=>obs.observe(h));
+})();
+</script>
+</body></html>
