@@ -1,0 +1,600 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="floreo:type" content="swiss-baseline">
+<meta name="floreo:created" content="2026-10-26">
+<meta name="floreo:model" content="minimax-m3">
+<meta name="floreo:version" content="1">
+<title>Swiss Style — The Grid as Instrument</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* type — the grotesque. helvetica neue first, then the classic fallbacks. */
+  --f-h:"Helvetica Neue",Helvetica,"Neue Haas Grotesk Text Pro","Inter",Arial,system-ui,sans-serif;
+  --f-b:"Helvetica Neue",Helvetica,"Neue Haas Grotesk Text Pro","Inter",Arial,system-ui,sans-serif;
+  --f-m:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono","Courier New",monospace;
+
+  /* colour — black, white, and one red. nothing else. */
+  --cb:#fbfbfa;      /* paper */
+  --cs:#ffffff;      /* surface */
+  --cs2:#f2f2f0;     /* subtle surface */
+  --cbr:#dcdcd8;     /* hairline rule */
+  --ct:#111111;      /* ink */
+  --cm:#3d3d3a;      /* muted ink */
+  --cq:#6b6b66;      /* quiet ink */
+  --ca:#d81e05;      /* the red */
+  --cat:color-mix(in srgb,var(--ca) 65%,var(--ct));
+  --cab:color-mix(in srgb,var(--ca) 7%,var(--cb));
+  --con:#fbfbfa;     /* text on accent */
+  --cw-bg:#fdf4e3;--cw:#8a5a00;
+  --cg-bg:#eef3ec;--cg:#3f6b34;
+  --cr-bg:#fbe9e6;
+  --cc:#111111;--cct:#f5f5f2;
+  --grid-ink:rgba(17,17,17,.022);
+
+  /* scale — few sizes, strong contrast. this is the whole point. */
+  --t-xs:.6875rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.375rem;--t-2xl:1.75rem;--t-3xl:2.5rem;--t-4xl:clamp(2.75rem,6.5vw,5.25rem);
+
+  /* spatial — the core 4→64 scale, plus the grid's own units */
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px;
+  --gut:24px;        /* gutter */
+  --base:24px;       /* baseline */
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --cb:#111110;--cs:#1a1a18;--cs2:#232321;--cbr:#333330;--ct:#f2f2ef;--cm:#c9c9c4;--cq:#96968f;
+    --ca:#ff4a2b;--cat:color-mix(in srgb,var(--ca) 45%,var(--ct));--cab:color-mix(in srgb,var(--ca) 14%,var(--cb));
+    --con:#111110;
+    --cw-bg:#2e2310;--cw:#e0b45c;--cg-bg:#182713;--cg:#8fbf82;--cr-bg:#2e1310;
+    --cc:#0a0a09;--cct:#f5f5f2;
+    --grid-ink:rgba(242,242,239,.03);
+  }
+}
+html{background:var(--cb)}
+body{
+  font-family:var(--f-b);
+  background:var(--cb);
+  color:var(--ct);
+  font-size:var(--t-md);
+  line-height:1.5;             /* 24px — one baseline */
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* === THE GRID === */
+/* twelve columns, one gutter, one baseline. everything sits on this. */
+.pg{max-width:1240px;margin:0 auto;padding:0 var(--s5) var(--s8);display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut)}
+main{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut);position:relative}
+
+/* the grid, made faintly visible — structure you feel rather than read */
+.gridlines{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut);pointer-events:none;z-index:0}
+.gridlines i{display:block;background:var(--grid-ink)}
+main > *:not(.gridlines){position:relative;z-index:1}
+
+/* === COVER === */
+.hd{grid-column:1/-1;padding:var(--s8) 0 var(--s5);display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut)}
+.hd .ey{grid-column:1/span 4;font-size:var(--t-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ca);font-weight:700}
+.hd h1{grid-column:1/span 9;grid-row:2/span 3;font-size:var(--t-4xl);font-weight:700;line-height:.92;letter-spacing:-.035em;text-wrap:balance;margin:var(--s4) 0 0}
+.hd .sub{grid-column:1/span 6;margin-top:var(--s5);font-size:var(--t-lg);line-height:1.4;color:var(--cm);max-width:52ch}
+.hd .meta{grid-column:10/span 3;grid-row:1/span 4;align-self:end;font-size:var(--t-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--cq);line-height:2;text-align:right}
+.hd .meta b{color:var(--ct);font-weight:700}
+.hd .blk{grid-column:10/span 3;grid-row:1/span 1;height:6px;background:var(--ca);align-self:start;margin-bottom:var(--s4)}
+.hd .rule{grid-column:1/-1;height:3px;background:var(--ct);margin-top:var(--s6)}
+
+/* === TOC — three columns of numbered entries, hairline separated === */
+.toc{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut);padding:var(--s6) 0 var(--s7);border-top:1px solid var(--cbr)}
+.toc .toch{grid-column:1/-1;font-size:var(--t-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--cq);margin-bottom:var(--s4)}
+.toc ol{grid-column:1/-1;list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0 var(--gut);counter-reset:toc}
+.toc li{counter-increment:toc;border-top:1px solid var(--cbr);padding:var(--s3) 0;display:grid;grid-template-columns:auto 1fr;gap:var(--s3);align-items:baseline}
+.toc li::before{content:counter(toc,decimal-leading-zero);font-size:var(--t-xs);font-weight:700;color:var(--ca);letter-spacing:.08em}
+.toc a{color:var(--ct);text-decoration:none;border-bottom:none;font-size:var(--t-lg);font-weight:700;letter-spacing:-.01em;transition:color .12s ease-out}
+.toc a:hover{color:var(--ca);border-bottom:1px solid var(--ca)}
+.toc a.active{color:var(--ca)}
+
+/* === SECTION — number, heading, deck on the grid; body indented === */
+.sc{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut);padding-top:var(--s7);margin-bottom:var(--s7);border-top:2px solid var(--ct);scroll-margin-top:var(--s5)}
+.sc .snum{grid-column:1/span 1;font-size:var(--t-xs);font-weight:700;letter-spacing:.18em;color:var(--ca);padding-top:.55rem}
+.sc h2{grid-column:2/span 7;font-size:var(--t-3xl);font-weight:700;line-height:1.02;letter-spacing:-.03em;text-wrap:balance}
+.sc .deck{grid-column:10/span 3;font-size:var(--t-sm);line-height:1.45;color:var(--cq);padding-top:.4rem}
+.sc .body{grid-column:3/span 7;padding-top:var(--s5)}
+.sc .wide{grid-column:3/span 10;padding-top:var(--s5)}
+.sc h3{font-size:var(--t-xl);font-weight:700;line-height:1.2;letter-spacing:-.02em;margin-top:var(--s6);margin-bottom:var(--s3)}
+.sc h3:first-child{margin-top:0}
+.sc h3 + p{margin-top:0}
+.sc .body p,.sc .body ul,.sc .body ol,.sc .wide p,.sc .wide ul,.sc .wide ol{max-width:66ch}
+.sc .body > *:last-child,.sc .wide > *:last-child{margin-bottom:0}
+
+p{margin-bottom:var(--s4);color:var(--cm);text-wrap:pretty}
+strong{color:var(--ct);font-weight:700}
+em{font-style:italic}
+a{color:var(--cat);text-decoration:none;border-bottom:1px solid var(--ca);transition:background .12s ease-out}
+a:hover{background:var(--cab)}
+ul,ol{padding-left:var(--s4);margin-bottom:var(--s4)}
+li{margin-bottom:var(--s2)}
+li::marker{color:var(--ca);font-weight:700}
+code{font-family:var(--f-m);font-size:.9em}
+
+/* === CODE — the only dark surface === */
+.code{background:var(--cc);color:var(--cct);padding:var(--s4);font-family:var(--f-m);font-size:.85rem;line-height:1.6;font-variant-ligatures:none;overflow-x:auto;margin:var(--s4) 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.code code{font-size:inherit}
+
+/* === TABLES — hairline rules, no boxes, no fills === */
+.tw{overflow-x:auto;margin:var(--s4) 0}
+.tbl{width:100%;border-collapse:collapse;font-size:var(--t-sm)}
+.tbl thead th{text-align:left;padding:var(--s3) var(--s3) var(--s2);font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ct);font-weight:700;border-bottom:2px solid var(--ct)}
+.tbl td{padding:var(--s3);border-bottom:1px solid var(--cbr);color:var(--cm);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl th:first-child,.tbl td:first-child{padding-left:0}
+.tbl tbody tr:hover td{background:var(--cs2)}
+
+/* === STATS — figures on the page, no containers === */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s5) var(--gut);margin:var(--s5) 0;padding-top:var(--s4);border-top:2px solid var(--ct)}
+.stat{display:flex;flex-direction:column;gap:var(--s1);min-width:0}
+.stat .k{font-size:var(--t-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--cq);font-weight:700}
+.stat .v{font-size:var(--t-2xl);font-weight:700;line-height:1.05;letter-spacing:-.03em;color:var(--ct)}
+.stat .v.key{color:var(--ca)}
+.stat .n{font-size:var(--t-sm);color:var(--cq);line-height:1.4}
+
+/* === CALLOUTS — rules, never boxes === */
+.note,.warn,.tip{margin:var(--s5) 0;padding:var(--s3) 0 0;border-top:2px solid var(--ct);font-size:var(--t-sm);line-height:1.55;color:var(--cm)}
+.note .lab,.warn .lab,.tip .lab{display:block;font-size:var(--t-xs);letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--ct);margin-bottom:var(--s2)}
+.warn{border-top-color:var(--ca)}
+.warn .lab{color:var(--ca)}
+.tip{border-top-color:var(--ct)}
+.tip .lab{color:var(--ca)}
+.note p,.warn p,.tip p{margin-bottom:0;color:inherit}
+
+/* === STEPS — numbered, hairline separated === */
+.steps{list-style:none;padding:0;margin:var(--s4) 0;counter-reset:stp;max-width:66ch}
+.steps li{counter-increment:stp;position:relative;padding:var(--s3) 0 var(--s3) 3.5ch;border-top:1px solid var(--cbr);margin-bottom:0}
+.steps li:last-child{border-bottom:1px solid var(--cbr)}
+.steps li::before{content:counter(stp,decimal-leading-zero);position:absolute;left:0;top:var(--s3);font-size:var(--t-xs);font-weight:700;color:var(--ca);letter-spacing:.08em}
+.steps li::marker{content:""}
+
+/* === FIGURES === */
+.fig{margin:var(--s5) 0}
+.fig svg{display:block;max-width:100%;height:auto}
+figcaption{font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--cq);margin-top:var(--s3);padding-top:var(--s2);border-top:1px solid var(--cbr)}
+
+/* === KEY-VALUE === */
+.kv{display:grid;grid-template-columns:auto 1fr;gap:var(--s2) var(--s5);font-size:var(--t-sm);margin:var(--s4) 0}
+.kv dt{color:var(--cq);font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding-top:.2rem}
+.kv dd{color:var(--cm)}
+
+/* === BADGE === */
+.bdg{display:inline-block;background:var(--ca);color:var(--con);font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;padding:.15rem .5rem;font-weight:700}
+
+/* === FOOTER === */
+.fn{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut);margin-top:var(--s7);padding-top:var(--s3);border-top:2px solid var(--ct);font-size:var(--t-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--cq)}
+.fn .l{grid-column:1/span 6}
+.fn .r{grid-column:10/span 3;text-align:right;color:var(--ct);font-weight:700}
+
+:focus-visible{outline:2px solid var(--ca);outline-offset:2px}
+::selection{background:var(--ca);color:var(--con)}
+
+@media(max-width:900px){
+  .pg{grid-template-columns:repeat(6,1fr);padding:0 var(--s4) var(--s7)}
+  main,.sc,.hd,.toc,.fn{grid-template-columns:repeat(6,1fr)}
+  .gridlines{grid-template-columns:repeat(6,1fr)}
+  .hd h1{grid-column:1/-1;grid-row:auto}
+  .hd .ey,.hd .sub,.hd .meta,.hd .rule{grid-column:1/-1;grid-row:auto;text-align:left}
+  .hd .blk{grid-column:1/-1;grid-row:auto;width:80px;height:6px;margin-bottom:var(--s3)}
+  .sc .snum{grid-column:1/-1;padding-top:0;margin-bottom:var(--s2)}
+  .sc h2,.sc h3,.sc .deck,.sc .body,.sc .wide{grid-column:1/-1}
+  .toc ol{grid-template-columns:repeat(2,1fr)}
+  .fn .l,.fn .r{grid-column:1/-1;text-align:left}
+}
+@media(max-width:600px){
+  .toc ol{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  /* print inherits the OS theme unless overridden — force the paper palette */
+  :root{--cb:#fff;--cs:#fff;--cs2:#f4f4f2;--cbr:#dcdcd8;--ct:#111;--cm:#3d3d3a;--cq:#6b6b66;--ca:#d81e05;--cat:#921909;--con:#fff;--cw-bg:#fdf4e3;--cw:#8a5a00;--cg-bg:#eef3ec;--cg:#3f6b34;--cr-bg:#fbe9e6;--cc:#111;--cct:#f5f5f2}
+  .gridlines{display:none}
+  .pg{max-width:100%;display:block;padding:0}
+  main,.sc,.hd,.toc,.fn{display:block}
+  .sc{page-break-inside:avoid}
+  .sc h2{page-break-after:avoid}
+  a{color:inherit;border-bottom:none}
+}
+</style>
+</head><body>
+<div class="pg">
+
+<!-- ============== COVER ============== -->
+<header class="hd">
+  <p class="ey">design reference · no. 02</p>
+  <div class="blk"></div>
+  <h1>The grid<br>as instrument</h1>
+  <p class="sub">Swiss Style — the International Typographic Style of Zürich and Basel, read as a system: a page format divided into columns, a baseline, and a modulus, with hierarchy carried by size and weight instead of ornament.</p>
+  <p class="meta"><b>swiss style</b><br>zürich · basel<br>1950s—1960s<br>floreo · v1</p>
+  <div class="rule"></div>
+</header>
+
+<!-- ============== TOC ============== -->
+<nav class="toc" aria-label="table of contents">
+  <p class="toch">contents</p>
+  <ol id="toc-list">
+    <li><a href="#origins">Origins — two schools</a></li>
+    <li><a href="#grid">The grid, anatomised</a></li>
+    <li><a href="#typography">Typography as method</a></li>
+    <li><a href="#typefaces">The typefaces</a></li>
+    <li><a href="#colour">Black, white, one red</a></li>
+    <li><a href="#web">The grid on the web</a></li>
+    <li><a href="#limits">Where it breaks</a></li>
+    <li><a href="#rules">Working rules</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ol>
+</nav>
+
+<main>
+<div class="gridlines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<!-- ============== 01 ORIGINS ============== -->
+<section class="sc" id="origins" data-floreo-id="origins">
+  <p class="snum">01</p>
+  <h2>Origins — two schools</h2>
+  <p class="deck">Where the style came from, and why it was a school method before it was a look.</p>
+  <div class="body">
+    <p>The Swiss Style is usually dated to the 1950s. Its roots reach further back, and it grew in exactly two places. The Swiss government's own history of the style names Basel and Zürich as "the two main centers" — Basel working out of the Basel School of Design, Zürich out of the Zürich School of Arts and Crafts.</p>
+
+    <p>Over both sat <strong>Ernst Keller</strong>, a co-founder of the Swiss Werkbund and, from 1920 to 1956, head of the Zürich graphic design programme. Poster House's exhibition <em>The Swiss Grid</em> calls him "the Father of Swiss Style" and credits his teaching with placing "communication first, focusing on typography over illustration." Keller taught <strong>Josef Müller-Brockmann</strong> in Zürich and <strong>Armin Hofmann</strong> in Basel — the two figures the style is published through, and the split between them is the style's split. The same two sources describe the difference plainly: Zürich "championed the use of a layout grid," while Basel "used layout grids more selectively."</p>
+
+    <p>The style's journal was <strong>Neue Grafik</strong> — a trilingual Zürich publication edited by Richard Paul Lohse, Hans Neuburg, Müller-Brockmann and Carlo Vivarelli, running from 1958 to 1965. Its first issue, in September 1958, was designed by Vivarelli and set in Akzidenz-Grotesk.</p>
+
+    <p>Two details are worth carrying forward. First, the grid predates the style: the Swiss government credits <strong>Max Bill</strong> with creating "the first true layout grid system in the late 1930s." Second, the style kept going after its moment — from 1978, Müller-Brockmann built the Swiss Federal Railways visual identity with Peter Spalinger, a white double-arrow on red, which remains the most durable Swiss application of a single accent.</p>
+
+    <p>Third, the style had a launch. In 1949 <strong>Max Bill</strong> conceived <em>Die gute Form</em>, an international touring exhibition for the Swiss Werkbund, shown first at the Mustermesse Basel and the Kunstgewerbemuseum Zürich — a programme of good design that turned two schools' teaching into something with a public address.</p>
+
+    <div class="stats" role="group" aria-label="the style at a glance">
+      <div class="stat"><span class="k">centres</span><span class="v key">2</span><span class="n">Basel and Zürich</span></div>
+      <div class="stat"><span class="k">journal</span><span class="v">1958–65</span><span class="n"><em>Neue Grafik</em>, trilingual</span></div>
+      <div class="stat"><span class="k">grid systems</span><span class="v">8–32</span><span class="n">fields, in the book's range</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 02 THE GRID ============== -->
+<section class="sc" id="grid" data-floreo-id="grid">
+  <p class="snum">02</p>
+  <h2>The grid, anatomised</h2>
+  <p class="deck">Columns, gutter, baseline, modulus — the four parts and what each one is for.</p>
+  <div class="body">
+    <p>Every account of this style routes through one book: Müller-Brockmann's <em>Grid Systems in Graphic Design</em> — the German original appeared as <em>Raster Systeme für die grafische Gestaltung</em>, and the editions are dated differently across sources, so cite the edition you are reading. Its systems run from <strong>8 to 32 fields</strong>, the columns. Worth remembering: twelve columns is a web convention, not a Swiss one.</p>
+
+    <p>Four parts do the work. <strong>Columns</strong> divide the page horizontally. <strong>Gutters</strong> separate them. The <strong>baseline</strong> is the horizontal line each line of type sits on, and the leading between two lines is always a whole multiple of it. The <strong>modulus</strong> is the base unit everything else divides into — margins, measures, leading, and the size of the type itself.</p>
+
+    <p>Poster House's exhibition shows what this looked like in practice: a "flexible grid" adapted across a series, a three-column structure paired with "precisely-measured geometric images," two columns set in differing weights, a "monolithic block of solid text" — and the exceptions that prove the rule. Karl Gerstner's "programmes," "highly complex and innovative" grids. A grid tilted to 50 degrees, "providing a visual tension that not only echoes, but also enhances the message."</p>
+
+    <figure class="fig">
+      <svg viewBox="0 0 960 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-grid-t fig-grid-d">
+        <title id="fig-grid-t">Anatomy of a twelve-column page grid</title>
+        <desc id="fig-grid-d">A page rectangle divided into twelve equal columns separated by gutters, with a marked margin at left and right, a baseline grid of horizontal rules, and a text block spanning the middle six columns.</desc>
+        <rect x="40" y="20" width="880" height="320" fill="none" stroke="var(--cbr)" stroke-width="1"/>
+        <g fill="var(--grid-ink)">
+          <rect x="60" y="20" width="52" height="320"/><rect x="136" y="20" width="52" height="320"/>
+          <rect x="212" y="20" width="52" height="320"/><rect x="288" y="20" width="52" height="320"/>
+          <rect x="364" y="20" width="52" height="320"/><rect x="440" y="20" width="52" height="320"/>
+          <rect x="516" y="20" width="52" height="320"/><rect x="592" y="20" width="52" height="320"/>
+          <rect x="668" y="20" width="52" height="320"/><rect x="744" y="20" width="52" height="320"/>
+          <rect x="820" y="20" width="52" height="320"/><rect x="896" y="20" width="4" height="320"/>
+        </g>
+        <g stroke="var(--cbr)" stroke-width="1">
+          <line x1="40" y1="44" x2="920" y2="44"/><line x1="40" y1="68" x2="920" y2="68"/>
+          <line x1="40" y1="92" x2="920" y2="92"/><line x1="40" y1="116" x2="920" y2="116"/>
+          <line x1="40" y1="140" x2="920" y2="140"/><line x1="40" y1="164" x2="920" y2="164"/>
+          <line x1="40" y1="188" x2="920" y2="188"/><line x1="40" y1="212" x2="920" y2="212"/>
+          <line x1="40" y1="236" x2="920" y2="236"/><line x1="40" y1="260" x2="920" y2="260"/>
+          <line x1="40" y1="284" x2="920" y2="284"/><line x1="40" y1="308" x2="920" y2="308"/>
+        </g>
+        <rect x="364" y="92" width="232" height="72" fill="var(--ca)"/>
+        <g fill="var(--ct)">
+          <rect x="384" y="112" width="160" height="6"/><rect x="384" y="126" width="192" height="6"/>
+          <rect x="384" y="140" width="120" height="6"/>
+        </g>
+        <line x1="100" y1="20" x2="100" y2="340" stroke="var(--ca)" stroke-width="2"/>
+        <line x1="880" y1="20" x2="880" y2="340" stroke="var(--ca)" stroke-width="2"/>
+      </svg>
+      <figcaption>fig. 01 — twelve columns, a marked margin, a baseline of horizontal rules, one text block</figcaption>
+    </figure>
+    <div class="note"><span class="lab">note</span><p>"The grid system is an aid, not a guarantee. It permits a number of possible uses and each designer can look for a solution appropriate to his personal style." <strong>— Josef Müller-Brockmann</strong></p></div>
+
+    <div class="tip"><span class="lab">tip</span><p>"But one must learn how to use the grid; it is an art that requires practice." A grid does not make a page good. It makes the decisions on the page <em>visible</em>, which is a different and more useful thing.</p></div>
+
+    <p>The grid's proof is the poster. Müller-Brockmann made more than seventy for the Tonhalle-Gesellschaft Zürich between 1951 and 1972. The best known is the <strong>Beethoven</strong> of 1955 — for the concert of Tuesday 22 February, conducted by Carl Schuricht — and it is the clearest demonstration of what the grid is for.</p>
+
+    <p>It contains no picture. There is no photograph, no drawing, no ornament: a field of black on white, cut by large concentric arcs generated from a single centre, each band a different width, sweeping off the top and right edges. The subject is <em>beethoven</em>, set in bold lowercase flush left at mid-height, with the concert details below in a narrow column of small lowercase sans, ragged right, and a single line of credit set vertically against the right edge. The arcs are not decoration laid over the type. They are the grid's own geometry, and the type is aligned to them.</p>
+
+    <figure class="fig">
+      <svg viewBox="0 0 720 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-bee-t fig-bee-d">
+        <title id="fig-bee-t">Construction of the 1955 Beethoven poster</title>
+        <desc id="fig-bee-d">A schematic construction diagram, not a reproduction. A portrait field is ruled with a faint thirty-pixel grid. One marked centre low in the field throws a ladder of hairline construction circles, each radius a multiple of the module, and a single bold black band sweeps from the left edge up across the top. The lowercase word beethoven sits flush left in the open white area below, with small sans concert details beneath it. A numbered key identifies the centre, the radius ladder, and the type block.</desc>
+        <defs><clipPath id="bee-clip"><rect x="40" y="25" width="340" height="410"/></clipPath></defs>
+        <g stroke="var(--grid-ink)" stroke-width="1">
+          <line x1="70" y1="25" x2="70" y2="435"/><line x1="100" y1="25" x2="100" y2="435"/>
+          <line x1="130" y1="25" x2="130" y2="435"/><line x1="160" y1="25" x2="160" y2="435"/>
+          <line x1="190" y1="25" x2="190" y2="435"/><line x1="220" y1="25" x2="220" y2="435"/>
+          <line x1="250" y1="25" x2="250" y2="435"/><line x1="280" y1="25" x2="280" y2="435"/>
+          <line x1="310" y1="25" x2="310" y2="435"/><line x1="340" y1="25" x2="340" y2="435"/>
+          <line x1="370" y1="25" x2="370" y2="435"/>
+          <line x1="40" y1="55" x2="380" y2="55"/><line x1="40" y1="85" x2="380" y2="85"/>
+          <line x1="40" y1="115" x2="380" y2="115"/><line x1="40" y1="145" x2="380" y2="145"/>
+          <line x1="40" y1="175" x2="380" y2="175"/><line x1="40" y1="205" x2="380" y2="205"/>
+          <line x1="40" y1="235" x2="380" y2="235"/><line x1="40" y1="265" x2="380" y2="265"/>
+          <line x1="40" y1="295" x2="380" y2="295"/><line x1="40" y1="325" x2="380" y2="325"/>
+          <line x1="40" y1="355" x2="380" y2="355"/><line x1="40" y1="385" x2="380" y2="385"/>
+          <line x1="40" y1="415" x2="380" y2="415"/>
+        </g>
+        <g clip-path="url(#bee-clip)">
+          <circle cx="250" cy="360" r="290" fill="none" stroke="var(--ct)" stroke-width="26"/>
+        </g>
+        <g clip-path="url(#bee-clip)" fill="none" stroke="var(--ca)" stroke-width="1" stroke-dasharray="3 4" opacity="0.65">
+          <circle cx="250" cy="360" r="80"/>
+          <circle cx="250" cy="360" r="130"/>
+          <circle cx="250" cy="360" r="180"/>
+          <circle cx="250" cy="360" r="230"/>
+        </g>
+        <rect x="40" y="25" width="340" height="410" fill="none" stroke="var(--ct)" stroke-width="2"/>
+        <g font-family="var(--f-h)" fill="var(--ct)">
+          <text x="80" y="300" font-size="26" font-weight="700" letter-spacing="-1">beethoven</text>
+        </g>
+        <g font-family="var(--f-b)" font-size="11" fill="var(--ct)">
+          <text x="80" y="326">tonhalle grosser saal</text>
+          <text x="80" y="343">dienstag, den 22. februar 1955</text>
+          <text x="80" y="360">20.15 uhr &#183; 4. extrakonzert</text>
+          <text x="80" y="377">leitung carl schuricht</text>
+        </g>
+        <line x1="250" y1="360" x2="250" y2="130" stroke="var(--ca)" stroke-width="1" stroke-dasharray="3 3"/>
+        <g fill="var(--ca)">
+          <circle cx="250" cy="360" r="11"/>
+          <circle cx="250" cy="140" r="11"/>
+          <circle cx="58" cy="290" r="11"/>
+        </g>
+        <g font-family="var(--f-m)" font-size="11" font-weight="700" fill="var(--cb)" text-anchor="middle">
+          <text x="250" y="364">1</text>
+          <text x="250" y="144">2</text>
+          <text x="58" y="294">3</text>
+        </g>
+        <g font-family="var(--f-m)" font-size="11" fill="var(--ca)" letter-spacing="0.5">
+          <text x="420" y="140">1 &#160;one centre</text>
+          <text x="420" y="162">2 &#160;radii at module multiples</text>
+          <text x="420" y="286">3 &#160;the type sits inside the same field</text>
+        </g>
+      </svg>
+      <figcaption>fig. 02 — construction of the 1955 Beethoven poster: one centre, radii at module multiples, the type aligned to the same field</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============== 03 TYPOGRAPHY ============== -->
+<section class="sc" id="typography" data-floreo-id="typography">
+  <p class="snum">03</p>
+  <h2>Typography as method</h2>
+  <p class="deck">The objective voice: hierarchy by size and weight, alignment to the grid, nothing decorative.</p>
+  <div class="wide">
+    <p>"Objective typography" gets used loosely. Poster House's exhibition states the rules concretely, and they are stricter than the phrase suggests. The style's principal sans families were <strong>Akzidenz Grotesk Bold</strong>, <strong>Univers 65 Bold</strong> and <strong>Helvetica Bold</strong> — one weight of three faces, set large. Parentheses went in "a slightly smaller point size than the rest of the text." Red appeared in "three different sizes, creating a visual force." And in Karl Gerstner's work, form and message became codependent: his "integral typography," where the composition and the content cannot be pulled apart.</p>
+
+    <p>One rule is quietly radical, and it connects straight back to the Bauhaus: <strong>lowercase-only composition</strong>, with no capitals even on proper nouns. The exhibition's note is that this "condenses leading and kerning to produce a weightier block of information" — the same move Herbert Bayer made at Dessau a quarter-century earlier, arriving by a different route. It was in the work, not just the theory: the 1955 Beethoven poster sets its subject word in bold lowercase flush left.</p>
+
+    <figure class="fig">
+      <svg viewBox="0 0 960 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-scale-t fig-scale-d">
+        <title id="fig-scale-t">The type scale, set on the 24-pixel baseline</title>
+        <desc id="fig-scale-d">Seven type sizes from an 11-pixel uppercase label to an 84-pixel display. Each specimen sits on a baseline that falls a whole number of 24-pixel units below the one above it, so the leading is always a multiple of the baseline.</desc>
+        <g stroke="var(--cbr)" stroke-width="1">
+          <line x1="0" y1="20" x2="960" y2="20"/><line x1="0" y1="44" x2="960" y2="44"/>
+          <line x1="0" y1="68" x2="960" y2="68"/><line x1="0" y1="92" x2="960" y2="92"/>
+          <line x1="0" y1="116" x2="960" y2="116"/><line x1="0" y1="140" x2="960" y2="140"/>
+          <line x1="0" y1="164" x2="960" y2="164"/><line x1="0" y1="188" x2="960" y2="188"/>
+          <line x1="0" y1="212" x2="960" y2="212"/><line x1="0" y1="236" x2="960" y2="236"/>
+          <line x1="0" y1="260" x2="960" y2="260"/><line x1="0" y1="284" x2="960" y2="284"/>
+          <line x1="0" y1="308" x2="960" y2="308"/><line x1="0" y1="332" x2="960" y2="332"/>
+          <line x1="0" y1="356" x2="960" y2="356"/>
+        </g>
+        <g font-family="var(--f-m)" font-size="11" fill="var(--cq)" letter-spacing="1">
+          <text x="0" y="44">11 / 24</text>
+          <text x="0" y="68">14 / 24</text>
+          <text x="0" y="92">16 / 24</text>
+          <text x="0" y="140">22 / 48</text>
+          <text x="0" y="188">28 / 48</text>
+          <text x="0" y="260">40 / 72</text>
+          <text x="0" y="356">84 / 96</text>
+        </g>
+        <g stroke="var(--ca)" stroke-width="2">
+          <line x1="130" y1="44" x2="960" y2="44"/>
+          <line x1="130" y1="68" x2="960" y2="68"/>
+          <line x1="130" y1="92" x2="960" y2="92"/>
+          <line x1="130" y1="140" x2="960" y2="140"/>
+          <line x1="130" y1="188" x2="960" y2="188"/>
+          <line x1="130" y1="260" x2="960" y2="260"/>
+          <line x1="130" y1="356" x2="960" y2="356"/>
+        </g>
+        <g font-family="var(--f-h)" font-weight="700" fill="var(--ct)" letter-spacing="-0.02em">
+          <text x="130" y="44" font-size="11" letter-spacing="1.4">LABELS</text>
+          <text x="130" y="68" font-size="14">captions</text>
+          <text x="130" y="92" font-size="16">body copy set here</text>
+          <text x="130" y="140" font-size="22">sub-section heading</text>
+          <text x="130" y="188" font-size="28">a larger step</text>
+          <text x="130" y="260" font-size="40">section heading</text>
+          <text x="130" y="356" font-size="84">display</text>
+        </g>
+      </svg>
+      <figcaption>fig. 03 — seven sizes, one baseline: every leading is a whole multiple of 24px</figcaption>
+    </figure>
+    <ol class="steps">
+      <li><strong>Build hierarchy from size and weight, not from ornament.</strong> A handful of sizes, used without exception. Nothing is bold, coloured or boxed to make a point that size could have made.</li>
+      <li><strong>Set flush left, ragged right.</strong> Never justify. The rag is a structural element, not a flaw to be ironed out.</li>
+      <li><strong>Snap the small stuff too.</strong> Richard Paul Lohse locked the right side of his numerals to the grid line; Gerstner let a numeral's tail bleed past the measure so its edge still ran along the same grid as the body of the number. Alignment that holds for the headline and fails for the table is not alignment.</li>
+      <li><strong>Use one face and one weight per role.</strong> The style had three sans families and used one weight of each. A second weight is a second opinion about the hierarchy, and the hierarchy only gets one.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============== 04 TYPEFACES ============== -->
+<section class="sc" id="typefaces" data-floreo-id="typefaces">
+  <p class="snum">04</p>
+  <h2>The typefaces</h2>
+  <p class="deck">Akzidenz-Grotesk, Helvetica, Univers — three grotesques and the jobs each one did.</p>
+  <div class="body">
+    <p>Helvetica and Univers were both released commercially in <strong>1957</strong>. Akzidenz-Grotesk, the Berthold Foundry's release, is generally dated to 1958. The three are close cousins — all grotesques, drawn for the same job of carrying information without decoration — and the differences between them are the differences between the two schools that used them.</p>
+
+    <p>Here the sources disagree, and the disagreement is instructive. The Swiss government's history says Zürich leaned toward <strong>Helvetica</strong> and Basel toward <strong>Univers</strong>. Poster House's exhibition agrees about Basel — "Basel favored Univers experimentation and looser grid adherence" — but puts Zürich with <strong>Akzidenz-Grotesk</strong> and "strict adherence to the grid." The likely reconciliation is that Zürich owned the strict grid and used Akzidenz-Grotesk for the journal covers and the posters, while Helvetica, released the same year as Univers and adopted later, became the face the style is remembered by. Poster House puts it plainly: Helvetica is the style's biggest export, but "no posters in this show feature Helvetica."</p>
+
+    <p>What the style did with type is stranger than the choice of face. Univers 65 Bold was the workhorse. Red was set in three different sizes to create visual force. And compositions were set lowercase-only, without capitals on proper nouns, which condensed the leading and the kerning and produced — in the exhibition's phrase — "a weightier block of information."</p>
+
+    <div class="tw">
+      <table class="tbl">
+        <thead><tr><th>Face</th><th>Year</th><th>Designer</th><th>Where it worked</th></tr></thead>
+        <tbody>
+          <tr><td>Akzidenz-Grotesk</td><td>1958</td><td>Berthold Foundry</td><td><em>Neue Grafik</em> covers; Zürich's grid</td></tr>
+          <tr><td>Helvetica</td><td>1957</td><td>Miedinger &amp; Hoffmann</td><td>The style's biggest export</td></tr>
+          <tr><td>Univers</td><td>1957</td><td>Adrian Frutiger</td><td>Basel; a nine-weight system</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 05 COLOUR ============== -->
+<section class="sc" id="colour" data-floreo-id="colour">
+  <p class="snum">05</p>
+  <h2>Black, white, one red</h2>
+  <p class="deck">Why the palette is a discipline and not an absence of choice.</p>
+  <div class="body">
+    <p>The Swiss government describes the style as pursuing "a design language reduced to its essentials," built on "the use of photography and graphic symbols, sparing utilisation of colour, sans serif fonts and asymmetrical layouts." The operative word is <em>sparing</em>. This is not a black-and-white style with red in it — it is a style that spent colour carefully, which in practice meant one colour used as a field rather than an ornament.</p>
+
+    <p>The most durable instance is not a poster. From 1978, Müller-Brockmann and Peter Spalinger built the Swiss Federal Railways identity around a white double-arrow on red: a single accent doing the work of an entire visual system, legible at platform scale and at ticket scale.</p>
+
+    <p>The discipline is also visible in what the style refused. The Beethoven poster — the most reproduced artefact of the movement — is entirely black and white. Not black, white and a spot of red: no colour at all, on a poster measuring roughly 70 by 100 centimetres, seen from across a street. The red arrives later, and by way of a corporate identity rather than a concert poster.</p>
+
+    <p>Inside the compositions, red was handled as a scale, not a swatch — set in three different sizes to create visual force — and Hofmann's 1959 sculptors' exhibition poster shows the photographic half of the style working alongside it. The two poles are usually presented as opposites: Müller-Brockmann's constructed typography against Hofmann's photo-montage. In practice they were one discipline applied to two materials.</p>
+
+    <div class="tip"><span class="lab">tip</span><p>The discipline is the rarity. One red used at three sizes beats three colours used at one. If red appears on every callout, every badge and every link, then the one accent that was carrying the hierarchy has been spent.</p></div>
+  </div>
+</section>
+
+<!-- ============== 06 WEB ============== -->
+<section class="sc" id="web" data-floreo-id="web">
+  <p class="snum">06</p>
+  <h2>The grid on the web</h2>
+  <p class="deck">CSS Grid, the baseline grid, modular scales, and the 8-point unit.</p>
+  <div class="wide">
+    <p>CSS Grid is the Swiss grid's descendant, and the spec inherits its vocabulary directly. <code>grid-template-columns</code> is Baseline "Widely available" — across browsers since October 2017 — and <code>repeat()</code> exists, in MDN's wording, to let "a large number of columns that exhibit a recurring pattern to be written in a more compact form." The <code>fr</code> unit specifies "the track's flex factor," so that each track "takes a share of the remaining space in proportion to its flex factor." The formal rules live in CSS Grid Layout Module Level 2 under track sizing.</p>
+
+    <p>That is the whole translation, and it is exact. A Swiss grid was a division of a page into columns with a fixed relationship between that division and the type. A CSS grid is a division of a container into tracks with a fixed relationship between that division and the content. Everything else — the fluid column, the proportional gutter, the collapsed layout on narrow screens — is bookkeeping the browser does for you.</p>
+
+    <pre class="code"><code>/* the grid: twelve columns, one gutter, one page width */
+.pg{display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut);max-width:1240px;margin:0 auto}
+
+/* the text block sits on the grid — columns 3 to 9 */
+.sc .body{grid-column:3/span 7}
+
+/* the baseline: 16px type at 1.5 leading advances exactly 24px per line */
+body{font-size:1rem;line-height:1.5}
+p{margin-bottom:var(--s5)}   /* 24px — one baseline */</code></pre>
+
+    <p><strong>The baseline grid is the part CSS does not give you.</strong> There is no baseline-grid feature. What you get is a convention: set the body to 16px with a line-height of 1.5, so every line of body text advances exactly 24px and every baseline lands on a 24px rhythm. Then remove every margin, padding and border that is not a multiple of 24. A <code>repeating-linear-gradient</code> background can draw the baseline grid, but it does not snap anything to it — it only makes misalignment visible. Baseline alignment is maintained by arithmetic, not by the renderer.</p>
+
+    <p><strong>The type scale does the same job vertically.</strong> Tim Brown's modular scale, first introduced at Build 2010, defines a scale as "one base with one ratio" — "Bases are a scale's root numbers," and "Ratios are multiplied by the base to produce a scale of numbers that are proportionally related." The named ratios run from the minor second at 1.067 through the major third at 1.25 and the perfect fourth at 1.333, to the golden section at 1.618. Anything beyond a base and a ratio is, in the site's phrasing, a "multi-stranded modular scale."</p>
+
+    <p><strong>Spacing has its own arithmetic.</strong> Material Design 3's spacing tokens run 0, 4dp, 8dp, 12dp, 16dp, 24dp, 32dp, 40dp, 48dp, 56dp, 64dp — a 4dp base with 8dp steps above 16dp. That is the 8-point grid as it exists in practice today, and it is why a 24px baseline and a 4px spacing scale can share a page: the baseline is a multiple of the spacing unit. The 8-point grid is popularly credited to Google's Material Design and the designer Elliot Dahl, popularised through the 2010s and now standard across Material, Carbon and Ant Design — though newer systems are drifting back toward 4-point grids.</p>
+
+    <p>What is genuinely new is not the grid. It is that the grid is now <em>invisible by default</em> — the browser lays it out for you — which means the discipline has to move somewhere else. It moves to the decisions the grid cannot make for you: which sizes, which weights, how much space, and where the one accent goes.</p>
+  </div>
+</section>
+
+<!-- ============== 07 LIMITS ============== -->
+<section class="sc" id="limits" data-floreo-id="limits">
+  <p class="snum">07</p>
+  <h2>Where it breaks</h2>
+  <p class="deck">Justified text, fixed pages, thin weights, and what the style's politics were.</p>
+  <div class="body">
+    <p><strong>Justified text.</strong> Swiss print set flush left and ragged right. Justification requires hyphenation and produces rivers — and it removes the rag, which was the point. On screen it is worse, because the measure changes with the viewport.</p>
+
+    <p><strong>Fixed page formats.</strong> An A-series poster had one page. A screen has a thousand, each a different width. "Strict adherence to the grid" means nothing if the grid is re-derived at every viewport.</p>
+
+    <p><strong>The accessibility floor.</strong> WCAG 2.2 puts hard numbers on all of it. Contrast (Minimum), SC 1.4.3, Level AA, requires 4.5:1 for body text and 3:1 for large-scale text — 18pt and above non-bold, or 14pt and above bold. Non-text Contrast, SC 1.4.11, requires 3:1 for the visual boundaries of user-interface components and for graphics needed to understand the content: a red rule that carries meaning is a graphic, and it has to clear 3:1 against the paper. Target Size (Minimum), SC 2.5.8, Level AA, requires pointer targets of at least 24 by 24 CSS pixels, with exceptions for spacing, inline targets, user-agent-controlled sizing and essential presentation.</p>
+
+    <p><strong>Text Spacing is the one that breaks rigid grids.</strong> SC 1.4.12 requires that content survives, without loss, when line height is raised to at least 1.5 times the font size, paragraph spacing to at least 2 times, letter spacing to at least 0.12 times and word spacing to at least 0.16 times. Every fixed-height row and every fixed-height card in a print-derived grid violates that. Reflow, SC 1.4.10, requires content to work at a width of 320 CSS pixels without two-dimensional scrolling; Resize Text, SC 1.4.4, requires 200 percent text without loss of content or function. A grid with hard-coded row heights fails both.</p>
+
+    <div class="warn"><span class="lab">warn</span><p>Swiss Style design is usually taught as if it has no political content. It does. The "objective" voice, the absence of authorial expression, the rational grid — these were deliberate choices about what a designed object should be <em>for</em>, and they descend directly from the 1930s reaction to propaganda typography. Treat the style as a political artifact, not a neutral tool.</p></div>
+  </div>
+</section>
+
+<!-- ============== 08 RULES ============== -->
+<section class="sc" id="rules" data-floreo-id="rules">
+  <p class="snum">08</p>
+  <h2>Working rules</h2>
+  <p class="deck">The checklist that falls out of the above.</p>
+  <div class="wide">
+    <ol class="steps">
+      <li><strong>Divide the page before you set the type.</strong> Twelve columns, one gutter, one baseline. Choose the unit first and let every measure derive from it.</li>
+      <li><strong>Build the hierarchy from size and weight alone.</strong> Seven sizes at most. Nothing is bold, coloured or boxed to make a point that size could have made.</li>
+      <li><strong>Snap the small stuff too.</strong> Numeral edges, caption rules, the gap under a heading. Alignment that holds for the headline and fails for the table is not alignment.</li>
+      <li><strong>Spend the accent sparingly, and at three sizes.</strong> One colour, used as a field, a rule and a word — not as a fill on everything that needs emphasis.</li>
+      <li><strong>Let the grid hold the layout, and the numbers hold the reader.</strong> Contrast at 4.5:1, targets at 24px, reflow at 320px, text spacing that survives a user's override. The method is only worth adopting if the result is readable by everyone.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============== 09 SOURCES ============== -->
+<section class="sc" id="sources" data-floreo-id="sources">
+  <p class="snum">09</p>
+  <h2>Sources</h2>
+  <p class="deck">Where the canon lives.</p>
+  <div class="body">
+    <ul>
+      <li><a href="https://www.aboutswitzerland.eda.admin.ch/en/swiss-style-forever-the-story-of-a-graphic-design-tradition">Swiss Style forever — the story of a graphic design tradition</a> — the Swiss federal government's official history</li>
+      <li><a href="https://swissgrid.posterhouse.org/">The Swiss Grid</a> — Poster House exhibition</li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Josef_M%C3%BCller-Brockmann._beethoven_poster(1955).jpg">Beethoven poster (1955)</a> — Wikimedia Commons; the poster itself is the source for fig. 03</li>
+      <li><a href="https://designreviewed.com/artefacts/max-bills-view-of-things-die-gute-form-an-exhibition-1949-2013/">Max Bill's View of Things: Die gute Form</a> — Design Reviewed</li>
+      <li><a href="https://www.printmag.com/featured/swiss-style-principles-typefaces-designers/">Swiss Style: The Principles, the Typefaces &amp; the Designers</a> — Print</li>
+      <li><a href="https://designopendata.wordpress.com/portfolio/grid-systems/">Grid Systems in Graphic Design</a> — designopendata archive</li>
+      <li><a href="https://niggli.ch/en/products/rastersysteme-fur-die-visuelle-gestaltung">Raster Systeme für die visuelle Gestaltung</a> — Niggli, the publisher</li>
+      <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns">grid-template-columns</a> — MDN</li>
+      <li><a href="https://www.modularscale.com/">Modular Scale</a> — Tim Brown</li>
+      <li><a href="https://m3.material.io/styles/spacing/tokens">Spacing tokens</a> — Material Design 3</li>
+      <li><a href="https://www.w3.org/WAI/WCAG22/quickref/">WCAG 2.2 Quick Reference</a> — W3C WAI</li>
+      <li><a href="https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html">Understanding SC 2.5.8 Target Size (Minimum)</a> — W3C WAI</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="fn">
+  <div class="l">floreo · swiss-baseline · generated 2026-10-26</div>
+  <div class="r">12 columns · one red</div>
+</footer>
+
+</div>
+
+<script type="application/floreo" id="content-plan">
+DOCUMENT: Swiss Style — The Grid as Instrument
+AUDIENCE: Designers and developers translating grid systems into digital artifacts
+PURPOSE: A sourced reference to the Swiss / International Typographic Style, focused on grid systems as applied to web design
+ACCENT: one red (#d81e05) on near-black ink (#111111) and paper (#fbfbfa)
+GRID: 12 columns · 24px gutter · 24px baseline · 4px spacing unit
+SOURCES: Swiss federal government (aboutswitzerland.eda.admin.ch) · Poster House "The Swiss Grid" · Niggli · MDN CSS Grid · modularscale.com · Material Design 3 · WCAG 2.2
+TEMPLATE: swiss-baseline
+</script>
+<script>
+(function(){
+  var list=document.getElementById('toc-list');
+  if(!list)return;
+  var links=list.querySelectorAll('a');
+  links[0]&&links[0].classList.add('active');
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var a=list.querySelector('a[href="#'+e.target.id+'"]');
+      if(!a)return;
+      links.forEach(function(x){x.classList.remove('active');x.removeAttribute('aria-current')});
+      a.classList.add('active');a.setAttribute('aria-current','true');
+    });
+  },{rootMargin:'-10% 0px -75% 0px'});
+  document.querySelectorAll('main section.sc').forEach(function(s){
+    if(!s.id)return;
+    obs.observe(s);
+  });
+})();
+</script>
+</body></html>
