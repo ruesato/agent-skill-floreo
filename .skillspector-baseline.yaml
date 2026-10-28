@@ -34,7 +34,7 @@ version: 2
 scanner_version: 2.9.6
 rules: []
 fingerprints:
-- hash: sha256:30fc16ffdcfdb732a3c7be41ac590afdb30e70661053514c861f37ccf3ca2309
+- hash: sha256:1c7dd87477193ea2cf525a9766e5dc0245c6f10a31fbab61a117ceef7a133198
   rule_id: P2
   file: SKILL.md
   reason: >-
@@ -52,11 +52,11 @@ fingerprints:
     status and its render behavior; "rejected" is the one case where a comment
     is intentionally kept, and the prose at draft/SKILL.md:262 explains why
     ("so the decision is visible in the rendered output").
-- hash: sha256:b46a66704e431641f6dc04142b41a91b3598fc41ef67de7ef7a04edb6aa646bf
+- hash: sha256:585071520a9fb44f8c912abd68f40712d6fafba63b2d521b9e658b7dae88b2a8
   rule_id: P2
   file: SKILL.md
   reason: >-
-    False positive in skills/floreo/SKILL.md line 1438. P2 "Hidden Instructions"
+    False positive in skills/floreo/SKILL.md line 1462. P2 "Hidden Instructions"
     matched an HTML comment annotating a fenced ```html code example: `<!-- Bars
     — single series uses one fill; for two series use --ca and --cm (both clear
     3:1) -->`. The skill uses such comments throughout its SVG/HTML examples as
@@ -72,16 +72,16 @@ fingerprints:
     heatmap); only the two whose prose most resembles an instruction were
     flagged. The comment contains color-guidance prose, not a directive to
     perform an action.
-- hash: sha256:d97dbff8456005d77eb02bce0a67858231dfb7b982d087647d9f141efe149337
+- hash: sha256:49ab437edc83bb53168f99519bca4e18952617f2e8664f6cd0c18d3805a03316
   rule_id: P2
   file: SKILL.md
   reason: >-
-    False positive in skills/floreo/SKILL.md line 1750. P2 "Hidden Instructions"
+    False positive in skills/floreo/SKILL.md line 1774. P2 "Hidden Instructions"
     matched an HTML comment annotating a fenced ```html code example: `<!-- At
     start of main, before first section -->`. Same root cause as the
-    floreo:1438 finding: a teaching annotation inside a code fence labeling
+    floreo:1462 finding: a teaching annotation inside a code fence labeling
     where the search/ToC markup goes. The prose immediately above the code
-    fence (floreo/SKILL.md:1744) already states "Add inside `<header class="hd">`
+    fence (floreo/SKILL.md:1768) already states "Add inside `<header class="hd">`
     (for the export button) and at the start of `<main>` (for search and sticky
     ToC)" — the comment is a redundant placement marker, not an instruction.
     Never reaches generated output per the skill's no-HTML-comments rule
