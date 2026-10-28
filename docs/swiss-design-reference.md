@@ -3,20 +3,20 @@ title: Swiss Style — The Grid as Instrument
 type: report
 accent: swiss
 interactive: toc
-date: 2026-10-26
+date: 2026-10-27
 ---
 
 # swiss style — the grid as instrument
 
 The Swiss Style — the International Typographic Style that came out of Zürich and Basel in the 1950s and 1960s — is usually described as a look: Helvetica, red, white space. It is not a look. It is a method, and the method is the grid.
 
-<hint status="approved">Render in the new swiss-baseline floreo template — twelve visible columns, a 24px baseline, black and white with one red, hairline rules instead of boxes, and a sans hierarchy carried by size and weight.</hint>
+<hint status="approved">Render in the swiss-baseline floreo template — a twelve-column page grid on a 24px baseline: the cover and footer span all twelve columns, the content runs in columns 1–8, and the contents sit in a rail in columns 10–12, level with the first section heading. Section numbers hang in a 40px slot beside the heading, and the deck and body share that same 40px indent. Black and white with one red, hairline rules instead of boxes, and a sans hierarchy carried by size and weight rather than ornament.</hint>
 
-## origins — two schools
+## Origins — two schools
 
 The Swiss Style is usually dated to the 1950s. Its roots reach further back, and it grew in exactly two places. The Swiss government's own history of the style names Basel and Zürich as "the two main centers" — Basel working out of the Basel School of Design, Zürich out of the Zürich School of Arts and Crafts.
 
-Over both sat **Ernst Keller**, a co-founder of the Swiss Werkbund and, from 1920 to 1956, head of the Zürich graphic design programme. Poster House's exhibition *The Swiss Grid* calls him "the Father of Swiss Style" and credits his teaching with placing "communication first, focusing on typography over illustration." Keller taught **Josef Müller-Brockmann** in Zürich and **Armin Hofmann** in Basel — the two figures the style is published through, and the split between them is the style's split. The same two sources describe the difference plainly: Zürich "championed the use of a layout grid," while Basel "used layout grids more selectively."
+Over both sat **Ernst Keller**, a co-founder of the Swiss Werkbund and, from 1920 to 1956, head of the Zürich graphic design programme. Poster House's exhibition *The Swiss Grid* calls him "the Father of Swiss Style" and credits his teaching with placing "communication first, focusing on typography over illustration." Keller taught **Josef Müller-Brockmann** in Zürich and **Armin Hofmann** in Basel — the two figures the style is published through, and the split between them is the style's split. The same two sources describe the difference plainly: Zürich "championed the use of layout grids," while Basel "used layout grids more selectively."
 
 The style's journal was **Neue Grafik** — a trilingual Zürich publication edited by Richard Paul Lohse, Hans Neuburg, Müller-Brockmann and Carlo Vivarelli, running from 1958 to 1965. Its first issue, in September 1958, was designed by Vivarelli and set in Akzidenz-Grotesk.
 
@@ -30,7 +30,9 @@ Journal: Neue Grafik, 1958–65, trilingual
 Grid systems: 8–32 fields, the book's range
 ```
 
-## the grid, anatomised
+<hint status="approved">Render as the Stat Row component: three equal columns with no gap between them, a 2px rule above the row, and in each column a quiet uppercase label, the figure in bold ink, and a quiet note beneath. No card containers.</hint>
+
+## The grid, anatomised
 
 Every account of this style routes through one book: Müller-Brockmann's *Grid Systems in Graphic Design* — the German original appeared as *Raster Systeme für die grafische Gestaltung*, and the editions are dated differently across sources, so cite the edition you are reading. Its systems run from **8 to 32 fields**, the columns. Worth remembering: twelve columns is a web convention, not a Swiss one.
 
@@ -46,15 +48,21 @@ Poster House's exhibition shows what this looked like in practice: a "flexible g
 "But one must learn how to use the grid; it is an art that requires practice." A grid does not make a page good. It makes the decisions on the page visible, which is a different and more useful thing.
 ```
 
+<hint status="approved">Render callouts with the Callout component: a 2px top rule and an uppercase label above the body copy — never a filled box, never a side stripe. The Note variant takes an ink rule and an ink label; the Tip variant takes an ink rule and a red label; the Warning variant takes a red rule and a red label.</hint>
+
 The grid's proof is the poster. Müller-Brockmann made more than seventy for the Tonhalle-Gesellschaft Zürich between 1951 and 1972. The best known is the **Beethoven** of 1955 — for the concert of Tuesday 22 February, conducted by Carl Schuricht — and it is the clearest demonstration of what the grid is for.
 
 It contains no picture. There is no photograph, no drawing, no ornament: a field of black on white, cut by large concentric arcs generated from a single centre, each band a different width, sweeping off the top and right edges. The subject is *beethoven*, set in bold lowercase flush left at mid-height, with the concert details below in a narrow column of small lowercase sans, ragged right, and a single line of credit set vertically against the right edge. The arcs are not decoration laid over the type. They are the grid's own geometry, and the type is aligned to them.
 
-## typography as method
+<hint status="approved">Render as an inline SVG figure in the body column, above the caption: a page rectangle divided into twelve equal columns separated by gutters, with a marked margin at left and right, a baseline grid of horizontal rules, and a single red text block spanning the middle columns. Give the SVG a role of img, a title and a desc, and point aria-labelledby at both.</hint>
+
+## Typography as method
 
 "Objective typography" gets used loosely. Poster House's exhibition states the rules concretely, and they are stricter than the phrase suggests. The style's principal sans families were **Akzidenz Grotesk Bold**, **Univers 65 Bold** and **Helvetica Bold** — one weight of three faces, set large. Parentheses went in "a slightly smaller point size than the rest of the text." Red appeared in "three different sizes, creating a visual force." And in Karl Gerstner's work, form and message became codependent: his "integral typography," where the composition and the content cannot be pulled apart.
 
 One rule is quietly radical, and it connects straight back to the Bauhaus: **lowercase-only composition**, with no capitals even on proper nouns. The exhibition's note is that this "condenses leading and kerning to produce a weightier block of information" — the same move Herbert Bayer made at Dessau a quarter-century earlier, arriving by a different route. It was in the work, not just the theory: the 1955 Beethoven poster sets its subject word in bold lowercase flush left.
+
+<hint status="approved">Render as an inline SVG figure: a portrait field ruled with a faint grid, one marked centre low in the field throwing a ladder of hairline construction circles at module multiples, a single bold black band sweeping from the left edge up across the top, and the lowercase word beethoven set flush left in the open white area below. A construction diagram, not a reproduction — give it a role of img, a title and a desc.</hint>
 
 ```steps
 1. Build hierarchy from size and weight, not from ornament. A handful of sizes, used without exception. Nothing is bold, coloured or boxed to make a point that size could have made.
@@ -63,7 +71,9 @@ One rule is quietly radical, and it connects straight back to the Bauhaus: **low
 4. Use one face and one weight per role. The style had three sans families and used one weight of each. A second weight is a second opinion about the hierarchy, and the hierarchy only gets one.
 ```
 
-## the typefaces
+<hint status="approved">Render steps with the Step component: the number in the margin in red, the lead sentence in bold ink, the rest in body colour, and a hairline rule above each step. No bullets, no list markers.</hint>
+
+## The typefaces
 
 Helvetica and Univers were both released commercially in **1957**. Akzidenz-Grotesk, the Berthold Foundry's release, is generally dated to 1958. The three are close cousins — all grotesques, drawn for the same job of carrying information without decoration — and the differences between them are the differences between the two schools that used them.
 
@@ -77,7 +87,9 @@ What the style did with type is stranger than the choice of face. Univers 65 Bol
 | Helvetica | 1957 | Miedinger & Hoffmann | The style's biggest export |
 | Univers | 1957 | Adrian Frutiger | Basel; a nine-weight system |
 
-## black, white, one red
+<hint status="approved">Render the table with the Table component: uppercase mono headers over a 2px ink rule, hairline rules between rows, no fills, no rounded corners, and the first column flush left with no extra padding.</hint>
+
+## Black, white, one red
 
 The Swiss government describes the style as pursuing "a design language reduced to its essentials," built on "the use of photography and graphic symbols, sparing utilisation of colour, sans serif fonts and asymmetrical layouts." The operative word is *sparing*. This is not a black-and-white style with red in it — it is a style that spent colour carefully, which in practice meant one colour used as a field rather than an ornament.
 
@@ -91,23 +103,21 @@ Inside the compositions, red was handled as a scale, not a swatch — set in thr
 The discipline is the rarity. One red used at three sizes beats three colours used at one. If red appears on every callout, every badge and every link, then the one accent that was carrying the hierarchy has been spent.
 ```
 
-## the grid on the web
+## The grid on the web
 
 CSS Grid is the Swiss grid's descendant, and the spec inherits its vocabulary directly. `grid-template-columns` is Baseline "Widely available" — across browsers since October 2017 — and `repeat()` exists, in MDN's wording, to let "a large number of columns that exhibit a recurring pattern to be written in a more compact form." The `fr` unit specifies "the track's flex factor," so that each track "takes a share of the remaining space in proportion to its flex factor." The formal rules live in CSS Grid Layout Module Level 2 under track sizing.
 
 That is the whole translation, and it is exact. A Swiss grid was a division of a page into columns with a fixed relationship between that division and the type. A CSS grid is a division of a container into tracks with a fixed relationship between that division and the content. Everything else — the fluid column, the proportional gutter, the collapsed layout on narrow screens — is bookkeeping the browser does for you.
 
 ```code
-/* the grid: twelve columns, one gutter, one page width */
-.pg{display:grid;grid-template-columns:repeat(12,1fr);gap:0 var(--gut);max-width:1240px;margin:0 auto}
-
-/* the text block sits on the grid — columns 3 to 9 */
-.sc .body{grid-column:3/span 7}
-
-/* the baseline: 16px type at 1.5 leading advances exactly 24px per line */
-body{font-size:1rem;line-height:1.5}
-p{margin-bottom:var(--s5)}   /* 24px — one baseline */
+/* the page grid: twelve columns, one gutter, one page width */
+.pg{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--s7) var(--gut);max-width:1240px}
+.sc{grid-column:1/span 8}               /* the main column — grid columns 1–8 */
+.toc{grid-column:10/span 3;grid-row:2}  /* the rail — grid columns 10–12 */
+p{line-height:1.5} /* 16px × 1.5 = 24px — one baseline */
 ```
+
+<hint status="approved">Render code as the Code Block component: the only dark surface in the system, mono at 13.6px on a 22px leading, 16px padding, and sharp corners — no radius, no border.</hint>
 
 **The baseline grid is the part CSS does not give you.** There is no baseline-grid feature. What you get is a convention: set the body to 16px with a line-height of 1.5, so every line of body text advances exactly 24px and every baseline lands on a 24px rhythm. Then remove every margin, padding and border that is not a multiple of 24. A `repeating-linear-gradient` background can draw the baseline grid, but it does not snap anything to it — it only makes misalignment visible. Baseline alignment is maintained by arithmetic, not by the renderer.
 
@@ -117,7 +127,7 @@ p{margin-bottom:var(--s5)}   /* 24px — one baseline */
 
 What is genuinely new is not the grid. It is that the grid is now *invisible by default* — the browser lays it out for you — which means the discipline has to move somewhere else. It moves to the decisions the grid cannot make for you: which sizes, which weights, how much space, and where the one accent goes.
 
-## where it breaks
+## Where it breaks
 
 **Justified text.** Swiss print set flush left and ragged right. Justification requires hyphenation and produces rivers — and it removes the rag, which was the point. On screen it is worse, because the measure changes with the viewport.
 
@@ -131,7 +141,7 @@ What is genuinely new is not the grid. It is that the grid is now *invisible by 
 Swiss Style design is usually taught as if it has no political content. It does. The "objective" voice, the absence of authorial expression, the rational grid — these were deliberate choices about what a designed object should be *for*, and they descend directly from the 1930s reaction to propaganda typography. Treat the style as a political artifact, not a neutral tool.
 ```
 
-## working rules
+## Working rules
 
 ```steps
 1. Divide the page before you set the type. Twelve columns, one gutter, one baseline. Choose the unit first and let every measure derive from it.
@@ -141,17 +151,19 @@ Swiss Style design is usually taught as if it has no political content. It does.
 5. Let the grid hold the layout, and the numbers hold the reader. Contrast at 4.5:1, targets at 24px, reflow at 320px, text spacing that survives a user's override. The method is only worth adopting if the result is readable by everyone.
 ```
 
-## sources
+## Sources
 
-- Swiss Style forever — the story of a graphic design tradition — the Swiss federal government's official history
-- The Swiss Grid — Poster House exhibition
-- Beethoven poster (1955) — Wikimedia Commons; the poster itself is the source for fig. 02
-- Max Bill's View of Things: Die gute Form — Design Reviewed
-- Swiss Style: The Principles, the Typefaces & the Designers — Print
-- Grid Systems in Graphic Design — designopendata archive
-- Raster Systeme für die visuelle Gestaltung — Niggli, the publisher
-- grid-template-columns — MDN
-- Modular Scale — Tim Brown
-- Spacing tokens — Material Design 3
-- WCAG 2.2 Quick Reference — W3C WAI
-- Understanding SC 2.5.8 Target Size (Minimum) — W3C WAI
+- [Swiss Style forever — the story of a graphic design tradition](https://www.aboutswitzerland.eda.admin.ch/en/swiss-style-forever-the-story-of-a-graphic-design-tradition) — the Swiss federal government's official history
+- [The Swiss Grid](https://swissgrid.posterhouse.org/) — Poster House exhibition
+- [Beethoven poster (1955)](https://commons.wikimedia.org/wiki/File:Josef_M%C3%BCller-Brockmann._beethoven_poster(1955).jpg) — Wikimedia Commons; the poster itself is the source for the construction diagram
+- [Max Bill's View of Things: Die gute Form](https://designreviewed.com/artefacts/max-bills-view-of-things-die-gute-form-an-exhibition-1949-2013/) — Design Reviewed
+- [Swiss Style: The Principles, the Typefaces & the Designers](https://www.printmag.com/featured/swiss-style-principles-typefaces-designers/) — Print
+- [Grid Systems in Graphic Design](https://designopendata.wordpress.com/portfolio/grid-systems/) — designopendata archive
+- [Raster Systeme für die visuelle Gestaltung](https://niggli.ch/en/products/rastersysteme-fur-die-visuelle-gestaltung) — Niggli, the publisher
+- [grid-template-columns](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns) — MDN
+- [Modular Scale](https://www.modularscale.com/) — Tim Brown
+- [Spacing tokens](https://m3.material.io/styles/spacing/tokens) — Material Design 3
+- [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/) — W3C WAI
+- [Understanding SC 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) — W3C WAI
+
+<hint status="approved">Render the sources as a plain list in the body column, each item a quiet 14px line with the publication name in ink and the description in quiet ink. No bullets, no numbering, no rules.</hint>
