@@ -42,7 +42,7 @@ Every floreo markdown file begins with YAML frontmatter:
 title: Document Title
 type: report            # report | analysis | plan | proposal | incident | retrospective | brief | tutorial
 accent: technical       # technical | warning | success | planning | research
-interactive: toc        # toc | search | collapsible | tabs | none  (comma-separated)
+interactive: toc        # toc | search | collapsible | tabs | theme | none  (comma-separated)
 author: Name            # optional
 date: YYYY-MM-DD        # optional, ISO 8601
 ---
