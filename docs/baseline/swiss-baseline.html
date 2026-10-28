@@ -12,23 +12,25 @@
   --f-b:"Helvetica Neue",Helvetica,"Neue Haas Grotesk Text Pro","Inter",Arial,system-ui,sans-serif;
   --f-m:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono","Courier New",monospace;
 
-  /* colour — black, white, and one red. nothing else. */
-  --cb:#fbfbfa;      /* paper */
-  --cs:#ffffff;      /* surface */
-  --cs2:#f2f2f0;     /* subtle surface */
-  --cbr:#dcdcd8;     /* hairline rule */
-  --ct:#111111;      /* ink */
-  --cm:#3d3d3a;      /* muted ink */
-  --cq:#6b6b66;      /* quiet ink */
-  --ca:#d81e05;      /* the red */
-  --cat:color-mix(in srgb,var(--ca) 65%,var(--ct));
-  --cab:color-mix(in srgb,var(--ca) 7%,var(--cb));
-  --con:#fbfbfa;     /* text on accent */
-  --cw-bg:#fdf4e3;--cw:#8a5a00;
-  --cg-bg:#eef3ec;--cg:#3f6b34;
-  --cr-bg:#fbe9e6;
-  --cc:#111111;--cct:#f5f5f2;
-  --grid-ink:rgba(17,17,17,.022);
+  /* colour — black, white, and one red. nothing else.
+     every token is a light-dark() pair: light value first, dark second. */
+  color-scheme:light dark;
+  --cb:light-dark(#fbfbfa,#111110);   /* paper */
+  --cs:light-dark(#ffffff,#1a1a18);   /* surface */
+  --cs2:light-dark(#f2f2f0,#232321);  /* subtle surface */
+  --cbr:light-dark(#dcdcd8,#333330);  /* hairline rule */
+  --ct:light-dark(#111111,#f2f2ef);   /* ink */
+  --cm:light-dark(#3d3d3a,#c9c9c4);   /* muted ink */
+  --cq:light-dark(#6b6b66,#96968f);   /* quiet ink */
+  --ca:light-dark(#d81e05,#ff4a2b);   /* the red */
+  --cat:light-dark(color-mix(in srgb,var(--ca) 65%,var(--ct)),color-mix(in srgb,var(--ca) 45%,var(--ct)));
+  --cab:light-dark(color-mix(in srgb,var(--ca) 7%,var(--cb)),color-mix(in srgb,var(--ca) 14%,var(--cb)));
+  --con:light-dark(#fbfbfa,#111110);  /* text on accent */
+  --cw-bg:light-dark(#fdf4e3,#2e2310);--cw:light-dark(#8a5a00,#e0b45c);
+  --cg-bg:light-dark(#eef3ec,#182713);--cg:light-dark(#3f6b34,#8fbf82);
+  --cr-bg:light-dark(#fbe9e6,#2e1310);
+  --cc:light-dark(#111111,#0a0a09);--cct:#f5f5f2;
+  --grid-ink:light-dark(rgba(17,17,17,.022),rgba(242,242,239,.03));
 
   /* scale — few sizes, strong contrast. this is the whole point. */
   --t-xs:.6875rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.375rem;--t-2xl:1.75rem;--t-3xl:2.5rem;--t-4xl:clamp(2.75rem,6.5vw,5.25rem);
@@ -39,16 +41,9 @@
   --base:24px;       /* baseline */
   --indent:40px;     /* the hanging indent — section number, deck, body */
 }
-@media(prefers-color-scheme:dark){
-  :root{
-    --cb:#111110;--cs:#1a1a18;--cs2:#232321;--cbr:#333330;--ct:#f2f2ef;--cm:#c9c9c4;--cq:#96968f;
-    --ca:#ff4a2b;--cat:color-mix(in srgb,var(--ca) 45%,var(--ct));--cab:color-mix(in srgb,var(--ca) 14%,var(--cb));
-    --con:#111110;
-    --cw-bg:#2e2310;--cw:#e0b45c;--cg-bg:#182713;--cg:#8fbf82;--cr-bg:#2e1310;
-    --cc:#0a0a09;--cct:#f5f5f2;
-    --grid-ink:rgba(242,242,239,.03);
-  }
-}
+/* an explicit reader choice pins the scheme; without one the OS decides */
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
 html{background:var(--cb)}
 body{
   font-family:var(--f-b);
@@ -172,6 +167,9 @@ figcaption{font-size:var(--t-xs);line-height:24px;letter-spacing:.12em;text-tran
 /* === FOOTER — spans all twelve columns === */
 .fn{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;padding-top:var(--s3);border-top:2px solid var(--ct);font-size:var(--t-xs);line-height:24px;letter-spacing:.16em;text-transform:uppercase;color:var(--cq)}
 .fn .r{color:var(--ct);font-weight:700}
+/* the theme toggle is set as type, not as a control — a red word after the colophon */
+.ri-theme{font:inherit;letter-spacing:inherit;text-transform:inherit;line-height:inherit;color:var(--cat);background:none;border:0;border-bottom:1px solid var(--ca);padding:0;cursor:pointer;transition:background .12s ease-out}
+.ri-theme:hover{background:var(--cab)}
 
 :focus-visible{outline:2px solid var(--ca);outline-offset:2px}
 ::selection{background:var(--ca);color:var(--con)}
@@ -197,16 +195,56 @@ figcaption{font-size:var(--t-xs);line-height:24px;letter-spacing:.12em;text-tran
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 @media print{
-  :root{--cb:#fff;--cs:#fff;--cs2:#f4f4f2;--cbr:#dcdcd8;--ct:#111;--cm:#3d3d3a;--cq:#6b6b66;--ca:#d81e05;--cat:#921909;--con:#fff;--cw-bg:#fdf4e3;--cw:#8a5a00;--cg-bg:#eef3ec;--cg:#3f6b34;--cr-bg:#fbe9e6;--cc:#111;--cct:#f5f5f2}
+  :root{color-scheme:light;--cb:#fff;--cs:#fff;--cs2:#f4f4f2;--cbr:#dcdcd8;--ct:#111;--cm:#3d3d3a;--cq:#6b6b66;--ca:#d81e05;--cat:#921909;--con:#fff;--cw-bg:#fdf4e3;--cw:#8a5a00;--cg-bg:#eef3ec;--cg:#3f6b34;--cr-bg:#fbe9e6;--cc:#111;--cct:#f5f5f2}
   .gridlines{display:none}
   .pg{max-width:100%;display:block;padding:0}
   main{display:block}
-  .toc{display:none}
+  .toc,.ri-theme{display:none}
   .sc{page-break-inside:avoid}
   .shead h2{page-break-after:avoid}
   a{color:inherit;border-bottom:none}
 }
 </style>
+<script>
+/* theme — runs in the head so a stored choice lands before first paint */
+(function(){
+  var root=document.documentElement, KEY='floreo-theme', chosen=null;
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+  try{chosen=localStorage.getItem(KEY)}catch(e){}
+  if(chosen!=='light'&&chosen!=='dark')chosen=null;
+  function effective(){return chosen||(mq&&mq.matches?'dark':'light')}
+  function label(){
+    var btn=document.querySelector('.ri-theme');
+    if(!btn)return;
+    var next=effective()==='dark'?'light':'dark';
+    btn.textContent=next;
+    btn.setAttribute('aria-label','Switch to '+next+' mode');
+  }
+  function apply(){
+    /* no explicit choice — drop the attribute so the OS preference governs */
+    if(chosen)root.setAttribute('data-theme',chosen);else root.removeAttribute('data-theme');
+    label();
+  }
+  apply();
+  /* follow the OS until the reader makes a choice of their own */
+  if(mq){
+    var onChange=function(){if(!chosen)apply()};
+    if(mq.addEventListener)mq.addEventListener('change',onChange);else if(mq.addListener)mq.addListener(onChange);
+  }
+  function wire(){
+    var btn=document.querySelector('.ri-theme');
+    if(!btn)return;
+    btn.addEventListener('click',function(){
+      chosen=effective()==='dark'?'light':'dark';
+      /* storage throws on some file:// origins — the choice still holds for this visit */
+      try{localStorage.setItem(KEY,chosen)}catch(e){}
+      apply();
+    });
+    label();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
+})();
+</script>
 </head><body>
 <div class="pg">
 
@@ -520,7 +558,7 @@ p{line-height:1.5} /* 16px × 1.5 = 24px — one baseline */</code></pre>
 <!-- ============== FOOTER ============== -->
 <footer class="fn">
   <div class="l">floreo · swiss-baseline · generated 2026-10-27</div>
-  <div class="r">12 columns · one red</div>
+  <div class="r">12 columns · one red · <button class="ri-theme" type="button">dark</button></div>
 </footer>
 
 </div>

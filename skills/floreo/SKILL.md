@@ -956,42 +956,37 @@ Type scale (rem): `--t-xs:.75` `--t-sm:.875` `--t-md:1` `--t-lg:1.125` `--t-xl:1
 
 ### Color tokens
 
-Adapt `--ca` (accent) to the document's purpose or brand:
+Adapt `--ca` (accent) to the document's purpose or brand. Every other token is a `light-dark()` pair — the first value is the light theme, the second the dark one — so the palette is written once and both themes resolve from it:
 
 ```css
 :root{
-  --cb:#fafaf9;    /* page background */
-  --cs:#ffffff;   /* surface (cards, panels) */
-  --cbr:#e7e5e4;  /* border */
-  --ct:#1c1917;   /* primary text */
-  --cm:#57534e;   /* muted/secondary text */
-  --cq:#736c66;   /* quiet/meta text — 4.5:1 minimum on every light surface */
-  --ca:#2563eb;   /* accent — vary by document */
-  --cat:color-mix(in srgb,var(--ca) 65%,var(--ct)); /* accent as text — derived, never set by hand */
-  --cab:#dbeafe;  /* accent background tint */
-  --con:#fafaf9;  /* text on a solid accent fill — same in both themes */
-  --cw-bg:#fef3c7; --cw:#d97706;  /* warning amber */
-  --cg-bg:#dcfce7; --cg:#16a34a;  /* success green */
-  --cr-bg:#ffe4e6;                /* removed / destructive tint */
-  --cc:#1c1917; --cct:#f5f5f4     /* code block surface and text */
+  color-scheme:light dark;
+  --cb:light-dark(#fafaf9,#1c1917);   /* page background */
+  --cs:light-dark(#ffffff,#292524);   /* surface (cards, panels) */
+  --cs2:light-dark(#f5f5f4,#211f1e);  /* subtle surface */
+  --cbr:light-dark(#e7e5e4,#44403c); /* border */
+  --ct:light-dark(#1c1917,#fafaf9);   /* primary text */
+  --cm:light-dark(#57534e,#d6d3d1);  /* muted/secondary text */
+  --cq:light-dark(#736c66,#a8a29e);  /* quiet/meta text — 4.5:1 minimum on every surface */
+  --ca:#2563eb;                       /* accent — vary by document */
+  --cat-mix:65%;                      /* accent-as-text mix ratio — per theme, see below */
+  --cat:color-mix(in srgb,var(--ca) var(--cat-mix),var(--ct)); /* accent as text — derived, never set by hand */
+  --cab:light-dark(#dbeafe,#082f3e); /* accent background tint */
+  --con:#fafaf9;                      /* text on a solid accent fill — same in both themes */
+  --cw-bg:light-dark(#fef3c7,#3d1a00); --cw:#d97706;  /* warning amber */
+  --cg-bg:light-dark(#dcfce7,#052e16); --cg:#16a34a;  /* success green */
+  --cr-bg:light-dark(#ffe4e6,#3f0d12);                /* removed / destructive tint */
+  --cc:light-dark(#1c1917,#0c0a09); --cct:#f5f5f4;     /* code block surface and text */
 }
 ```
 
 **Accent as text uses `--cat`, not `--ca`.** Links, eyebrows, active ToC items, badge text and stat numbers use `--cat`. It mixes the accent toward the ink color so it clears 4.5:1 on the page, surfaces and `--cab` in both themes for every accent in the Default and Deep columns below. `--ca` stays for fills: dots, bars, numbered circles, highlights. Never hard-code a hex where a token exists; it breaks dark mode.
 
-**Dark mode — always override callout backgrounds.** The pastel tints (`--cab`, `--cw-bg`, `--cg-bg`, `--cr-bg`) become unreadable with near-white text in dark mode. Add these to the dark mode `:root` block:
+**`--cat-mix` is the one value `light-dark()` cannot carry** — it is a percentage, not a colour. It is 65% in the light theme and 45% in the dark one: the accent mixes further toward the ink in light mode, and further toward the light ink in dark mode. The base CSS sets it from `prefers-color-scheme` and an explicit theme choice overrides it.
 
-```css
-@media(prefers-color-scheme:dark){:root{
-  /* ... other dark tokens ... */
-  --cat:color-mix(in srgb,var(--ca) 45%,var(--ct)); /* lighter mix for dark surfaces */
-  --cab:#082f3e;   /* dark teal — readable with #fafaf9 text */
-  --cw-bg:#3d1a00; /* dark amber */
-  --cg-bg:#052e16; /* dark green */
-  --cr-bg:#3f0d12; /* dark rose */
-  --cc:#0c0a09     /* code sits darker than the page */
-}}
-```
+**Callout backgrounds are theme-aware by construction.** The pastel tints (`--cab`, `--cw-bg`, `--cg-bg`, `--cr-bg`) become unreadable with near-white text in dark mode, so each one carries its dark value inside its `light-dark()` pair above. There is no separate dark-mode block to keep in sync.
+
+**`light-dark()` is Baseline 2024** (Chrome 123, Safari 17.5, Firefox 120). The base CSS already uses `color-mix()`, Baseline 2023, so this moves the floor by a year. It also sets `color-scheme`, which makes native widget chrome and scrollbars follow the document's palette instead of the browser default.
 
 Common accent values by document type — pick a shade to create visual variety within a category. Light shades are for fills and charts only; as `--ca` they fail text contrast even through `--cat`:
 
@@ -1032,11 +1027,40 @@ Include this compressed block in every floreo document. Extend as needed:
 
 ```css
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--f-h:Charter,'Bitstream Charter','Iowan Old Style',Georgia,'Times New Roman',serif;--f-b:system-ui,-apple-system,'Segoe UI',sans-serif;--f-m:ui-monospace,Menlo,Consolas,'Liberation Mono','Courier New',monospace;--cb:#fafaf9;--cs:#fff;--cs2:#f5f5f4;--cbr:#e7e5e4;--ct:#1c1917;--cm:#57534e;--cq:#736c66;--ca:#2563eb;--cat:color-mix(in srgb,var(--ca) 65%,var(--ct));--cab:#dbeafe;--con:#fafaf9;--cw-bg:#fef3c7;--cw:#d97706;--cg-bg:#dcfce7;--cg:#16a34a;--cr-bg:#ffe4e6;--cc:#1c1917;--cct:#f5f5f4}
+:root{
+  color-scheme:light dark;
+  /* theme values that are not colours — resolved per theme below */
+  --cat-mix:65%;
+  --body-lh:1.7;
+  --f-h:Charter,'Bitstream Charter','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --f-b:system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-m:ui-monospace,Menlo,Consolas,'Liberation Mono','Courier New',monospace;
+  --cb:light-dark(#fafaf9,#1c1917);
+  --cs:light-dark(#fff,#292524);
+  --cs2:light-dark(#f5f5f4,#211f1e);
+  --cbr:light-dark(#e7e5e4,#44403c);
+  --ct:light-dark(#1c1917,#fafaf9);
+  --cm:light-dark(#57534e,#d6d3d1);
+  --cq:light-dark(#736c66,#a8a29e);
+  --ca:#2563eb;
+  --cat:color-mix(in srgb,var(--ca) var(--cat-mix),var(--ct));
+  --cab:light-dark(#dbeafe,#082f3e);
+  --con:#fafaf9;
+  --cw-bg:light-dark(#fef3c7,#3d1a00);
+  --cw:#d97706;
+  --cg-bg:light-dark(#dcfce7,#052e16);
+  --cg:#16a34a;
+  --cr-bg:light-dark(#ffe4e6,#3f0d12);
+  --cc:light-dark(#1c1917,#0c0a09);
+  --cct:#f5f5f4;
+  --code-edge:light-dark(transparent,#44403c);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--cat-mix:45%;--body-lh:1.75}}
+:root:where([data-theme="dark"]){color-scheme:dark;--cat-mix:45%;--body-lh:1.75}
+:root:where([data-theme="light"]){color-scheme:light}
 :root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px}
 :root{--t-xs:.75rem;--t-sm:.875rem;--t-md:1rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:2rem;--t-4xl:3rem}
-@media(prefers-color-scheme:dark){:root{--cb:#1c1917;--cs:#292524;--cs2:#211f1e;--cbr:#44403c;--ct:#fafaf9;--cm:#d6d3d1;--cq:#a8a29e;--cat:color-mix(in srgb,var(--ca) 45%,var(--ct));--cab:#082f3e;--cw-bg:#3d1a00;--cg-bg:#052e16;--cr-bg:#3f0d12;--cc:#0c0a09}.code{border:1px solid var(--cbr)}body{line-height:1.75}}
-body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:1.7;padding:0 1rem}
+body{font-family:var(--f-b);background:var(--cb);color:var(--ct);line-height:var(--body-lh);padding:0 1rem}
 .pg{max-width:860px;margin:0 auto;padding:4rem 0 8rem}
 h1,h2{font-family:var(--f-h);line-height:1.2;color:var(--ct);text-wrap:balance}
 h3,h4{font-family:var(--f-b);line-height:1.3;color:var(--ct);text-wrap:balance}
@@ -1063,7 +1087,7 @@ p,ul,ol,.sub,dl{max-width:68ch}
 .tbl tr:last-child td{border-bottom:none}
 .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:1.5rem 0}
 .card{background:var(--cs);border:1px solid var(--cbr);border-radius:8px;padding:1.25rem}
-.code{background:var(--cc);color:var(--cct);padding:1.25rem;border-radius:8px;font-family:var(--f-m);font-size:.85rem;line-height:1.6;font-variant-ligatures:none;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.code{background:var(--cc);color:var(--cct);padding:1.25rem;border:1px solid var(--code-edge);border-radius:8px;font-family:var(--f-m);font-size:.85rem;line-height:1.6;font-variant-ligatures:none;overflow-x:auto;margin:1.5rem 0;white-space:pre-wrap;overflow-wrap:anywhere}
 .fig{margin:2rem 0}
 .fig svg{display:block;max-width:100%;height:auto}
 figcaption{font-size:.85rem;color:var(--cq);margin-top:.75rem;max-width:68ch}
@@ -1075,7 +1099,7 @@ li{margin-bottom:.25rem}
 strong{color:var(--ct)}
 .ic{background:var(--cs2);padding:.1rem .3rem;border-radius:3px;font-family:var(--f-m);font-size:.85rem}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-@media print{.toc,.ri-toc,.ri-search,.ri-export{display:none}.pg{max-width:100%}main{display:block}h2{page-break-after:avoid}.sc{page-break-inside:avoid}a[href]{color:inherit;text-decoration:none}}
+@media print{:root{color-scheme:light!important;--cat-mix:65%!important;--body-lh:1.7!important}.toc,.ri-toc,.ri-search,.ri-export,.ri-theme{display:none}.pg{max-width:100%}main{display:block}h2{page-break-after:avoid}.sc{page-break-inside:avoid}a[href]{color:inherit;text-decoration:none}}
 ```
 
 ---
@@ -1139,7 +1163,7 @@ The attribute is zero-cost in source and invisible to readers. Add it to every `
 <div class="tip"><strong>Tip:</strong> helpful suggestion</div>
 ```
 
-**Background tint is the signal. No side-stripe borders.** Never add `border-left` or `border-right` as a colored accent to callouts — that is the Bootstrap-alert aesthetic this system explicitly rejects. The background color alone communicates the variant. The dark mode overrides for `--cab`, `--cw-bg`, and `--cg-bg` are required (see Color tokens above).
+**Background tint is the signal. No side-stripe borders.** Never add `border-left` or `border-right` as a colored accent to callouts — that is the Bootstrap-alert aesthetic this system explicitly rejects. The background color alone communicates the variant. Each callout tint carries its own dark value inside its `light-dark()` pair (see Color tokens above).
 
 ### Inline code
 
@@ -1871,6 +1895,86 @@ mark.ri-hl.ri-hl-cur{outline:2px solid var(--ct);outline-offset:1px}
 
 ---
 
+## Theme Toggle (Optional)
+
+The base CSS expresses every colour as a `light-dark()` pair under `color-scheme: light dark`, so the document follows the operating system by default. This adds an explicit, persisted choice on top: a small button that flips the scheme, remembers it, and falls back to the OS preference when the reader has not chosen.
+
+### HTML addition
+
+One button in `<header class="hd">`, next to the Reading Interface's `.ri-export` when both are present:
+
+```html
+<button class="ri-theme" type="button">dark</button>
+```
+
+The script rewrites the label to name the mode the button switches *to*, and keeps `aria-label` in sync.
+
+### CSS addition
+
+```css
+.ri-theme{font-family:var(--f-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cq);cursor:pointer;background:none;border:1px solid var(--cbr);border-radius:4px;padding:.3rem .6rem;line-height:1;margin-top:.5rem}
+.ri-theme:hover{color:var(--cat);border-color:var(--cat)}
+```
+
+The base CSS print block already hides `.ri-theme`.
+
+### JS addition
+
+Place this in `<head>`, directly after the `<style>` block — not with the Reading Interface script at the end of `<body>`. It sets `data-theme` before first paint, so a reader whose stored choice differs from the OS does not see a flash of the wrong palette. The button is wired once the DOM is ready.
+
+```js
+(function(){
+  const root=document.documentElement;
+  const KEY='floreo-theme';
+  const mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+  let chosen=null;
+  try{chosen=localStorage.getItem(KEY)}catch(e){}
+  if(chosen!=='light'&&chosen!=='dark')chosen=null;
+  function effective(){return chosen||(mq&&mq.matches?'dark':'light')}
+  function label(){
+    const btn=document.querySelector('.ri-theme');
+    if(!btn)return;
+    const next=effective()==='dark'?'light':'dark';
+    btn.textContent=next;
+    btn.setAttribute('aria-label','Switch to '+next+' mode');
+  }
+  function apply(){
+    /* no explicit choice — drop the attribute so the OS preference governs */
+    if(chosen)root.setAttribute('data-theme',chosen);
+    else root.removeAttribute('data-theme');
+    label();
+  }
+  apply();
+  /* follow the OS until the reader makes a choice of their own */
+  if(mq){
+    const onChange=()=>{if(!chosen)apply()};
+    if(mq.addEventListener)mq.addEventListener('change',onChange);
+    else if(mq.addListener)mq.addListener(onChange);
+  }
+  function wire(){
+    const btn=document.querySelector('.ri-theme');
+    if(!btn)return;
+    btn.addEventListener('click',()=>{
+      chosen=effective()==='dark'?'light':'dark';
+      try{localStorage.setItem(KEY,chosen)}catch(e){}
+      apply();
+    });
+    label();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);
+  else wire();
+})();
+```
+
+**Notes**
+
+- `light-dark()` is Baseline 2024 (Chrome 123, Safari 17.5, Firefox 120). The base CSS already uses `color-mix()`, Baseline 2023, so this moves the floor by a year.
+- `--cat-mix` and `--body-lh` are not colours, so `light-dark()` cannot carry them. They are set by a `prefers-color-scheme` block that an explicit `data-theme` overrides.
+- `localStorage` throws on some `file://` origins. The script catches it: the toggle still works for the session, it just does not persist.
+- Printing always uses the light palette — the print block forces `color-scheme: light`.
+
+---
+
 ## Markup Subagent Prompt
 
 When spawning the markup phase as a subagent, use the most token-efficient model available (currently `model="haiku"`). Use this prompt:
@@ -2024,6 +2128,7 @@ When a hint cannot be fully applied (ambiguous, conflicting with design system, 
 | `interactive: search` | Add reading interface search |
 | `interactive: collapsible` | Wrap eligible sections in `<details class="clp">` |
 | `interactive: tabs` | Apply tab JS pattern to eligible sections |
+| `interactive: theme` | Add the light/dark toggle button + JS |
 | `author`, `date` | Render in document header as metadata |
 
 `toc` is always added when the rendered document has 4+ `<h2>` sections, regardless of the frontmatter value.
@@ -2042,7 +2147,7 @@ Before writing the final file:
 - [ ] Visual hierarchy is clear: h1 > h2 (serif, `--f-h`) → h3 (system-ui), spacing creates sections
 - [ ] `h3`/`h4` use `--f-b` (system-ui), NOT `--f-h` (serif) — Serif Authority Rule
 - [ ] No side-stripe accents anywhere (callouts, diff rows, cards) — tints and markers only
-- [ ] Dark mode overrides present for `--cab`, `--cw-bg`, `--cg-bg` in the dark media query
+- [ ] Every theme-aware token carries both values — `--cab`, `--cw-bg`, `--cg-bg` resolve through `light-dark()` or a dark-mode override
 - [ ] Tables used for comparative data (not prose lists)
 - [ ] Callouts (`.note`, `.warn`, `.tip`) surface key insights
 - [ ] SVG chart present for any section with 3+ quantitative data points — a table alone is not sufficient for magnitude or trend data

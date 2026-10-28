@@ -158,18 +158,23 @@ check_file() {
     fi
   fi
 
-  # --- Dark mode callout overrides (ERROR if missing) ---
-  # --cab, --cw-bg, --cg-bg must be redefined after the dark media query.
-  if ! grep -qE 'prefers-color-scheme:dark' <<<"$content" 2>/dev/null; then
-    echo "  ERROR  no dark mode media query (prefers-color-scheme:dark)"; ferr=1
-  else
-    local dark_block
-    dark_block=$(sed -n '/prefers-color-scheme:dark/,$p' <<<"$content")
-    for var in --cab --cw-bg --cg-bg; do
-      if ! grep -qE -- "${var}:" <<<"$dark_block" 2>/dev/null; then
-        echo "  ERROR  dark mode missing override for $var"; ferr=1
-      fi
-    done
+  # --- Theme-aware callout backgrounds (ERROR if missing) ---
+  # --cab, --cw-bg, --cg-bg must resolve per theme: either paired through
+  # light-dark(), or overridden in a dark-mode block.
+  local dark_block
+  dark_block=$(sed -n '/prefers-color-scheme:dark/,$p' <<<"$content")
+  for var in --cab --cw-bg --cg-bg; do
+    if grep -qE -- "${var}:light-dark\(" <<<"$content" 2>/dev/null; then
+      : # paired through light-dark()
+    elif grep -qE -- "${var}:" <<<"$dark_block" 2>/dev/null; then
+      : # overridden in a dark-mode block
+    else
+      echo "  ERROR  $var is not theme-aware (needs light-dark() or a dark-mode override)"; ferr=1
+    fi
+  done
+  # light-dark() only resolves to its dark value under a color-scheme that allows dark.
+  if grep -qE 'light-dark\(' <<<"$content" 2>/dev/null && ! grep -qE 'color-scheme:[[:space:]]*light dark' <<<"$content" 2>/dev/null; then
+    echo "  ERROR  light-dark() used without color-scheme:light dark (dark values never apply)"; ferr=1
   fi
 
   # --- File size (ERROR over absolute max; WARN over per-template budget) ---

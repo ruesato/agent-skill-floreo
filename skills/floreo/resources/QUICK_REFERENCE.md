@@ -15,7 +15,7 @@
 `--f-h` heading font · `--f-b` body font · `--f-m` mono font  
 `--s1`–`--s8` spacing (4px→64px) · `--t-xs`–`--t-4xl` type scale (.75rem→3rem)
 
-Dark mode auto-activates via `@media(prefers-color-scheme:dark)` — overrides `--cb`, `--cs`, `--cs2`, `--cbr`, `--ct`, `--cm`, `--cq`, `--cat`, `--cab`, `--cw-bg`, `--cg-bg`, `--cr-bg`, `--cc`. Never hard-code hex where a token exists
+Dark mode follows the OS: `:root` sets `color-scheme:light dark` and each colour token is a `light-dark(light,dark)` pair. `--cat-mix` and `--body-lh` are not colours, so a `prefers-color-scheme` block sets them. `data-theme="light|dark"` on `<html>` pins a scheme (`interactive: theme` adds the toggle). Never hard-code hex where a token exists
 
 ## Accent color by doc type
 `#2563eb` technical (default) · `#dc2626` warning/incident · `#16a34a` success  
