@@ -6,6 +6,10 @@ All notable changes to floreo are documented here. Follows [Keep a Changelog](ht
 
 ## [Unreleased]
 
+---
+
+## [1.4.0] — 2026-10-29
+
 ### Added
 
 - **`swiss-baseline` template** — a Swiss / International Typographic Style document template, alongside the existing `bauhaus-baseline`. Twelve columns on a 24px baseline, black and white with one red, hairline rules instead of bordered components, and a sans hierarchy carried by size and weight rather than ornament. Sources the history, the grid doctrine, the typefaces and the colour discipline from the Swiss federal government's official history, Poster House's *The Swiss Grid* exhibition and Niggli; translates the grid into CSS Grid, the baseline grid, modular scales and the 4dp/8dp spacing unit; and states the WCAG 2.2 bounds that a print-derived grid has to respect. Ships with a draft source at `docs/swiss-design-reference.md`.
