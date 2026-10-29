@@ -8,10 +8,11 @@ All notable changes to floreo are documented here. Follows [Keep a Changelog](ht
 
 ### Added
 
-- **`swiss-baseline` template** — a Swiss / International Typographic Style document template, alongside the existing `bauhaus-baseline`. Twelve visible columns on a 24px baseline, black and white with one red, hairline rules instead of bordered components, and a sans hierarchy carried by size and weight rather than ornament. Sources the history, the grid doctrine, the typefaces and the colour discipline from the Swiss federal government's official history, Poster House's *The Swiss Grid* exhibition and Niggli; translates the grid into CSS Grid, the baseline grid, modular scales and the 4dp/8dp spacing unit; and states the WCAG 2.2 bounds that a print-derived grid has to respect. Ships with a draft source at `docs/swiss-design-reference.md`.
+- **`swiss-baseline` template** — a Swiss / International Typographic Style document template, alongside the existing `bauhaus-baseline`. Twelve columns on a 24px baseline, black and white with one red, hairline rules instead of bordered components, and a sans hierarchy carried by size and weight rather than ornament. Sources the history, the grid doctrine, the typefaces and the colour discipline from the Swiss federal government's official history, Poster House's *The Swiss Grid* exhibition and Niggli; translates the grid into CSS Grid, the baseline grid, modular scales and the 4dp/8dp spacing unit; and states the WCAG 2.2 bounds that a print-derived grid has to respect. Ships with a draft source at `docs/swiss-design-reference.md`.
 
 ### Changed
 
+- **`swiss-baseline` background grid removed** — the faint twelve-column overlay (`.gridlines`) was a testing aid and no longer renders in documents built from the template. The columns still structure the layout; they are just not drawn. The `--grid-ink` token stays, since the SVG figures use it.
 - **`swiss-baseline` layout** — rebuilt to match the layout set in Figma (`docs/baseline/swiss-baseline.html`). The page is now a twelve-column CSS Grid: the cover and footer span all twelve columns, the content runs in columns 1–8, and the table of contents is a rail in columns 10–12 that sits level with the first section heading and sticks as the page scrolls. Section headers stack — the number hangs in a 40px slot beside the heading, with the deck indented to the same 40px — and the body sits on the same hanging indent. The section rule above each heading is gone; the section number carries the separation instead.
 
 ---
